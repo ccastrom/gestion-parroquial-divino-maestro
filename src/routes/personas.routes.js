@@ -1,8 +1,7 @@
 const express = require('express');
 const router = express.Router();
+const {getPersonas}= require('../controllers/personas.controllers');
 
-router.get('/',(req,res)=>{
-   res.send('Hola desde personas')
-})
+router.get('/',getPersonas);
 
 module.exports = router;
