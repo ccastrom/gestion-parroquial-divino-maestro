@@ -1,8 +1,8 @@
-const {request,response} = require ('express');
+const {response} = require ('express');
 
 
 
-const getPersonas = (req=request,res=response)=>{
+const getPersonas = (req,res=response)=>{
    res.send('Hola desde personas')
 };
 
