@@ -1,8 +1,15 @@
 
 const {Router} = require('express');
-const {getPersonas}= require('../controllers/personas.controllers');
+const 
+{   GET_Personas, 
+    POST_Personas,
+    PUT_Personas,
+    DELETE_Personas}= require('../controllers/personas.controllers');
 const router= Router();
 
-router.get('/',getPersonas);
+router.get('/',GET_Personas);
+router.post('/',POST_Personas);
+router.put('/:id',PUT_Personas);
+router.delete('/',DELETE_Personas);
 
 module.exports = router;
