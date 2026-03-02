@@ -1,0 +1,32 @@
+const { Sequelize, Model, DataTypes, TableHints } = require("sequelize");
+const sequelize = require("../config/database.js");
+
+
+
+
+const Tramite = sequelize.define(
+  "Tramite",
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    fecha_ingreso: {
+      type: DataTypes.DATEONLY,
+    },
+    estado: {
+      type: DataTypes.STRING,
+    },
+    id_fk_reunion_pre_bautizo: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
+  },
+  {
+    tableName: "tramite",
+    timestamps: false,
+  },
+);
+
+module.exports = {Tramite};
