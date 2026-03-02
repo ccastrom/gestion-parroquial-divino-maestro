@@ -1,5 +1,5 @@
 const { Sequelize, Model, DataTypes } = require('sequelize');
-const sequelize = require('../config/database');
+const sequelize = require('../config/database.js');
 
 
 const Persona= sequelize.define('Persona',{
@@ -31,9 +31,9 @@ const Persona= sequelize.define('Persona',{
 },
 
 {
-  tableName: 'Persona', 
+  tableName: 'persona', 
   timestamps: false
 
 })
 
-module.exports = Persona;
+module.exports = {Persona};

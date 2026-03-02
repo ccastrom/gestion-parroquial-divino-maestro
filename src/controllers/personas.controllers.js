@@ -1,9 +1,23 @@
 const {request,response} = require ('express');
+const PersonaService = require('../services/persona.service');
 
 
 
-const GET_Personas = (req=request,res=response)=>{
-   res.send('Hola desde GET personas')
+const GET_Personas = async (req=request,res=response)=>{
+   try {
+       const personas = await PersonaService.getPersonas();
+       res.json({
+      msg: "get API - personas",
+      personas
+   });
+      
+   } catch (error) {
+      res.status(500).json({
+         msg: "Error al obtener personas",
+         error: error.message
+      });
+   }
+  
 };
 
 const POST_Personas=(req=request,res=response)=>{
