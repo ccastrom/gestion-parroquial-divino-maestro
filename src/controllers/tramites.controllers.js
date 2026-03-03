@@ -31,7 +31,7 @@ const PATCH_Tramites= asyncHandler(async(req,res)=>{
         const tramite=await tramiteService.cambiarEstadoTramite(req.params.id,estado);
       
     
-         res.status(200).json(tramites);
+         res.status(200).json(tramite);
     
 });
 
