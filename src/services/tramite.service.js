@@ -16,7 +16,10 @@ const cambiarEstadoTramite=async(id,nuevoEstado)=>{
 
   const tramite=await Tramite.findByPk(id);
   if(!tramite){
-    throw new Error('Trámite no encontrado');
+    const error= new Error('Trámite no encontrado');
+            error.statusCode=404;
+            throw error;
+    
   }
   tramite.estado=nuevoEstado;
   await tramite.save();
@@ -33,7 +36,18 @@ async function createTramite(){
 }
 
 async function getTramiteById(id){
-    return await Tramite.findByPk(id);
+    const tramite= await Tramite.findByPk(id);
+     if(!tramite){
+            const error= new Error('Trámite no encontrado');
+            error.statusCode=404;
+            throw error;
+        }
+          
+        return tramite;
+   
+
+ 
+   
 }
 
 async function getTramites(){
