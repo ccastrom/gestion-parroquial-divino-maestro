@@ -27,6 +27,12 @@ const cambiarEstadoTramite=async(id,nuevoEstado)=>{
 }
 
 
+const agregarParticipantesTramite=async(participante)=>{
+    
+    
+};
+
+
 
 
 

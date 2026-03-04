@@ -25,6 +25,10 @@ const POST_Tramites= asyncHandler(async(req,res)=>{
     
 });
 
+const POST_Tramites_Agregar_Participantes= asyncHandler(async(req,res)=>{
+    
+});
+
 const PATCH_Tramites= asyncHandler(async(req,res)=>{
    
         const {estado}=req.body;
@@ -45,5 +49,6 @@ module.exports={
     GET_Tramites,
     GET_TramitesById,
     POST_Tramites,
-    PATCH_Tramites
+    PATCH_Tramites,
+    POST_Tramites_Agregar_Participantes
 }
