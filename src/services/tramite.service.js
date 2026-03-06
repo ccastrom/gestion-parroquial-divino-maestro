@@ -1,17 +1,10 @@
 const {Tramite} = require('../models/tramite.model');
+const {ESTADOS_VALIDOS}= require('../constants/estados_tramites');
 
-const ESTADOS_VALIDOS=[
-    'Iniciado',
-    'Reunion asignada',
-    'Agendado',
-    'Finalizado',
-    'Derivado',
-    'Reabierto'
-];
 
 const cambiarEstadoTramite=async(id,nuevoEstado)=>{
-  if(!ESTADOS_VALIDOS.includes(nuevoEstado)){
-    throw new Error(`Estado no válido. Estados permitidos: ${ESTADOS_VALIDOS.join(', ')}`);
+  if(!Object.values(ESTADOS_VALIDOS).includes(nuevoEstado)){
+    throw new Error(`Estado no válido. Estados permitidos: ${Object.values(ESTADOS_VALIDOS).join(', ')}`);
   }
 
   const tramite=await Tramite.findByPk(id);
