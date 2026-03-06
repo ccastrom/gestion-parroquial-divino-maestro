@@ -27,9 +27,10 @@ const cambiarEstadoTramite=async(id,nuevoEstado)=>{
 }
 
 
-const agregarParticipantesTramite=async(participante)=>{
-    
-    
+const agregarParticipante=async(id,datos)=>{
+    const tramite= getTramiteById(id);
+   
+
 };
 
 
@@ -50,10 +51,6 @@ async function getTramiteById(id){
         }
           
         return tramite;
-   
-
- 
-   
 }
 
 async function getTramites(){
@@ -62,9 +59,11 @@ async function getTramites(){
 
 
 
+
 module.exports={
     createTramite,
     getTramites,
     getTramiteById,
-    cambiarEstadoTramite
+    cambiarEstadoTramite,
+    agregarParticipante
 }
