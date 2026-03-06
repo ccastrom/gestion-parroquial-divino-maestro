@@ -38,22 +38,22 @@ const agregarParticipante=async(id,datos)=>{
 
 
 
-async function createTramite(){
+const createTramite=async()=>{
     return await Tramite.create({});
 }
 
-async function getTramiteById(id){
+const getTramiteById=async(id)=>{
     const tramite= await Tramite.findByPk(id);
      if(!tramite){
             const error= new Error('Trámite no encontrado');
             error.statusCode=404;
             throw error;
-        }
-          
-        return tramite;
+    
+  }
+  return tramite;
 }
 
-async function getTramites(){
+const getTramites=async()=>{
     return await Tramite.findAll();
 }
 
