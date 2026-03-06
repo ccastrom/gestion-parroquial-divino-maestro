@@ -28,7 +28,7 @@ const cambiarEstadoTramite=async(id,nuevoEstado)=>{
 
 
 const agregarParticipante=async(id,datos)=>{
-    const tramite= getTramiteById(id);
+    const tramite= await getTramiteById(id);
    
 
 };
