@@ -1,6 +1,5 @@
-const {Tramite} = require('../models/tramite.model');
+const { Tramite, Participacion, Persona } = require('../models');
 const {ESTADOS_VALIDOS}= require('../constants/estados_tramites');
-
 
 const cambiarEstadoTramite=async(id,nuevoEstado)=>{
   if(!Object.values(ESTADOS_VALIDOS).includes(nuevoEstado)){
@@ -19,6 +18,14 @@ const cambiarEstadoTramite=async(id,nuevoEstado)=>{
   return tramite;
 }
 
+const Test_tramiteParticipacion=async()=>{
+  const result= await Participacion.findOne({
+    include:Persona
+  });
+
+  console.log(result);
+  return result;
+}
 
 const agregarParticipante=async(id,datos)=>{
     const tramite= await getTramiteById(id);
@@ -59,5 +66,7 @@ module.exports={
     getTramites,
     getTramiteById,
     cambiarEstadoTramite,
-    agregarParticipante
+    agregarParticipante,
+    Test_tramiteParticipacion
+    
 }

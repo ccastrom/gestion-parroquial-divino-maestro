@@ -17,6 +17,12 @@ const GET_TramitesById= asyncHandler (async(req,res)=>{
     
 });
 
+
+const GET_Test_TramitesParticipacion= asyncHandler(async(req,res)=>{
+        const tramite= await tramiteService.Test_tramiteParticipacion();
+           res.status(200).json(tramite);
+});
+
 const POST_Tramites= asyncHandler(async(req,res)=>{
     
         const tramite= await tramiteService.createTramite(req.body);
@@ -52,5 +58,6 @@ module.exports={
     GET_TramitesById,
     POST_Tramites,
     PATCH_Tramites,
-    POST_Tramites_Agregar_Participantes
+    POST_Tramites_Agregar_Participantes,
+    GET_Test_TramitesParticipacion
 }
