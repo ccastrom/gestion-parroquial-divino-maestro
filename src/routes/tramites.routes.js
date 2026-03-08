@@ -1,4 +1,6 @@
 
+const { agregarParticipanteSchema}= require('../schemas/participantes.schemas.js');
+const {validateBody}= require('../middleware/validarBody.js');
 const {Router} = require('express');
 const
 {   GET_Tramites,
@@ -11,7 +13,7 @@ const
 const router= Router();
 
 router.get('/',GET_Tramites);
-router.get('/test',GET_Test_TramitesParticipacion);
+router.post('/test',validateBody(agregarParticipanteSchema),GET_Test_TramitesParticipacion);
 router.get('/:id',GET_TramitesById);
 router.post('/',POST_Tramites);
 router.post('/:id/participantes', POST_Tramites_Agregar_Participantes);
