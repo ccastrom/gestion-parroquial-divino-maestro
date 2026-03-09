@@ -10,4 +10,10 @@ const ESTADOS_VALIDOS={
     Bautizo_Cancelado:'Bautizo cancelado'
 };
 
-module.exports = { ESTADOS_VALIDOS };
+const  validarEstado=(estado)=>{
+     if(!Object.values(ESTADOS_VALIDOS).includes(estado)){
+        throw new Error(`Estado no válido. Estados permitidos: ${Object.values(ESTADOS_VALIDOS).join(', ')}`);
+    }
+}
+
+module.exports = { ESTADOS_VALIDOS,validarEstado };

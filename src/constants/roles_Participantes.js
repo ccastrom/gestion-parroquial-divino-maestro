@@ -10,4 +10,10 @@ const ROLES_VALIDOS =
     Testigo:'Testigo',
     Catequista:'Catequista'
 };
-module.exports = { ROLES_VALIDOS };
+
+const  validateRol=(rol)=>{
+     if(!Object.values(ROLES_VALIDOS).includes(rol)){
+        throw new Error(`Rol no válido. Roles permitidos: ${Object.values(ROLES_VALIDOS).join(', ')}`);
+    }
+}
+module.exports = { ROLES_VALIDOS, validateRol };
