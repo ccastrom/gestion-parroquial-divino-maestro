@@ -1,34 +1,24 @@
 const { Tramite, Participacion, Persona } = require('../models');
-const {ESTADOS_VALIDOS}= require('../constants/estados_tramites');
+const {ESTADOS_VALIDOS,validarEstado}= require('../constants/estados_tramites');
+const {ROLES_VALIDOS,validateRol}= require('../constants/roles_Participantes');
+
 
 const cambiarEstadoTramite=async(id,nuevoEstado)=>{
-  if(!Object.values(ESTADOS_VALIDOS).includes(nuevoEstado)){
-    throw new Error(`Estado no válido. Estados permitidos: ${Object.values(ESTADOS_VALIDOS).join(', ')}`);
-  }
-
-  const tramite=await Tramite.findByPk(id);
-  if(!tramite){
-    const error= new Error('Trámite no encontrado');
-            error.statusCode=404;
-            throw error;
-    
-  }
+  validarEstado(nuevoEstado);
+  const tramite= await validarTramite(id);
   tramite.estado=nuevoEstado;
   await tramite.save();
   return tramite;
 }
 
-const Test_tramiteParticipacion=async()=>{
-  const result= await Participacion.findOne({
-    include:Persona
-  });
-
-  console.log(result);
-  return result;
+const Test_tramiteParticipacion=async(id,datos)=>{
+   const tramite= await validarTramite(id);
+   validateRol(datos.rol);
+   return tramite
 }
 
 const agregarParticipante=async(id,datos)=>{
-    const tramite= await getTramiteById(id);
+    const tramite= await validarTramite(id);
     return tramite;
    
 
@@ -43,7 +33,7 @@ const createTramite=async()=>{
     return await Tramite.create({});
 }
 
-const getTramiteById=async(id)=>{
+const validarTramite=async(id)=>{
     const tramite= await Tramite.findByPk(id);
      if(!tramite){
             const error= new Error('Trámite no encontrado');
@@ -64,7 +54,7 @@ const getTramites=async()=>{
 module.exports={
     createTramite,
     getTramites,
-    getTramiteById,
+    validarTramite,
     cambiarEstadoTramite,
     agregarParticipante,
     Test_tramiteParticipacion
