@@ -5,35 +5,32 @@ const {ROLES_VALIDOS,validateRol}= require('../constants/roles_Participantes');
 
 const cambiarEstadoTramite=async(id,nuevoEstado)=>{
   validarEstado(nuevoEstado);
-  const tramite= await validarTramite(id);
+  const tramite= await getTramiteById(id);
   tramite.estado=nuevoEstado;
   await tramite.save();
   return tramite;
 }
 
 const Test_tramiteParticipacion=async(id,datos)=>{
-   const tramite= await validarTramite(id);
+   const tramite= await getTramiteById(id);
    validateRol(datos.rol);
    return tramite
 }
 
 const agregarParticipante=async(id,datos)=>{
-    const tramite= await validarTramite(id);
+
+    //EN ESPERA
+    const tramite= await getTramiteById(id);
     return tramite;
    
 
 };
 
-
-
-
-
-
 const createTramite=async()=>{
     return await Tramite.create({});
 }
 
-const validarTramite=async(id)=>{
+const getTramiteById=async(id)=>{
     const tramite= await Tramite.findByPk(id);
      if(!tramite){
             const error= new Error('Trámite no encontrado');
@@ -54,7 +51,7 @@ const getTramites=async()=>{
 module.exports={
     createTramite,
     getTramites,
-    validarTramite,
+   getTramiteById,
     cambiarEstadoTramite,
     agregarParticipante,
     Test_tramiteParticipacion
