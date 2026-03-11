@@ -20,8 +20,7 @@ const Test_tramiteParticipacion=async(id,datos)=>{
      const persona= await getPersonById(datos.personaId);
    }
     await crearParticipante(id,datos);
-   return  tramite;
-  
+   return await getParticipantesByTramite(id);
 };
 
 const agregarParticipante=async(id,datos)=>{
@@ -82,11 +81,21 @@ const crearParticipante = async(id, datos) => {
     } catch (error) {
          console.log("Error en catch: ", error);
         await transaction.rollback();
-        throw error;
-        
+        throw error; 
     }
+    await getParticipantesByTramite(id);
 };
 
+const getParticipantesByTramite= async(id)=>{
+    const participantes= await Participacion.findAll({
+        where:{id_fk_tramite:id},
+        include:[{
+            model:Persona,
+            attributes:['nombre','apellido','fecha_nacimiento','rut','fono','direccion']
+        }]
+    });
+    return participantes;
+}
 
 
 
