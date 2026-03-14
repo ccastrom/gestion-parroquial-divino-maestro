@@ -1,7 +1,7 @@
 const sequelize = require("../config/database.js");
 const { Tramite, Participacion, Persona } = require("../models");
 const {ESTADOS_VALIDOS, validarEstado, } = require("../constants/estados_tramites");
-const { ROLES_VALIDOS,  validateRol, } = require("../constants/roles_Participantes");
+const { ROLES_VALIDOS, ROLES_UNICOS,  validateRol, } = require("../constants/roles_Participantes");
  
 const { getPersonById } = require("./persona.service");
 
@@ -25,8 +25,8 @@ const Test_tramiteParticipacion = async (id, datos) => {
   if (participanteData.personaId) {
      await getPersonById(participanteData.personaId);
   }
-  if(participanteData.rol === ROLES_VALIDOS.Bautizado){
-     await checkBautizadoExistente(participanteData);
+  if( ROLES_UNICOS.includes(participanteData.rol)){
+     await checkRolUnicoExistente(participanteData);
   }
   await crearParticipante(participanteData);
   return await getParticipantesByTramite(participanteData.tramiteId);
@@ -119,12 +119,12 @@ const getParticipantesByTramite = async (id) => {
   });
   return participantes;
 };
-const checkBautizadoExistente = async (participante) => {
+const checkRolUnicoExistente = async (participante) => {
     const bautizadoExistente = await Participacion.findOne({
       where: { id_fk_tramite: participante.tramiteId, rol:participante.rol  },
     });
-    if( bautizadoExistente.rol == ROLES_VALIDOS.Bautizado){
-        const error = new Error("Ya existe un bautizado registrado en este trámite");
+    if( bautizadoExistente){
+        const error = new Error(`Ya existe un participante con el rol ${participante.rol} en este trámite.`);
         error.statusCode = 400;
         throw error;
     }
