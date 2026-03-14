@@ -20,7 +20,7 @@ const Test_tramiteParticipacion = async (id, datos) => {
     persona: datos.persona,
     rol: datos.rol,
   };
-  const tramite = await getTramiteById(participanteData.tramiteId);
+  await getTramiteById(participanteData.tramiteId);
   validateRol(participanteData.rol);
   if (participanteData.personaId) {
      await getPersonById(participanteData.personaId);
