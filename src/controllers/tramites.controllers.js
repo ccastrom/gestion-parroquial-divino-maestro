@@ -18,24 +18,19 @@ const GET_TramitesById= asyncHandler (async(req,res)=>{
 });
 
 
-const POST_Test_TramitesParticipacion= asyncHandler(async(req,res)=>{
-        const tramite= await tramiteService.Test_tramiteParticipacion(req.params.id,req.body);
+const POST_Tramites_Agregar_Participantes= asyncHandler(async(req,res)=>{
+        const tramite= await tramiteService.agregarParticipantes(req.params.id,req.body);
            res.status(200).json(tramite);
 });
 
 const POST_Tramites= asyncHandler(async(req,res)=>{
     
-        const tramite= await tramiteService.createTramite(req.body);
+        const tramite= await tramiteService.createTramite();
         res.status(201).json(tramite);
    
     
 });
 
-const POST_Tramites_Agregar_Participantes= asyncHandler(async(req,res)=>{
-        const tramite=  await tramiteService.agregarParticipante(req.params.id,req.body);
-        res.status(200).json(tramite);
-    
-});
 
 const PATCH_Tramites= asyncHandler(async(req,res)=>{
    
@@ -59,5 +54,4 @@ module.exports={
     POST_Tramites,
     PATCH_Tramites,
     POST_Tramites_Agregar_Participantes,
-    POST_Test_TramitesParticipacion
 }

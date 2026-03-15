@@ -1,6 +1,6 @@
 
 const ESTADOS_VALIDOS={
-    Tramite_Iniciad:'Tramite iniciado',
+    Tramite_Iniciado:'iniciado',
     Reunion_Pre_Bautizo_Asignada:'Reunion Pre bautizo asignada',
     Reunion_Pre_Bautizo_Completada:'Reunion Pre bautizo completada',
     Evento_Bautizo_Agendado:'Evento bautizo agendado',

@@ -13,7 +13,7 @@ const cambiarEstadoTramite = async (id, nuevoEstado) => {
   return tramite;
 };
 
-const Test_tramiteParticipacion = async (id, datos) => {
+const agregarParticipantes = async (id, datos) => {
   const participanteData = {
     tramiteId: id,
     personaId: datos.personaId,
@@ -32,14 +32,9 @@ const Test_tramiteParticipacion = async (id, datos) => {
   return await getParticipantesByTramite(participanteData.tramiteId);
 };
 
-const agregarParticipante = async (id, datos) => {
-  //EN ESPERA
-  const tramite = await getTramiteById(id);
-  return tramite;
-};
-
 const createTramite = async () => {
-  return await Tramite.create({});
+  return await Tramite.create();
+  
 };
 
 const getTramiteById = async (id) => {
@@ -134,6 +129,6 @@ module.exports = {
   getTramites,
   getTramiteById,
   cambiarEstadoTramite,
-  agregarParticipante,
-  Test_tramiteParticipacion,
+  agregarParticipantes
+  
 };
