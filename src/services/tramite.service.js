@@ -2,7 +2,7 @@ const sequelize = require("../config/database.js");
 const { Tramite, Participacion, Persona } = require("../models");
 const {ESTADOS_VALIDOS, validarEstado, } = require("../constants/estados_tramites");
 const { ROLES_VALIDOS, ROLES_UNICOS,  validateRol, } = require("../constants/roles_Participantes");
- 
+const {createReunionPreBautizo} = require("./reunion_pre_bautizo.service");
 const { getPersonById } = require("./persona.service");
 
 const cambiarEstadoTramite = async (id, nuevoEstado) => {
@@ -20,7 +20,8 @@ const agregarParticipantes = async (id, datos) => {
     persona: datos.persona,
     rol: datos.rol,
   };
-  await getTramiteById(participanteData.tramiteId);
+  const tramite=await getTramiteById(participanteData.tramiteId);
+  participanteData["tramite"]=tramite.dataValues;
   validateRol(participanteData.rol);
   if (participanteData.personaId) {
      await getPersonById(participanteData.personaId);
@@ -30,6 +31,7 @@ const agregarParticipantes = async (id, datos) => {
   }
   await crearParticipante(participanteData);
   return await getParticipantesByTramite(participanteData.tramiteId);
+  
 };
 
 const createTramite = async () => {
@@ -87,6 +89,19 @@ const crearParticipante = async (participanteData) => {
         },
         { transaction },
       );
+    }
+
+    if(!participanteData.tramite.id_fk_reunion_pre_bautizo){
+      const reunion= await createReunionPreBautizo(transaction);
+      await Tramite.update({
+        id_fk_reunion_pre_bautizo:reunion.id
+      },{
+        where:{id: participanteData.tramiteId},
+        transaction
+      })
+      console.log('reunion.id:', reunion.id);
+      console.log('tramiteId:', participanteData.tramiteId);
+     
     }
     await transaction.commit();
   } catch (error) {
