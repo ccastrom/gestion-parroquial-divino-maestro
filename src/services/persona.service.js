@@ -1,6 +1,13 @@
 const {Persona}=require('../models/persona.model');
 
 
+
+const createPersona= async(persona)=>{
+    return await Persona.create(persona);
+     
+};
+
+
 async function getPersonas(){
     return await Persona.findAll();
 }
@@ -21,6 +28,7 @@ const getPersonById=async(id)=>{
 
 
 module.exports={
+    createPersona,
     getPersonas,
     getPersonById
 }
