@@ -3,7 +3,7 @@ const sequelize = require('../config/database.js');
 const {Persona} = require('./persona.model');
 const {Tramite} = require('./tramite.model');
 const {Participacion} = require('./participacion.model');
-const {ReunionPreBautizo} = require('./reunion_pre_bautizo.model.js');
+const {Reunion_prebautizmal} = require('./reunion_pre_bautizo.model.js');
 
 Participacion.belongsTo(Persona, {
   foreignKey: "id_fk_persona"
@@ -20,10 +20,10 @@ Tramite.hasMany(Participacion,{
     foreignKey:"id_fk_tramite"
 });
 
-ReunionPreBautizo.belongsTo(Tramite, {
+Reunion_prebautizmal.belongsTo(Tramite, {
     foreignKey:"id_fk_tramite"
 });
-Tramite.hasOne(ReunionPreBautizo,{
+Tramite.hasOne(Reunion_prebautizmal,{
     foreignKey:"id_fk_tramite"
 });
-module.exports = { Persona, Tramite, Participacion, ReunionPreBautizo };
+module.exports = { Persona, Tramite, Participacion, Reunion_prebautizmal };

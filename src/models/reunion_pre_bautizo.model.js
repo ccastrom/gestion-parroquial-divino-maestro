@@ -1,22 +1,25 @@
 const { Sequelize, Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/database.js');
 
-const ReunionPreBautizo= sequelize.define('ReunionPreBautizo',{
+const Reunion_prebautizmal= sequelize.define('reunion_prebautizmal',{
     id:{
         type:DataTypes.INTEGER,
             primaryKey: true,
         autoIncrement: true
     },
     fecha:{
-        type:DataTypes.DATE,
+        type:DataTypes.DATEONLY,
     },
-    id_fk_catequista:{
+    id_fk_persona:{
         type:DataTypes.INTEGER,
+    },
+    estado:{
+        type:DataTypes.STRING,
     }
 },
 {
-  tableName: 'reunion_pre_bautizo', 
+  tableName: "reunion_prebaustizmal", 
   timestamps: false
 });
 
-module.exports = {ReunionPreBautizo};
+module.exports = {Reunion_prebautizmal};
