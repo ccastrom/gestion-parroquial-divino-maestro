@@ -1,5 +1,5 @@
 const sequelize = require("../config/database.js");
-const { Tramite, Participacion, Persona } = require("../models");
+const { Tramite, Participacion, Persona, Reunion_prebautizmal } = require("../models");
 const {ESTADOS_VALIDOS, validarEstado, } = require("../constants/estados_tramites");
 const { ROLES_VALIDOS, ROLES_UNICOS,  validateRol, } = require("../constants/roles_Participantes");
 const {createReunionPreBautizo} = require("./reunion_pre_bautizo.service");
@@ -92,7 +92,9 @@ const crearParticipante = async (participanteData) => {
     }
 
     if(!participanteData.tramite.id_fk_reunion_pre_bautizo){
-      const reunion= await createReunionPreBautizo(transaction);
+      const reunion = await createReunionPreBautizo({
+        transaction
+      });
       await Tramite.update({
         id_fk_reunion_pre_bautizo:reunion.id
       },{
