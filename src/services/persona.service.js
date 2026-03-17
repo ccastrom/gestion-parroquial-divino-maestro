@@ -3,13 +3,53 @@ const {Persona}=require('../models/persona.model');
 
 
 const createPersona= async(persona)=>{
+    if(persona.rut){
+        await getPersonaByRUT(persona.rut);
+    }else{
+        const resultado=await getPersonaByNombreApellido(persona);
+        if(resultado?.advertencia){
+            return resultado;
+        }
+    }
     return await Persona.create(persona);
      
 };
 
 
-async function getPersonas(){
+const getPersonas=async()=>{
     return await Persona.findAll();
+}
+
+const getPersonaByNombreApellido=async(datos)=>{
+    const personaExistente=await Persona.findOne({
+        where:{
+            nombre:datos.nombre,
+            apellido: datos.apellido
+        }
+    });
+    if(personaExistente){
+        return{
+              advertencia: true,
+              mensaje:"Persona existe con este nombre",
+              personaEncontrada:personaExistente
+        }
+      
+        
+    }
+}
+
+
+const getPersonaByRUT=async(rutPersona)=>{
+    const personaExistente= await Persona.findOne({
+        where:{
+            rut:rutPersona
+        }
+    });
+    if(personaExistente){
+         const error = new Error("persona duplicada por rut");
+        error.statusCode = 400;
+        throw error;
+    }
 }
 
 const getPersonById=async(id)=>{
@@ -30,5 +70,6 @@ const getPersonById=async(id)=>{
 module.exports={
     createPersona,
     getPersonas,
-    getPersonById
+    getPersonaByRUT,
+    getPersonaByNombreApellido
 }

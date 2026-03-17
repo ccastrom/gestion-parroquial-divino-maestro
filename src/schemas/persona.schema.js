@@ -5,7 +5,7 @@ const crearPersonaSchema = Joi.object({
     nombre: Joi.string().required(),
     apellido: Joi.string().required(),
     fecha_nacimiento: Joi.date().required(),
-    rut: Joi.string().allow(null),
+    rut: Joi.string().allow(null,"").optional(),
     fono: Joi.string().allow(null),
     direccion: Joi.string().allow(null),  
 });
