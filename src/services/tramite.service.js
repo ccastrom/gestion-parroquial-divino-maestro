@@ -34,24 +34,6 @@ const agregarParticipantes = async (id, datos) => {
   
 };
 
-const createTramite = async () => {
-  return await Tramite.create();
-  
-};
-
-const getTramiteById = async (id) => {
-  const tramite = await Tramite.findByPk(id);
-  if (!tramite) {
-    const error = new Error("Trámite no encontrado");
-    error.statusCode = 404;
-    throw error;
-  }
-  return tramite;
-};
-
-const getTramites = async () => {
-  return await Tramite.findAll();
-};
 
 const crearParticipante = async (participanteData) => {
 
@@ -101,13 +83,16 @@ const crearParticipante = async (participanteData) => {
         where:{id: participanteData.tramiteId},
         transaction
       })
-      console.log('reunion.id:', reunion.id);
-      console.log('tramiteId:', participanteData.tramiteId);
      
     }
     await transaction.commit();
   } catch (error) {
     await transaction.rollback();
+
+   if (error.name === 'SequelizeUniqueConstraintError') {
+        throw { status: 400, message: 'Esta persona ya existe en este trámite' };
+    }
+    
     throw error;
   }
 };
@@ -141,6 +126,27 @@ const checkRolUnicoExistente = async (participante) => {
         throw error;
     }
 }
+
+
+const createTramite = async () => {
+  return await Tramite.create();
+  
+};
+
+const getTramiteById = async (id) => {
+  const tramite = await Tramite.findByPk(id);
+  if (!tramite) {
+    const error = new Error("Trámite no encontrado");
+    error.statusCode = 404;
+    throw error;
+  }
+  return tramite;
+};
+
+const getTramites = async () => {
+  return await Tramite.findAll();
+};
+
 module.exports = {
   createTramite,
   getTramites,
