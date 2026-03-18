@@ -9,6 +9,10 @@ const GET_Personas = asyncHandler(async(req,res)=>{
    const getPersonas= await PersonaService.getPersonas(nombre,apellido);
    return res.status(200).json(getPersonas);
 });
+const GET_PersonaById= asyncHandler(async(req,res)=>{
+   const obtenerPersona=await PersonaService.getPersonById(req.params.id);
+   return res.status(200).json(obtenerPersona);
+})
   
 
 const POST_Personas=asyncHandler (async(req,res)=>{
@@ -32,6 +36,7 @@ const DELETE_Personas= asyncHandler(async(req,res)=>{
 
 module.exports = {
    GET_Personas,
+   GET_PersonaById,
    POST_Personas,
    PUT_Personas,
    DELETE_Personas
