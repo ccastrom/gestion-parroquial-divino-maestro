@@ -5,7 +5,9 @@ const asyncHandler= require('../utils/asyncHandler')
 
 
 const GET_Personas = asyncHandler(async(req,res)=>{
-  
+  const {nombre, apellido}= req.query;
+   const getPersonas= await PersonaService.getPersonas(nombre,apellido);
+   return res.status(200).json(getPersonas);
 });
   
 

@@ -16,7 +16,26 @@ const createPersona= async(persona)=>{
 };
 
 
-const getPersonas=async()=>{
+const getPersonas=async(nombre,apellido)=>{
+   
+    if(nombre && apellido){
+        
+        const persona= await Persona.findOne({
+            where:{
+            nombre,
+            apellido
+            }
+        })
+        
+
+        if(!persona){
+            const error = new Error("No existe persona");
+            error.statusCode = 400;
+            throw error;
+        }
+         return persona;
+       
+    }
     return await Persona.findAll();
 }
 
