@@ -71,5 +71,6 @@ module.exports={
     createPersona,
     getPersonas,
     getPersonaByRUT,
-    getPersonaByNombreApellido
+    getPersonaByNombreApellido,
+    getPersonById
 }
