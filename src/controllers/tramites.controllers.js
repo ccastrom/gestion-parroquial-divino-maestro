@@ -42,6 +42,12 @@ const PATCH_Tramites= asyncHandler(async(req,res)=>{
     
 });
 
+const PUT_ReunionById=asyncHandler(async(req,res)=>{
+        const datosReunion=req.body;
+        const reunion = await tramiteService.actualizarReunionById(req.params.id,datosReunion);
+         res.status(200).json(reunion);
+})
+
 
 
 
@@ -53,5 +59,6 @@ module.exports={
     GET_TramitesById,
     POST_Tramites,
     PATCH_Tramites,
+    PUT_ReunionById,
     POST_Tramites_Agregar_Participantes,
 }

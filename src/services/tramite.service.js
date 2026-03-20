@@ -4,6 +4,7 @@ const {ESTADOS_VALIDOS, validarEstado, } = require("../constants/estados_tramite
 const { ROLES_VALIDOS, ROLES_UNICOS,  validateRol, } = require("../constants/roles_Participantes");
 const {createReunionPreBautizo} = require("./reunion_pre_bautizo.service");
 const { getPersonById } = require("./persona.service");
+const {updateReunionPreBautizoByID}= require("./reunion_pre_bautizo.service.js");
 
 const cambiarEstadoTramite = async (id, nuevoEstado) => {
   validarEstado(nuevoEstado);
@@ -12,6 +13,12 @@ const cambiarEstadoTramite = async (id, nuevoEstado) => {
   await tramite.save();
   return tramite;
 };
+const actualizarReunionById= async(id,datos)=>{
+  validarEstado(datos.estado);
+  const tramite=await getTramiteById(id);
+   await getPersonById(datos.id_fk_persona_catequista)
+  return await  updateReunionPreBautizoByID(tramite.id_fk_reunion_pre_bautizo,datos);
+}
 
 const agregarParticipantes = async (id, datos) => {
   const participanteData = {
@@ -152,6 +159,7 @@ module.exports = {
   getTramites,
   getTramiteById,
   cambiarEstadoTramite,
+  actualizarReunionById,
   agregarParticipantes
   
 };

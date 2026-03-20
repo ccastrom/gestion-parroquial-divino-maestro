@@ -10,8 +10,8 @@ const createReunionPreBautizo = async (estadoReunion) => {
     return reunion;
 };
 
-const getReunionPreBautizoById = async (id_tramite) => {
-    const reunion = await Reunion_prebautizmal.findByPk(id_tramite);
+const getReunionPreBautizoById = async (id) => {
+    const reunion = await Reunion_prebautizmal.findByPk(id);
     if (!reunion) {
         const error = new Error("Reunión de pre-bautizo no encontrada");
         error.statusCode = 404;
@@ -21,18 +21,17 @@ const getReunionPreBautizoById = async (id_tramite) => {
 };
 
 
-const updateReunionPreBautizo = async (id_tramite, datos) => {
-    const reunion = await getReunionPreBautizoById(id_tramite);
+const updateReunionPreBautizoByID = async (id, datos) => {
+    const reunion = await getReunionPreBautizoById(id);
     if (!reunion) {
         throw new Error("Reunión de pre-bautizo no encontrada");
     }
-    await reunion.update(datos);
-    return reunion;
+    return await Reunion_prebautizmal.update(datos,{where:{id:reunion.id}});
 };
 
 
 module.exports = {
     createReunionPreBautizo,
     getReunionPreBautizoById,
-    updateReunionPreBautizo
+    updateReunionPreBautizoByID
 }

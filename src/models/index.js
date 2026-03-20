@@ -20,10 +20,11 @@ Tramite.hasMany(Participacion,{
     foreignKey:"id_fk_tramite"
 });
 
-Reunion_prebautizmal.belongsTo(Tramite, {
-    foreignKey:"id_fk_tramite"
+Tramite.belongsTo(Reunion_prebautizmal, {
+  foreignKey: "id_fk_reunion_pre_bautizo"
 });
-Tramite.hasOne(Reunion_prebautizmal,{
-    foreignKey:"id_fk_tramite"
+Reunion_prebautizmal.hasOne(Tramite, {
+  foreignKey: "id_fk_reunion_pre_bautizo"
 });
+
 module.exports = { Persona, Tramite, Participacion, Reunion_prebautizmal };

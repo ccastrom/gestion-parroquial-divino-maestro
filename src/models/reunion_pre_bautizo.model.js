@@ -10,7 +10,7 @@ const Reunion_prebautizmal= sequelize.define('reunion_prebautizmal',{
     fecha:{
         type:DataTypes.DATEONLY,
     },
-    id_fk_persona:{
+    id_fk_persona_catequista:{
         type:DataTypes.INTEGER,
     },
     estado:{

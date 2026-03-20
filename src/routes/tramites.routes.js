@@ -1,5 +1,6 @@
 
 const { agregarParticipanteSchema}= require('../schemas/participantes.schemas.js');
+const {actualizarReunionSchema}= require('../schemas/reunion_pre_bautizo.schema.js');
 const {validateBody}= require('../middleware/validarBody.js');
 const {Router} = require('express');
 const
@@ -7,7 +8,8 @@ const
     GET_TramitesById,
     POST_Tramites,
     POST_Tramites_Agregar_Participantes,
-    PATCH_Tramites
+    PATCH_Tramites,
+    PUT_ReunionById
 }=require('../controllers/tramites.controllers');
 const router= Router();
 
@@ -16,5 +18,6 @@ router.get('/',GET_Tramites);
 router.post('/:id/participantes',validateBody(agregarParticipanteSchema),POST_Tramites_Agregar_Participantes);
 router.get('/:id',GET_TramitesById);
 router.patch('/:id/estado',PATCH_Tramites);
+router.put('/:id/reunion',validateBody(actualizarReunionSchema),PUT_ReunionById)
 
 module.exports = router;
