@@ -26,6 +26,10 @@ const POST_Personas=asyncHandler (async(req,res)=>{
 
 
 const PUT_Personas= asyncHandler(async(req,res)=>{
+    const persona=req.body
+    const actualizarPersona= await PersonaService.actualizarPersonaById(req.params.id,persona);
+    return res.status(200).json(actualizarPersona);
+   
 
 });
   

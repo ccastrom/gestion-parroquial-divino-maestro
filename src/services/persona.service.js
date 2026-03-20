@@ -83,7 +83,16 @@ const getPersonById=async(id)=>{
      return persona;
     
     }
-    
+const actualizarPersonaById= async(id,datosPersona)=>{
+    const persona = await Persona.findByPk(id);
+    if(!persona){
+        const error= new Error('Persona no encontrada');
+        error.statusCode=404;
+        throw error;
+    }
+    return await Persona.update(datosPersona,{where:{id}})
+
+}
 
 
 module.exports={
@@ -91,5 +100,6 @@ module.exports={
     getPersonas,
     getPersonaByRUT,
     getPersonaByNombreApellido,
-    getPersonById
+    getPersonById,
+    actualizarPersonaById
 }
