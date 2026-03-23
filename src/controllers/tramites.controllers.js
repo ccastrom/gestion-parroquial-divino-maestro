@@ -55,6 +55,17 @@ const completarReunion=asyncHandler(async(req,res)=>{
         res.status(200).json(reunion);
 })
 
+const agregarDocumento=asyncHandler(async(req,res)=>{
+        const documentoDatos={
+                idTramite:req.params.idTramite,
+                idParticipacion:req.params.idParticipacion,
+                documento:req.body
+        }
+        const documento= await tramiteService.agregarDocumentoParticipacion(documentoDatos)
+          res.status(200).json(documento);
+
+});
+
 
 
 
@@ -68,5 +79,6 @@ module.exports={
     PATCH_Tramites,
     PUT_ReunionById,
     POST_Tramites_Agregar_Participantes,
-    completarReunion
+    completarReunion,
+    agregarDocumento
 }

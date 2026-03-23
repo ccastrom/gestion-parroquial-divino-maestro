@@ -4,7 +4,7 @@ const {ESTADOS_VALIDOS, validarEstado, } = require("../constants/estados_tramite
 const { ROLES_VALIDOS, ROLES_UNICOS,  validateRol, } = require("../constants/roles_Participantes");
 const { getPersonById } = require("./persona.service");
 const {createReunionPreBautizo,updateReunionPreBautizoByID,getReunionPreBautizoById}= require("./reunion_pre_bautizo.service.js");
-
+const {crearDocumento}=require("./documento.service.js");
 const cambiarEstadoTramite = async (id, nuevoEstado) => {
   validarEstado(nuevoEstado);
   const tramite = await getTramiteById(id);
@@ -154,7 +154,12 @@ const completarReunion= async(idTramite,estadoReunion)=>{
    }
 
 }
-
+const agregarDocumentoParticipacion=async(documento)=>{
+  validarEstado(documento.documento.estado_documento);
+  const tramite= await getTramiteById(documento.idTramite);
+  const participacion= await getParticipacionById(documento.idParticipacion)
+  const documentoDatos= await crearDocumento(documento)
+}
 
 const createTramite = async () => {
   return await Tramite.create();
@@ -175,6 +180,16 @@ const getTramites = async () => {
   return await Tramite.findAll();
 };
 
+const getParticipacionById= async(id)=>{
+  const participacion=Participacion.findByPk(id);
+  if(!participacion){
+    const error = new Error("Participación no encontrada");
+    error.statusCode = 404;
+    throw error;
+  }
+  return participacion;
+}
+
 module.exports = {
   createTramite,
   getTramites,
@@ -182,6 +197,7 @@ module.exports = {
   cambiarEstadoTramite,
   actualizarReunionById,
   agregarParticipantes,
-  completarReunion
+  completarReunion,
+  agregarDocumentoParticipacion
   
 };
