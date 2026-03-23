@@ -9,7 +9,11 @@ const ESTADOS_VALIDOS={
     Bautizo_Finalizado_Con_Éxito:'Bautizo finalizado con éxito',
     Bautizo_Derivado_A_Otra_Parroquia:'Bautizo derivado a otra parroquia',
     Bautizo_Reabierto:'Bautizo reabierto',
-    Bautizo_Cancelado:'Bautizo cancelado'
+    Bautizo_Cancelado:'Bautizo cancelado',
+    Documento_Pendiente:'Documento Pendiente',
+    Documento_Entregado:'Documento Entregado',
+    Documento_No_Entregado:'Documento no entregado',
+    Documento_Proximo_A_Entregar:'Documento próximo a entregar'
 };
 
 const  validarEstado=(estado)=>{
