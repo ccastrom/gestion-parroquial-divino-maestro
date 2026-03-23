@@ -48,6 +48,13 @@ const PUT_ReunionById=asyncHandler(async(req,res)=>{
          res.status(200).json(reunion);
 })
 
+const completarReunion=asyncHandler(async(req,res)=>{
+        const tramiteId=req.params.id
+        const estadoReunion=req.body;
+        const reunion=await tramiteService.completarReunion(tramiteId,estadoReunion);
+        res.status(200).json(reunion);
+})
+
 
 
 
@@ -61,4 +68,5 @@ module.exports={
     PATCH_Tramites,
     PUT_ReunionById,
     POST_Tramites_Agregar_Participantes,
+    completarReunion
 }

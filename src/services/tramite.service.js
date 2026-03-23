@@ -2,9 +2,8 @@ const sequelize = require("../config/database.js");
 const { Tramite, Participacion, Persona, Reunion_prebautizmal } = require("../models");
 const {ESTADOS_VALIDOS, validarEstado, } = require("../constants/estados_tramites");
 const { ROLES_VALIDOS, ROLES_UNICOS,  validateRol, } = require("../constants/roles_Participantes");
-const {createReunionPreBautizo} = require("./reunion_pre_bautizo.service");
 const { getPersonById } = require("./persona.service");
-const {updateReunionPreBautizoByID}= require("./reunion_pre_bautizo.service.js");
+const {createReunionPreBautizo,updateReunionPreBautizoByID,getReunionPreBautizoById}= require("./reunion_pre_bautizo.service.js");
 
 const cambiarEstadoTramite = async (id, nuevoEstado) => {
   validarEstado(nuevoEstado);
@@ -134,6 +133,28 @@ const checkRolUnicoExistente = async (participante) => {
     }
 }
 
+const completarReunion= async(idTramite,estadoReunion)=>{
+  validarEstado(estadoReunion.estado);
+  const tramite=await getTramiteById(idTramite);
+  const reunion=await getReunionPreBautizoById(tramite.id_fk_reunion_pre_bautizo);
+  console.log( "id Tramite: "+tramite.id+" Reunion: "+reunion.id);
+   const transaction = await sequelize.transaction();
+   try {
+    await Reunion_prebautizmal.update({
+      estado:estadoReunion.estado
+    },{where:{id:reunion.id},transaction})
+    await Tramite.update({
+      estado: ESTADOS_VALIDOS.Reunion_Pre_Bautizo_Completada,
+    },{where: {id:idTramite},transaction})
+     await transaction.commit();
+    
+   } catch (error) {
+     await transaction.rollback();
+    throw error;
+   }
+
+}
+
 
 const createTramite = async () => {
   return await Tramite.create();
@@ -160,6 +181,7 @@ module.exports = {
   getTramiteById,
   cambiarEstadoTramite,
   actualizarReunionById,
-  agregarParticipantes
+  agregarParticipantes,
+  completarReunion
   
 };

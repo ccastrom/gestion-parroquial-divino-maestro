@@ -9,7 +9,8 @@ const
     POST_Tramites,
     POST_Tramites_Agregar_Participantes,
     PATCH_Tramites,
-    PUT_ReunionById
+    PUT_ReunionById,
+    completarReunion
 }=require('../controllers/tramites.controllers');
 const router= Router();
 
@@ -19,5 +20,6 @@ router.post('/:id/participantes',validateBody(agregarParticipanteSchema),POST_Tr
 router.get('/:id',GET_TramitesById);
 router.patch('/:id/estado',PATCH_Tramites);
 router.put('/:id/reunion',validateBody(actualizarReunionSchema),PUT_ReunionById)
+router.patch('/:id/reunion',validateBody(actualizarReunionSchema),completarReunion)
 
 module.exports = router;
