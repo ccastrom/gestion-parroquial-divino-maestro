@@ -1,7 +1,7 @@
-const { Sequelize, Model, DataTypes, INTEGER } = require('sequelize');
+const { Sequelize, Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/database.js');
 
-const Documento= Sequelize.deefine('documento',{
+const Documento= sequelize.define('documento',{
      id:{
         type:DataTypes.INTEGER,
          primaryKey: true,
@@ -19,7 +19,11 @@ const Documento= Sequelize.deefine('documento',{
     id_fk_participacion:{
         type:DataTypes.DATE
     }
-})
+},
+{
+  tableName: "documento", 
+  timestamps: false
+});
 
 
 module.exports={
