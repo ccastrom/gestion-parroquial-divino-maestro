@@ -5,13 +5,14 @@ const {Documento}=require('../models/documento.model');
 
 const crearDocumento = async (documentoDatos) => {
 
-    const {tipo_documento, estado_documento,fecha_entrega}=documentoDatos.documento
 
-    console.log(tipo_documento);
+    const {id_fk_participacion,tipo_documento, estado_documento,fecha_entrega}=documentoDatos
+
     const documento = await Documento.create({
        tipo_documento,
        estado_documento,
-       fecha_entrega
+       fecha_entrega,
+       id_fk_participacion
 
     });
     return documento;
@@ -19,11 +20,15 @@ const crearDocumento = async (documentoDatos) => {
 
 
 const obtenerDocumentoParticipacion= async(id)=>{
-   
+    const documento = await Documento.findOne({where:{id_fk_participacion:id }})
+    return documento;
+  
+ 
+
 }
 
 
-
 module.exports={
-    crearDocumento
+    crearDocumento,
+    obtenerDocumentoParticipacion
 }

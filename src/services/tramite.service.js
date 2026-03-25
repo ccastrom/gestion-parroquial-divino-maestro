@@ -4,7 +4,7 @@ const {ESTADOS_VALIDOS, validarEstado, } = require("../constants/estados_tramite
 const { ROLES_VALIDOS, ROLES_UNICOS,  validateRol, } = require("../constants/roles_Participantes");
 const { getPersonById } = require("./persona.service");
 const {createReunionPreBautizo,updateReunionPreBautizoByID,getReunionPreBautizoById}= require("./reunion_pre_bautizo.service.js");
-const {crearDocumento}=require("./documento.service.js");
+const {crearDocumento,obtenerDocumentoParticipacion}=require("./documento.service.js");
 const cambiarEstadoTramite = async (id, nuevoEstado) => {
   validarEstado(nuevoEstado);
   const tramite = await getTramiteById(id);
@@ -158,7 +158,22 @@ const agregarDocumentoParticipacion=async(documento)=>{
   validarEstado(documento.documento.estado_documento);
   const tramite= await getTramiteById(documento.idTramite);
   const participacion= await getParticipacionById(documento.idParticipacion)
-  const documentoDatos= await crearDocumento(documento)
+  const obtenerDocumento= await obtenerDocumentoParticipacion(documento.idParticipacion);
+  const NuevoDocumento={
+    id_fk_participacion:participacion.id,
+    tipo_documento:documento.documento.tipo_documento,
+    estado_documento:documento.documento.estado_documento,
+    fecha_entrega:documento.documento.fecha_entrega
+  }
+  if(!obtenerDocumento){
+      const generarDocumento= await crearDocumento(NuevoDocumento);
+      return generarDocumento
+  }else{
+    const error = new Error("Documento ya existente en participación");
+    error.statusCode = 404;
+    throw error;
+  }
+
 }
 
 const createTramite = async () => {
