@@ -17,7 +17,7 @@ const Documento= sequelize.define('documento',{
         type:DataTypes.DATE
     },
     id_fk_participacion:{
-        type:DataTypes.DATE
+        type:DataTypes.INTEGER
     }
 },
 {
