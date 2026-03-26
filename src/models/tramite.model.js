@@ -18,6 +18,9 @@ const Tramite = sequelize.define(
     estado: {
       type: DataTypes.STRING,
     },
+    fecha_bautismo:{
+        type: DataTypes.DATEONLY,
+    },
     id_fk_reunion_pre_bautizo: {
       type: DataTypes.INTEGER,
       allowNull: true,
