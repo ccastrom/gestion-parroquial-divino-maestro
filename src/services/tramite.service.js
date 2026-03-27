@@ -25,7 +25,7 @@ const actualizarReunionById= async(id,datos)=>{
   return await  updateReunionPreBautizoByID(tramite.id_fk_reunion_pre_bautizo,datos);
 }
 
-const agregarParticipantes = async (id, datos) => {
+const agregarParticipante = async (id, datos) => {
   const participanteData = {
     tramiteId: id,
     personaId: datos.personaId,
@@ -217,7 +217,7 @@ module.exports = {
   getTramiteById,
   cambiarEstadoTramite: modificarTramite,
   actualizarReunionById,
-  agregarParticipantes,
+  agregarParticipante,
   completarReunion,
   agregarDocumentoParticipacion
   
