@@ -19,7 +19,7 @@ const GET_TramitesById= asyncHandler (async(req,res)=>{
 
 
 const POST_Tramites_Agregar_Participantes= asyncHandler(async(req,res)=>{
-        const tramite= await tramiteService.agregarParticipantes(req.params.id,req.body);
+        const tramite= await tramiteService.agregarParticipante(req.params.id,req.body);
            res.status(200).json(tramite);
 });
 
