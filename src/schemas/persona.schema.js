@@ -2,26 +2,15 @@ const Joi = require('joi');
 
 
 const crearPersonaSchema = Joi.object({
-    nombre: Joi.string().required(),
-    apellido: Joi.string().required(),
-    fecha_nacimiento: Joi.date().allow(null,"").optional(),
-    rut: Joi.string().allow(null,"").optional(),
-    fono: Joi.string().allow(null,"").optional(),
-    direccion: Joi.string().allow(null,"").optional(),  
-});
-
-const actualizarPersonaSchema = Joi.object({
-    nombre: Joi.string(),
-    apellido: Joi.string(),
-    fecha_nacimiento: Joi.date(),
-    rut: Joi.string().allow(null),
-    fono: Joi.string().allow(null),
-    direccion: Joi.string().allow(null),  
-}).min(1);
-
+    nombre:Joi.string().trim().min(1).required(),
+    apellido:Joi.string().trim().min(1).required(),
+    fecha_nacimiento: Joi.date().max('now').allow(null).optional(),
+    rut: Joi.string().trim().uppercase().allow(null,'').optional(),
+    fono: Joi.string().trim().allow(null,'').optional(),
+    direccion: Joi.string().trim().allow(null,'').optional(),  
+}).unknown(false);
 
 
 module.exports = {
-    crearPersonaSchema,
-    actualizarPersonaSchema
+    crearPersonaSchema
 };
