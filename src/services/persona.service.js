@@ -3,6 +3,9 @@ const {Persona}=require('../models/persona.model');
 
 
 const createPersona= async(persona)=>{
+     if (!persona.rut || persona.rut.trim() === '') {
+        persona.rut = null;
+    }
     if(persona.rut){
         await getPersonaByRUT(persona.rut);
     }else{
