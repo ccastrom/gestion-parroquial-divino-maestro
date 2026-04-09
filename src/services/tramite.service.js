@@ -202,7 +202,7 @@ const getTramites = async () => {
 };
 
 const getParticipacionById= async(id)=>{
-  const participacion=Participacion.findByPk(id);
+  const participacion= await Participacion.findByPk(id);
   if(!participacion){
     const error = new Error("Participación no encontrada");
     error.statusCode = 404;
