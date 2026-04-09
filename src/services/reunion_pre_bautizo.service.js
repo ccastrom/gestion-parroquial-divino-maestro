@@ -3,7 +3,7 @@ const { Reunion_prebautizmal } = require("../models");
 const {ESTADOS_VALIDOS, validarEstado, } = require("../constants/estados_tramites");
 
 
-const createReunionPreBautizo = async (estadoReunion) => {
+const createReunionPreBautizo = async () => {
     const reunion = await Reunion_prebautizmal.create({
         estado: ESTADOS_VALIDOS.Reunion_Pre_Bautizo_Asignada
     });
