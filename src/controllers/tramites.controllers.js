@@ -35,7 +35,7 @@ const POST_Tramites= asyncHandler(async(req,res)=>{
 const PATCH_Tramites= asyncHandler(async(req,res)=>{
    
         const datosTramite= {fecha_bautismo,estado}=req.body;
-        const tramite=await tramiteService.cambiarEstadoTramite(req.params.id,datosTramite);
+        const tramite=await tramiteService.modificarTramite(req.params.id,datosTramite);
       
     
          res.status(200).json(tramite);
