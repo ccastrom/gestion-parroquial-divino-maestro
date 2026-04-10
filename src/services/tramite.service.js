@@ -7,7 +7,6 @@ const {createReunionPreBautizo,updateReunionPreBautizoByID,getReunionPreBautizoB
 const {crearDocumento,obtenerDocumentoParticipacion}=require("./documento.service.js");
 
 const modificarTramite = async (id, tramiteDatos) => {
-  console.log(tramiteDatos);
   validarEstado(tramiteDatos.estado);
    const tramite = await getTramiteById(id);
    tramite.estado = tramiteDatos.estado;
@@ -48,7 +47,6 @@ const agregarParticipante = async (id, datos) => {
 
 
 const crearParticipacion = async (participanteData) => {
-
   const transaction = await sequelize.transaction();
   try {
     if (participanteData.personaId) {
@@ -84,17 +82,16 @@ const crearParticipacion = async (participanteData) => {
         { transaction },
       );
     }
-
     if(!participanteData.tramite.id_fk_reunion_pre_bautizo){
-      const reunion = await createReunionPreBautizo({
-        transaction
-      });
+      const reunion = await createReunionPreBautizo(transaction)
+        
+     
       await Tramite.update({
         id_fk_reunion_pre_bautizo:reunion.id
       },{
         where:{id: participanteData.tramiteId},
         transaction
-      })
+      });
      
     }
     await transaction.commit();
@@ -102,7 +99,7 @@ const crearParticipacion = async (participanteData) => {
     await transaction.rollback();
 
    if (error.name === 'SequelizeUniqueConstraintError') {
-        throw { status: 400, message: 'Esta persona ya existe en este trámite' };
+        throw { status: 409, message: 'Esta persona ya existe en este trámite' };
     }
     
     throw error;
@@ -215,7 +212,7 @@ module.exports = {
   createTramite,
   getTramites,
   getTramiteById,
-  cambiarEstadoTramite: modificarTramite,
+  modificarTramite,
   actualizarReunionById,
   agregarParticipante,
   completarReunion,
