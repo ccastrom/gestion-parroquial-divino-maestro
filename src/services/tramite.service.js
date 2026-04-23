@@ -39,7 +39,7 @@ const agregarParticipante = async (id, datos) => {
      await getPersonById(participanteData.personaId);
   }
   if( ROLES_UNICOS.includes(participanteData.rol)){
-     await checkRolUnicoExistente(participanteData);
+     await participacionService.checkRolUnicoExistente(participanteData);
   }
   await crearParticipacion(participanteData);
   return await getParticipantesByTramite(participanteData.tramiteId);
@@ -126,16 +126,7 @@ const getParticipantesByTramite = async (id) => {
   });
   return participantes;
 };
-const checkRolUnicoExistente = async (participante) => {
-    const bautizadoExistente = await Participacion.findOne({
-      where: { id_fk_tramite: participante.tramiteId, rol:participante.rol  },
-    });
-    if( bautizadoExistente){
-        const error = new Error(`Ya existe un participante con el rol ${participante.rol} en este trámite.`);
-        error.statusCode = 400;
-        throw error;
-    }
-}
+
 
 const completarReunion= async(idTramite,estadoReunion)=>{
   validarEstado(estadoReunion.estado);

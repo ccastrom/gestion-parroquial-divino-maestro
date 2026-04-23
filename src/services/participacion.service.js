@@ -10,10 +10,22 @@ const getParticipacionById= async(id)=>{
   return participacion;
 }
 
+const checkRolUnicoExistente = async (participante) => {
+    const bautizadoExistente = await Participacion.findOne({
+      where: { id_fk_tramite: participante.tramiteId, rol:participante.rol  },
+    });
+    if( bautizadoExistente){
+        const error = new Error(`Ya existe un participante con el rol ${participante.rol} en este trámite.`);
+        error.statusCode = 400;
+        throw error;
+    }
+}
+
+
 
 module.exports = {
     getParticipacionById,
-    // checkRolUnicoExistente,
+    checkRolUnicoExistente,
     // getParticipantesByTramite,
     // crearParticipacionDB
 }
