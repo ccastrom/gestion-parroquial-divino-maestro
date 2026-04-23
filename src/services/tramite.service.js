@@ -88,7 +88,6 @@ const completarReunion= async(idTramite,estadoReunion)=>{
   validarEstado(estadoReunion.estado);
   const tramite=await getTramiteById(idTramite);
   const reunion=await getReunionPreBautizoById(tramite.id_fk_reunion_pre_bautizo);
-  console.log( "id Tramite: "+tramite.id+" Reunion: "+reunion.id);
    const transaction = await sequelize.transaction();
    try {
     await Reunion_prebautizmal.update({
