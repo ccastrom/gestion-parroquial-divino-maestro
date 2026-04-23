@@ -1,4 +1,5 @@
 const {Participacion}=require('../models/participacion.model');
+const {Persona}=require('../models/persona.model');
 
 const getParticipacionById= async(id)=>{
   const participacion= await Participacion.findByPk(id);
@@ -9,6 +10,26 @@ const getParticipacionById= async(id)=>{
   }
   return participacion;
 }
+const getParticipantesByTramite = async (id) => {
+  const participantes = await Participacion.findAll({
+    where: { id_fk_tramite: id },
+    include: [
+      {
+        model: Persona,
+        attributes: [
+          "nombre",
+          "apellido",
+          "fecha_nacimiento",
+          "rut",
+          "fono",
+          "direccion",
+        ],
+      },
+    ],
+  });
+  return participantes;
+};
+
 
 const checkRolUnicoExistente = async (participante) => {
     const bautizadoExistente = await Participacion.findOne({
@@ -26,6 +47,6 @@ const checkRolUnicoExistente = async (participante) => {
 module.exports = {
     getParticipacionById,
     checkRolUnicoExistente,
-    // getParticipantesByTramite,
+     getParticipantesByTramite,
     // crearParticipacionDB
 }

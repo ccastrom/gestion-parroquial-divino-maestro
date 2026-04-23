@@ -42,7 +42,7 @@ const agregarParticipante = async (id, datos) => {
      await participacionService.checkRolUnicoExistente(participanteData);
   }
   await crearParticipacion(participanteData);
-  return await getParticipantesByTramite(participanteData.tramiteId);
+  return await participacionService.getParticipantesByTramite(participanteData.tramiteId);
   
 };
 
@@ -107,25 +107,7 @@ const crearParticipacion = async (participanteData) => {
   }
 };
 
-const getParticipantesByTramite = async (id) => {
-  const participantes = await Participacion.findAll({
-    where: { id_fk_tramite: id },
-    include: [
-      {
-        model: Persona,
-        attributes: [
-          "nombre",
-          "apellido",
-          "fecha_nacimiento",
-          "rut",
-          "fono",
-          "direccion",
-        ],
-      },
-    ],
-  });
-  return participantes;
-};
+
 
 
 const completarReunion= async(idTramite,estadoReunion)=>{
@@ -190,15 +172,7 @@ const getTramites = async () => {
   return await Tramite.findAll();
 };
 
-const getParticipacionById= async(id)=>{
-  const participacion= await Participacion.findByPk(id);
-  if(!participacion){
-    const error = new Error("Participación no encontrada");
-    error.statusCode = 404;
-    throw error;
-  }
-  return participacion;
-}
+
 
 module.exports = {
   createTramite,
