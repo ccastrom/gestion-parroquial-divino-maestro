@@ -2,14 +2,14 @@ const {Persona}=require('../models/persona.model');
 
 
 
-const createPersona= async(persona,transaction = null)=>{
+const crearPersona= async(persona,transaction = null)=>{
      if (!persona.rut || persona.rut.trim() === '') {
         persona.rut = null;
     }
     if(persona.rut){
-        await getPersonaByRUT(persona.rut);
+        await obtenerPersonaPorRUT(persona.rut);
     }else{
-        const resultado=await getPersonaByNombreApellido(persona);
+        const resultado=await obtenerPersonaPorNombreApellido(persona);
         if(resultado?.advertencia){
             return resultado;
         }
@@ -19,7 +19,7 @@ const createPersona= async(persona,transaction = null)=>{
 };
 
 
-const getPersonas=async(nombre,apellido)=>{
+const obtenerPersonas=async(nombre,apellido)=>{
    
     if(nombre && apellido){
         
@@ -42,7 +42,7 @@ const getPersonas=async(nombre,apellido)=>{
     return await Persona.findAll();
 }
 
-const getPersonaByNombreApellido=async(datos)=>{
+const obtenerPersonaPorNombreApellido=async(datos)=>{
     const personaExistente=await Persona.findOne({
         where:{
             nombre:datos.nombre,
@@ -61,7 +61,7 @@ const getPersonaByNombreApellido=async(datos)=>{
 }
 
 
-const getPersonaByRUT=async(rutPersona)=>{
+const obtenerPersonaPorRUT=async(rutPersona)=>{
     const personaExistente= await Persona.findOne({
         where:{
             rut:rutPersona
@@ -74,7 +74,7 @@ const getPersonaByRUT=async(rutPersona)=>{
     }
 }
 
-const getPersonById=async(id)=>{
+const obtenerPersonaPorId=async(id)=>{
     
         const persona= await Persona.findByPk(id);
      if(!persona){
@@ -86,7 +86,7 @@ const getPersonById=async(id)=>{
      return persona;
     
     }
-const actualizarPersonaById= async(id,datosPersona)=>{
+const actualizarPersonaPorId= async(id,datosPersona)=>{
     const persona = await Persona.findByPk(id);
     if(!persona){
         const error= new Error('Persona no encontrada');
@@ -99,10 +99,10 @@ const actualizarPersonaById= async(id,datosPersona)=>{
 
 
 module.exports={
-    createPersona,
-    getPersonas,
-    getPersonaByRUT,
-    getPersonaByNombreApellido,
-    getPersonById,
-    actualizarPersonaById
+    crearPersona,
+    obtenerPersonas,
+    obtenerPersonaPorRUT,
+    obtenerPersonaPorNombreApellido,
+    obtenerPersonaPorId,
+    actualizarPersonaPorId
 }

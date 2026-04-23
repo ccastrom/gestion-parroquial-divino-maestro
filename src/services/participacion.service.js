@@ -11,7 +11,7 @@ const crearParticipacion=async(participanteData,idPersona,transaction)=>{
         { transaction },
       );
 }
-const getParticipacionById= async(id)=>{
+const obtenerParticipacionPorId= async(id)=>{
   const participacion= await Participacion.findByPk(id);
   if(!participacion){
     const error = new Error("Participación no encontrada");
@@ -20,7 +20,7 @@ const getParticipacionById= async(id)=>{
   }
   return participacion;
 }
-const getParticipantesByTramite = async (id) => {
+const obtenerParticipantesPorTramite = async (id) => {
   const participantes = await Participacion.findAll({
     where: { id_fk_tramite: id },
     include: [
@@ -41,7 +41,7 @@ const getParticipantesByTramite = async (id) => {
 };
 
 
-const checkRolUnicoExistente = async (participante) => {
+const verificarRolUnicoExistente = async (participante) => {
     const bautizadoExistente = await Participacion.findOne({
       where: { id_fk_tramite: participante.tramiteId, rol:participante.rol  },
     });
@@ -55,8 +55,8 @@ const checkRolUnicoExistente = async (participante) => {
 
 
 module.exports = {
-    getParticipacionById,
-    checkRolUnicoExistente,
-     getParticipantesByTramite,
-     crearParticipacion
+    obtenerParticipacionPorId,
+    verificarRolUnicoExistente,
+    obtenerParticipantesPorTramite,
+    crearParticipacion
 }

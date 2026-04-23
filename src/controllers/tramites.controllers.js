@@ -3,7 +3,7 @@ const asyncHandler=require('../utils/asyncHandler');
 
 const GET_Tramites= asyncHandler(async (req,res)=> {
         
-        const tramites= await tramiteService.getTramites();
+        const tramites= await tramiteService.obtenerTramites();
         if(tramites.length===0){
             return res.status(200).json({message:'No se encontraron trámites'});
         }
@@ -11,7 +11,7 @@ const GET_Tramites= asyncHandler(async (req,res)=> {
     
 });
 const GET_TramitesById= asyncHandler (async(req,res)=>{
-      const tramite= await tramiteService.getTramiteById(req.params.id);
+      const tramite= await tramiteService.obtenerTramitePorId(req.params.id);
             res.status(200).json(tramite);
       
     
@@ -25,7 +25,7 @@ const POST_Tramites_Agregar_Participantes= asyncHandler(async(req,res)=>{
 
 const POST_Tramites= asyncHandler(async(req,res)=>{
     
-        const tramite= await tramiteService.createTramite();
+        const tramite= await tramiteService.crearTramite();
         res.status(201).json(tramite);
    
     
@@ -44,7 +44,7 @@ const PATCH_Tramites= asyncHandler(async(req,res)=>{
 
 const PUT_ReunionById=asyncHandler(async(req,res)=>{
         const datosReunion=req.body;
-        const reunion = await tramiteService.actualizarReunionById(req.params.id,datosReunion);
+        const reunion = await tramiteService.actualizarReunionPorId(req.params.id,datosReunion);
          res.status(200).json(reunion);
 })
 

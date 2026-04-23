@@ -1,15 +1,15 @@
 const sequelize = require("../config/database.js");
 const { Tramite, Reunion_prebautizmal } = require("../models");
 const {ESTADOS_VALIDOS, validarEstado, } = require("../constants/estados_tramites");
-const { ROLES_VALIDOS, ROLES_UNICOS,  validateRol, } = require("../constants/roles_Participantes");
-const { getPersonById,createPersona } = require("./persona.service");
-const {createReunionPreBautizo,updateReunionPreBautizoByID,getReunionPreBautizoById}= require("./reunion_pre_bautizo.service.js");
+const { ROLES_VALIDOS, ROLES_UNICOS,  validarRol, } = require("../constants/roles_Participantes");
+const { obtenerPersonaPorId,crearPersona } = require("./persona.service");
+const {crearReunionPreBautizo,actualizarReunionPreBautizoPorId,obtenerReunionPreBautizoPorId}= require("./reunion_pre_bautizo.service.js");
 const {crearDocumento,obtenerDocumentoParticipacion}=require("./documento.service.js");
 const participacionService = require('./participacion.service');
 
 const modificarTramite = async (id, tramiteDatos) => {
   validarEstado(tramiteDatos.estado);
-   const tramite = await getTramiteById(id);
+   const tramite = await obtenerTramitePorId(id);
    tramite.estado = tramiteDatos.estado;
    if(tramiteDatos.fecha_bautismo){
     tramite.fecha_bautismo=tramiteDatos.fecha_bautismo
@@ -18,11 +18,11 @@ const modificarTramite = async (id, tramiteDatos) => {
    await tramite.save();
    return tramite;
 };
-const actualizarReunionById= async(id,datos)=>{
+const actualizarReunionPorId= async(id,datos)=>{
   validarEstado(datos.estado);
-  const tramite=await getTramiteById(id);
-   await getPersonById(datos.id_fk_persona_catequista)
-  return await  updateReunionPreBautizoByID(tramite.id_fk_reunion_pre_bautizo,datos);
+  const tramite=await obtenerTramitePorId(id);
+   await obtenerPersonaPorId(datos.id_fk_persona_catequista)
+  return await  actualizarReunionPreBautizoPorId(tramite.id_fk_reunion_pre_bautizo,datos);
 }
 
 const agregarParticipante = async (id, datos) => {
@@ -32,17 +32,17 @@ const agregarParticipante = async (id, datos) => {
     persona: datos.persona,
     rol: datos.rol,
   };
-  const tramite=await getTramiteById(participanteData.tramiteId);
+  const tramite=await obtenerTramitePorId(participanteData.tramiteId);
   participanteData["tramite"]=tramite.dataValues;
-  validateRol(participanteData.rol);
+  validarRol(participanteData.rol);
   if (participanteData.personaId) {
-     await getPersonById(participanteData.personaId);
+     await obtenerPersonaPorId(participanteData.personaId);
   }
   if( ROLES_UNICOS.includes(participanteData.rol)){
-     await participacionService.checkRolUnicoExistente(participanteData);
+     await participacionService.verificarRolUnicoExistente(participanteData);
   }
   await crearParticipacion(participanteData);
-  return await participacionService.getParticipantesByTramite(participanteData.tramiteId);
+  return await participacionService.obtenerParticipantesPorTramite(participanteData.tramiteId);
   
 };
 
@@ -53,12 +53,12 @@ const crearParticipacion = async (participanteData) => {
     if (participanteData.personaId) {
      await participacionService.crearParticipacion(participanteData,participanteData.personaId,transaction)
     } else {
-      const nuevaPersona = await createPersona(participanteData.persona, transaction);
+      const nuevaPersona = await crearPersona(participanteData.persona, transaction);
         await participacionService.crearParticipacion(participanteData,nuevaPersona.id,transaction)
       
     }
     if(!participanteData.tramite.id_fk_reunion_pre_bautizo){
-      const reunion = await createReunionPreBautizo(transaction)
+      const reunion = await crearReunionPreBautizo(transaction)
         
      
       await Tramite.update({
@@ -86,8 +86,8 @@ const crearParticipacion = async (participanteData) => {
 
 const completarReunion= async(idTramite,estadoReunion)=>{
   validarEstado(estadoReunion.estado);
-  const tramite=await getTramiteById(idTramite);
-  const reunion=await getReunionPreBautizoById(tramite.id_fk_reunion_pre_bautizo);
+  const tramite=await obtenerTramitePorId(idTramite);
+  const reunion=await obtenerReunionPreBautizoPorId(tramite.id_fk_reunion_pre_bautizo);
    const transaction = await sequelize.transaction();
    try {
     await Reunion_prebautizmal.update({
@@ -106,8 +106,8 @@ const completarReunion= async(idTramite,estadoReunion)=>{
 }
 const agregarDocumentoParticipacion=async(documento)=>{
   validarEstado(documento.documento.estado_documento);
-  const tramite= await getTramiteById(documento.idTramite);
-  const participacion= await participacionService.getParticipacionById(documento.idParticipacion)
+  const tramite= await obtenerTramitePorId(documento.idTramite);
+  const participacion= await participacionService.obtenerParticipacionPorId(documento.idParticipacion)
   const obtenerDocumento= await obtenerDocumentoParticipacion(documento.idParticipacion);
   const NuevoDocumento={
     id_fk_participacion:participacion.id,
@@ -126,12 +126,12 @@ const agregarDocumentoParticipacion=async(documento)=>{
 
 }
 
-const createTramite = async () => {
+const crearTramite = async () => {
   return await Tramite.create();
-  
+
 };
 
-const getTramiteById = async (id) => {
+const obtenerTramitePorId = async (id) => {
   const tramite = await Tramite.findByPk(id);
   if (!tramite) {
     const error = new Error("Trámite no encontrado");
@@ -141,20 +141,19 @@ const getTramiteById = async (id) => {
   return tramite;
 };
 
-const getTramites = async () => {
+const obtenerTramites = async () => {
   return await Tramite.findAll();
 };
 
 
 
 module.exports = {
-  createTramite,
-  getTramites,
-  getTramiteById,
+  crearTramite,
+  obtenerTramites,
+  obtenerTramitePorId,
   modificarTramite,
-  actualizarReunionById,
+  actualizarReunionPorId,
   agregarParticipante,
   completarReunion,
   agregarDocumentoParticipacion
-  
 };

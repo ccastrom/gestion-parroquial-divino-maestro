@@ -3,7 +3,7 @@ const { Reunion_prebautizmal } = require("../models");
 const {ESTADOS_VALIDOS, validarEstado, } = require("../constants/estados_tramites");
 
 
-const createReunionPreBautizo = async (transaction) => {
+const crearReunionPreBautizo = async (transaction) => {
     const reunion = await Reunion_prebautizmal.create({
         estado: ESTADOS_VALIDOS.Reunion_Pre_Bautizo_Asignada,
        
@@ -11,7 +11,7 @@ const createReunionPreBautizo = async (transaction) => {
     return reunion;
 };
 
-const getReunionPreBautizoById = async (id) => {
+const obtenerReunionPreBautizoPorId = async (id) => {
     const reunion = await Reunion_prebautizmal.findByPk(id);
     if (!reunion) {
         const error = new Error("Reunión de pre-bautizo no encontrada");
@@ -22,8 +22,8 @@ const getReunionPreBautizoById = async (id) => {
 };
 
 
-const updateReunionPreBautizoByID = async (id, datos) => {
-    const reunion = await getReunionPreBautizoById(id);
+const actualizarReunionPreBautizoPorId = async (id, datos) => {
+    const reunion = await obtenerReunionPreBautizoPorId(id);
     if (!reunion) {
         throw new Error("Reunión de pre-bautizo no encontrada");
     }
@@ -32,7 +32,7 @@ const updateReunionPreBautizoByID = async (id, datos) => {
 
 
 module.exports = {
-    createReunionPreBautizo,
-    getReunionPreBautizoById,
-    updateReunionPreBautizoByID
+    crearReunionPreBautizo,
+    obtenerReunionPreBautizoPorId,
+    actualizarReunionPreBautizoPorId
 }
