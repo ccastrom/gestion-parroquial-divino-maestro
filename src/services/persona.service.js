@@ -2,7 +2,7 @@ const {Persona}=require('../models/persona.model');
 
 
 
-const createPersona= async(persona)=>{
+const createPersona= async(persona,transaction = null)=>{
      if (!persona.rut || persona.rut.trim() === '') {
         persona.rut = null;
     }
@@ -14,7 +14,7 @@ const createPersona= async(persona)=>{
             return resultado;
         }
     }
-    return await Persona.create(persona);
+    return await Persona.create(persona,{transaction});
      
 };
 

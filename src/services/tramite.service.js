@@ -1,8 +1,8 @@
 const sequelize = require("../config/database.js");
-const { Tramite, Participacion, Persona, Reunion_prebautizmal } = require("../models");
+const { Tramite, Reunion_prebautizmal } = require("../models");
 const {ESTADOS_VALIDOS, validarEstado, } = require("../constants/estados_tramites");
 const { ROLES_VALIDOS, ROLES_UNICOS,  validateRol, } = require("../constants/roles_Participantes");
-const { getPersonById } = require("./persona.service");
+const { getPersonById,createPersona } = require("./persona.service");
 const {createReunionPreBautizo,updateReunionPreBautizoByID,getReunionPreBautizoById}= require("./reunion_pre_bautizo.service.js");
 const {crearDocumento,obtenerDocumentoParticipacion}=require("./documento.service.js");
 const participacionService = require('./participacion.service');
@@ -53,19 +53,7 @@ const crearParticipacion = async (participanteData) => {
     if (participanteData.personaId) {
      await participacionService.crearParticipacion(participanteData,participanteData.personaId,transaction)
     } else {
-      const { nombre, apellido, fecha_nacimiento, rut, fono, direccion } =
-        participanteData.persona;
-      const nuevaPersona = await Persona.create(
-        {
-          nombre,
-          apellido,
-          fecha_nacimiento,
-          rut,
-          fono,
-          direccion,
-        },
-        { transaction },
-      );
+      const nuevaPersona = await createPersona(participanteData.persona, transaction);
         await participacionService.crearParticipacion(participanteData,nuevaPersona.id,transaction)
       
     }
