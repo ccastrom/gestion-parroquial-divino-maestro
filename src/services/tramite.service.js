@@ -5,6 +5,7 @@ const { ROLES_VALIDOS, ROLES_UNICOS,  validateRol, } = require("../constants/rol
 const { getPersonById } = require("./persona.service");
 const {createReunionPreBautizo,updateReunionPreBautizoByID,getReunionPreBautizoById}= require("./reunion_pre_bautizo.service.js");
 const {crearDocumento,obtenerDocumentoParticipacion}=require("./documento.service.js");
+const participacionService = require('./participacion.service');
 
 const modificarTramite = async (id, tramiteDatos) => {
   validarEstado(tramiteDatos.estado);
@@ -160,7 +161,7 @@ const completarReunion= async(idTramite,estadoReunion)=>{
 const agregarDocumentoParticipacion=async(documento)=>{
   validarEstado(documento.documento.estado_documento);
   const tramite= await getTramiteById(documento.idTramite);
-  const participacion= await getParticipacionById(documento.idParticipacion)
+  const participacion= await participacionService.getParticipacionById(documento.idParticipacion)
   const obtenerDocumento= await obtenerDocumentoParticipacion(documento.idParticipacion);
   const NuevoDocumento={
     id_fk_participacion:participacion.id,
