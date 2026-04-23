@@ -51,14 +51,7 @@ const crearParticipacion = async (participanteData) => {
   const transaction = await sequelize.transaction();
   try {
     if (participanteData.personaId) {
-      await Participacion.create(
-        {
-          id_fk_tramite: participanteData.tramiteId,
-          id_fk_persona: participanteData.personaId,
-          rol: participanteData.rol,
-        },
-        { transaction },
-      );
+     await participacionService.crearParticipacion(participanteData,participanteData.personaId,transaction)
     } else {
       const { nombre, apellido, fecha_nacimiento, rut, fono, direccion } =
         participanteData.persona;
@@ -73,15 +66,8 @@ const crearParticipacion = async (participanteData) => {
         },
         { transaction },
       );
-
-      await Participacion.create(
-        {
-          id_fk_tramite: participanteData.tramiteId,
-          id_fk_persona: nuevaPersona.id,
-          rol: participanteData.rol,
-        },
-        { transaction },
-      );
+        await participacionService.crearParticipacion(participanteData,nuevaPersona.id,transaction)
+      
     }
     if(!participanteData.tramite.id_fk_reunion_pre_bautizo){
       const reunion = await createReunionPreBautizo(transaction)

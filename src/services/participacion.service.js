@@ -1,6 +1,16 @@
 const {Participacion}=require('../models/participacion.model');
 const {Persona}=require('../models/persona.model');
 
+const crearParticipacion=async(participanteData,idPersona,transaction)=>{
+     await Participacion.create(
+        {
+          id_fk_tramite: participanteData.tramiteId,
+          id_fk_persona: idPersona,
+          rol: participanteData.rol,
+        },
+        { transaction },
+      );
+}
 const getParticipacionById= async(id)=>{
   const participacion= await Participacion.findByPk(id);
   if(!participacion){
@@ -48,5 +58,5 @@ module.exports = {
     getParticipacionById,
     checkRolUnicoExistente,
      getParticipantesByTramite,
-    // crearParticipacionDB
+     crearParticipacion
 }
