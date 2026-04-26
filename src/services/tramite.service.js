@@ -41,11 +41,11 @@ const agregarParticipante = async (id, datos) => {
   if (ROLES_UNICOS.includes(participanteData.rol)) {
     await participacionService.verificarRolUnicoExistente(participanteData);
   }
-  await crearParticipacion(participanteData);
+  await orquestarParticipacion(participanteData);
   return await participacionService.obtenerParticipantesPorTramite(participanteData.tramiteId);
 };
 
-const crearParticipacion = async (participanteData) => {
+const orquestarParticipacion = async (participanteData) => {
   const transaction = await sequelize.transaction();
   try {
     if (participanteData.personaId) {
