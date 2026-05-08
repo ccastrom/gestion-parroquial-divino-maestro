@@ -93,7 +93,7 @@ const completarReunion = async (idTramite, estadoReunion) => {
 
 const agregarDocumentoParticipacion = async (documento) => {
   validarEstado(documento.documento.estado_documento);
-  const tramite = await obtenerTramitePorId(documento.idTramite);
+  await obtenerTramitePorId(documento.idTramite);
   const participacion = await participacionService.obtenerParticipacionPorId(documento.idParticipacion);
   const obtenerDocumento = await obtenerDocumentoParticipacion(documento.idParticipacion);
   const NuevoDocumento = {
