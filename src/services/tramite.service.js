@@ -7,60 +7,50 @@ const { crearReunionPreBautizo, actualizarReunionPreBautizoPorId, obtenerReunion
 const { crearDocumento, obtenerDocumentoParticipacion } = require("./documento.service.js");
 const participacionService = require('./participacion.service');
 
-const modificarTramite = async (id, tramiteDatos) => {
-  validarEstado(tramiteDatos.estado);
-  const tramite = await obtenerTramitePorId(id);
-  tramite.estado = tramiteDatos.estado;
-  if (tramiteDatos.fecha_bautismo) {
-    tramite.fecha_bautismo = tramiteDatos.fecha_bautismo;
+const crearTramite = async () => {
+  return await Tramite.create();
+};
+
+const obtenerTramites = async () => {
+  return await Tramite.findAll();
+};
+
+const obtenerTramitePorId = async (id) => {
+  const tramite = await Tramite.findByPk(id);
+  if (!tramite) {
+    const error = new Error("Trámite no encontrado");
+    error.statusCode = 404;
+    throw error;
   }
-  await tramite.save();
   return tramite;
 };
 
-const actualizarReunionPorId = async (id, datos) => {
-  validarEstado(datos.estado);
+const agregarParticipante = async (id, participante) => {
   const tramite = await obtenerTramitePorId(id);
-  await obtenerPersonaPorId(datos.id_fk_persona_catequista);
-  return await actualizarReunionPreBautizoPorId(tramite.id_fk_reunion_pre_bautizo, datos);
-};
-
-const agregarParticipante = async (id, datos) => {
-  const participanteData = {
-    tramiteId: id,
-    personaId: datos.personaId,
-    persona: datos.persona,
-    rol: datos.rol,
-  };
-  const tramite = await obtenerTramitePorId(participanteData.tramiteId);
-  participanteData["tramite"] = tramite.dataValues;
-  validarRol(participanteData.rol);
-  if (participanteData.personaId) {
-    await obtenerPersonaPorId(participanteData.personaId);
+  validarRol(participante.rol);
+  if (participante.personaId) {
+    await obtenerPersonaPorId(participante.personaId);
   }
-  if (ROLES_UNICOS.includes(participanteData.rol)) {
-    await participacionService.verificarRolUnicoExistente(participanteData);
+  if (ROLES_UNICOS.includes(participante.rol)) {
+    await participacionService.verificarRolUnicoExistente({ tramiteId: id, rol: participante.rol });
   }
-  await orquestarParticipacion(participanteData);
-  return await participacionService.obtenerParticipantesPorTramite(participanteData.tramiteId);
-};
 
-const orquestarParticipacion = async (participanteData) => {
   const transaction = await sequelize.transaction();
   try {
-    if (participanteData.personaId) {
-      await participacionService.crearParticipacion(participanteData, participanteData.personaId, transaction);
-    } else {
-      const nuevaPersona = await crearPersona(participanteData.persona, transaction);
-      await participacionService.crearParticipacion(participanteData, nuevaPersona.id, transaction);
-    }
-    if (!participanteData.tramite.id_fk_reunion_pre_bautizo) {
+    const personaId = participante.personaId
+      ? participante.personaId
+      : (await crearPersona(participante.persona, transaction)).id;
+
+    await participacionService.crearParticipacion({ tramiteId: id, rol: participante.rol }, personaId, transaction);
+
+    if (!tramite.id_fk_reunion_pre_bautizo) {
       const reunion = await crearReunionPreBautizo(transaction);
       await Tramite.update(
         { id_fk_reunion_pre_bautizo: reunion.id },
-        { where: { id: participanteData.tramiteId }, transaction }
+        { where: { id }, transaction }
       );
     }
+
     await transaction.commit();
   } catch (error) {
     await transaction.rollback();
@@ -69,6 +59,15 @@ const orquestarParticipacion = async (participanteData) => {
     }
     throw error;
   }
+
+  return await participacionService.obtenerParticipantesPorTramite(id);
+};
+
+const actualizarReunionPorId = async (id, datos) => {
+  validarEstado(datos.estado);
+  const tramite = await obtenerTramitePorId(id);
+  await obtenerPersonaPorId(datos.id_fk_persona_catequista);
+  return await actualizarReunionPreBautizoPorId(tramite.id_fk_reunion_pre_bautizo, datos);
 };
 
 const completarReunion = async (idTramite, estadoReunion) => {
@@ -112,22 +111,15 @@ const agregarDocumentoParticipacion = async (documento) => {
   }
 };
 
-const crearTramite = async () => {
-  return await Tramite.create();
-};
-
-const obtenerTramitePorId = async (id) => {
-  const tramite = await Tramite.findByPk(id);
-  if (!tramite) {
-    const error = new Error("Trámite no encontrado");
-    error.statusCode = 404;
-    throw error;
+const modificarTramite = async (id, tramiteDatos) => {
+  validarEstado(tramiteDatos.estado);
+  const tramite = await obtenerTramitePorId(id);
+  tramite.estado = tramiteDatos.estado;
+  if (tramiteDatos.fecha_bautismo) {
+    tramite.fecha_bautismo = tramiteDatos.fecha_bautismo;
   }
+  await tramite.save();
   return tramite;
-};
-
-const obtenerTramites = async () => {
-  return await Tramite.findAll();
 };
 
 module.exports = {
