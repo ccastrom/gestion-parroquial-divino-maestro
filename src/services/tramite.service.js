@@ -106,7 +106,7 @@ const agregarDocumentoParticipacion = async (documento) => {
     return await crearDocumento(NuevoDocumento);
   } else {
     const error = new Error("Documento ya existente en participación");
-    error.statusCode = 404;
+    error.statusCode = 409;
     throw error;
   }
 };
