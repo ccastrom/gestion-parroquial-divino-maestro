@@ -89,6 +89,8 @@ const completarReunion = async (idTramite, estadoReunion) => {
     await transaction.rollback();
     throw error;
   }
+
+  return await obtenerTramitePorId(idTramite);
 };
 
 const agregarDocumentoParticipacion = async (documento) => {
