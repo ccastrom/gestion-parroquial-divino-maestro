@@ -16,7 +16,29 @@
 
   <div class="container py-4">
     <h2>Trámites de Bautismo</h2>
-    <p class="text-muted">Listado de trámites registrados.</p>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Fecha ingreso</th>
+          <th>Estado</th>
+          <th>Fecha bautismo</th>
+          <th>Reunion pre bautizo</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% tramites.forEach(function(item){ %>
+          <tr>
+              <td><%= item.id %></td>
+              <td><%= item.fecha_ingreso %></td>
+              <td><%= item.estado %></td>
+              <td><%= item.fecha_bautismo %></td>
+              <td><%= item.id_fk_reunion_pre_bautizo %></td>
+          </tr>
+       <% }); %>
+
+      </tbody>
+    </table>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
