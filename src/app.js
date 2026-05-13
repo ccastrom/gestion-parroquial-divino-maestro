@@ -1,6 +1,11 @@
 
+const path = require('path');
 const express= require('express');
 const app= express();
+
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+app.use(express.static(path.join(__dirname, 'public')));
 const personasRoutes= require('./routes/personas.routes');
 const tramitesRoutes= require('./routes/tramites.routes');
 const errorHandler=require('./middleware/errorHandler');
