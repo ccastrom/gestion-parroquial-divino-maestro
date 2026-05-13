@@ -1,5 +1,5 @@
 const sequelize = require("../config/database.js");
-const { Tramite, Reunion_prebautizmal } = require("../models");
+const { Tramite, Reunion_prebautizmal, Participacion, Persona } = require("../models");
 const { ESTADOS_VALIDOS, validarEstado } = require("../constants/estados_tramites");
 const { ROLES_VALIDOS, ROLES_UNICOS, validarRol } = require("../constants/roles_Participantes");
 const { obtenerPersonaPorId, crearPersona } = require("./persona.service");
@@ -13,6 +13,18 @@ const crearTramite = async () => {
 
 const obtenerTramites = async () => {
   return await Tramite.findAll();
+};
+
+const obtenerTramitesConBautizado = async () => {
+  return await Tramite.findAll({
+    include: [{
+      model: Participacion,
+      where: { rol: 'Bautizado' },
+      required: false,
+      include: [{ model: Persona, attributes: ['nombre', 'apellido'] }]
+    }],
+    order: [['fecha_ingreso', 'DESC']]
+  });
 };
 
 const obtenerTramitePorId = async (id) => {
@@ -127,6 +139,7 @@ const modificarTramite = async (id, tramiteDatos) => {
 module.exports = {
   crearTramite,
   obtenerTramites,
+  obtenerTramitesConBautizado,
   obtenerTramitePorId,
   modificarTramite,
   actualizarReunionPorId,

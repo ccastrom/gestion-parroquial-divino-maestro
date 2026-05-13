@@ -20,20 +20,21 @@
       <thead>
         <tr>
           <th>ID</th>
+          <th>Bautizado</th>
           <th>Fecha ingreso</th>
           <th>Estado</th>
           <th>Fecha bautismo</th>
-          <th>Reunion pre bautizo</th>
         </tr>
       </thead>
       <tbody>
         <% tramites.forEach(function(item){ %>
+          <% const bautizado = item.Participacions && item.Participacions[0] ? item.Participacions[0].Persona : null; %>
           <tr>
               <td><%= item.id %></td>
+              <td><%= bautizado ? bautizado.nombre + ' ' + bautizado.apellido : '—' %></td>
               <td><%= item.fecha_ingreso %></td>
               <td><%= item.estado %></td>
               <td><%= item.fecha_bautismo %></td>
-              <td><%= item.id_fk_reunion_pre_bautizo %></td>
           </tr>
        <% }); %>
 
