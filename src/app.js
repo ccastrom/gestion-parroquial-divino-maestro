@@ -5,7 +5,6 @@ const app= express();
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
-app.use(express.static(path.join(__dirname, 'public')));
 const personasRoutes= require('./routes/personas.routes');
 const tramitesRoutes= require('./routes/tramites.routes');
 const errorHandler=require('./middleware/errorHandler');
@@ -20,8 +19,11 @@ app.use((req, res, next) => {
   }
   next();
 });
+app.get('/', (req, res) => res.render('tramites/lista'));
+
 app.use('/personas',personasRoutes);
 app.use('/tramites',tramitesRoutes);
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(errorHandler);
 module.exports=app;
 
