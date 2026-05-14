@@ -25,6 +25,7 @@
           <th>Fecha ingreso</th>
           <th>Estado</th>
           <th>Fecha bautismo</th>
+          <th>Acciones</th>
         </tr>
       </thead>
       <tbody>
@@ -36,6 +37,7 @@
               <td><%= item.fecha_ingreso %></td>
               <td><%= item.estado %></td>
               <td><%= item.fecha_bautismo %></td>
+              <td><a href="/tramites/<%= item.id %>" class="btn btn-primary btn-sm">Ver</a></td>
           </tr>
        <% }); %>
 
