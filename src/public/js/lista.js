@@ -1,11 +1,7 @@
-const inputBusqueda = document.querySelector('input[type="text"]');
-const filas = document.querySelectorAll('tbody tr');
-
-inputBusqueda.addEventListener('input', function() {
-  const texto = this.value.toLowerCase();
-
-  filas.forEach(function(fila) {
-    const contenido = fila.textContent.toLowerCase();
-    fila.style.display = contenido.includes(texto) ? '' : 'none';
+$(document).ready(function() {
+  $('#tablaTramites').DataTable({
+    language: {
+      url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json'
+    }
   });
 });
