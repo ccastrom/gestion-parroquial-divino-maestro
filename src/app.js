@@ -16,7 +16,7 @@ const errorHandler=require('./middleware/errorHandler');
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.use('/',webRoutes);
+app.use('/web',webRoutes);
 app.use('/personas',personasRoutes);
 app.use('/tramites',tramitesRoutes);
 app.use(express.static(path.join(__dirname, 'public')));

@@ -11,12 +11,17 @@
 
   <nav class="navbar navbar-dark bg-dark">
     <div class="container">
-      <a class="navbar-brand" href="/">Parroquia &mdash; Bautismos</a>
+      <a class="navbar-brand" href="/web">Parroquia &mdash; Bautismos</a>
     </div>
   </nav>
 
   <div class="container py-4">
-    <h2>Trámites de Bautismo</h2>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h2 class="mb-0">Trámites de Bautismo</h2>
+      <form action="/web/tramites" method="POST">
+        <button class="btn btn-success">+ Nuevo Trámite</button>
+      </form>
+    </div>
     <table class="table" id="tablaTramites">
       <thead>
         <tr>
@@ -37,7 +42,7 @@
               <td><%= item.fecha_ingreso %></td>
               <td><%= item.estado %></td>
               <td><%= item.fecha_bautismo %></td>
-              <td><a href="/tramites/<%= item.id %>" class="btn btn-primary btn-sm">Ver</a></td>
+              <td><a href="/web/tramites/<%= item.id %>" class="btn btn-primary btn-sm">Ver</a></td>
           </tr>
        <% }); %>
 
