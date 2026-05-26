@@ -34,13 +34,39 @@
           </div>
           <div class="col-md-4">
             <small class="text-muted">Fecha bautismo</small>
-            <p><%= tramite.fecha_bautismo || '—' %></p>
+            <p><%= tramite.fecha_bautismo ? new Date(tramite.fecha_bautismo).toLocaleDateString('es-CL') : '—' %>
+</p>
           </div>
           <div class="col-md-4">
             <small class="text-muted">Estado</small>
             <p><%= tramite.estado || '—' %></p>
           </div>
         </div>
+      </div>
+    </div>
+
+    <!-- Cambiar estado -->
+    <div class="card mb-4">
+      <div class="card-header">Cambiar Estado</div>
+      <div class="card-body">
+        <form action="/tramites/<%= tramite.id %>/estado" method="POST" class="row g-3 align-items-end">
+          <div class="col-md-5">
+            <label class="form-label">Estado</label>
+            <select name="estado" class="form-select" required>
+              <% estados.forEach(function(e) { %>
+                <option value="<%= e %>" <%= tramite.estado === e ? 'selected' : '' %>><%= e %></option>
+              <% }); %>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Fecha bautismo</label>
+            <input type="date" name="fecha_bautismo" class="form-control"
+              value="<%= tramite.fecha_bautismo || '' %>">
+          </div>
+          <div class="col-md-3">
+            <button type="submit" class="btn btn-primary w-100">Guardar</button>
+          </div>
+        </form>
       </div>
     </div>
 
