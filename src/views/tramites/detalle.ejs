@@ -25,7 +25,7 @@
 
     <!-- Datos del trámite -->
     <div class="card mb-4">
-      <div class="card-header">Información del Trámite</div>
+      <div class="card-header bg-primary text-white">Información del Trámite</div>
       <div class="card-body">
         <div class="row">
           <div class="col-md-4">
@@ -47,7 +47,7 @@
 
     <!-- Cambiar estado -->
     <div class="card mb-4">
-      <div class="card-header">Cambiar Estado</div>
+      <div class="card-header bg-primary text-white">Cambiar Estado</div>
       <div class="card-body">
         <form action="/tramites/<%= tramite.id %>/estado" method="POST" class="row g-3 align-items-end">
           <div class="col-md-5">
@@ -72,7 +72,7 @@
 
     <!-- Participantes -->
     <div class="card mb-4">
-      <div class="card-header">Participantes</div>
+      <div class="card-header bg-primary text-white">Participantes</div>
       <div class="card-body">
         <% if (participantes && participantes.length > 0) { %>
           <% participantes.forEach(function(p) { %>
@@ -101,7 +101,7 @@
 
     <!-- Reunión Prebautismal -->
     <div class="card mb-4">
-      <div class="card-header">Reunión Prebautismal</div>
+      <div class="card-header bg-primary text-white">Reunión Prebautismal</div>
       <div class="card-body">
         <% if (reunion) { %>
           <div class="row">
@@ -127,7 +127,7 @@
 
     <!-- Documentos -->
     <div class="card mb-4">
-      <div class="card-header">Documentos</div>
+      <div class="card-header bg-primary text-white">Documentos</div>
       <div class="card-body">
         <%
           const tieneDocumentos = participantes && participantes.some(p => p.documento);
