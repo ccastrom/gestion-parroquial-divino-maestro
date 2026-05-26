@@ -8,8 +8,8 @@ const GET_Tramites_Web= asyncHandler(async(req,res)=>{
 });
 
 const GET_TramitesById_Web= asyncHandler(async(req,res)=>{
-    const {tramite, participantes, reunion} = await tramiteService.obtenerDetalleTramite(req.params.id);
-    res.render('tramites/detalle', {tramite, participantes, reunion, estados: Object.values(ESTADOS_VALIDOS)});
+    const {tramite, participantes, reunion,catequista} = await tramiteService.obtenerDetalleTramite(req.params.id);
+    res.render('tramites/detalle', {tramite, participantes, reunion,catequista, estados: Object.values(ESTADOS_VALIDOS)});
 });
 
 const POST_CambiarEstado_Web = asyncHandler(async(req, res)=>{

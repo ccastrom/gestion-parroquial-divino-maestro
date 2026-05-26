@@ -109,14 +109,15 @@
               <small class="text-muted">Estado</small>
               <p><%= reunion.estado || '—' %></p>
             </div>
+             <div class="col-md-4">
+              <small class="text-muted">Catequista asignado</small>
+              <p><%= catequista.nombre || '—' %> <%= catequista.apellido || '—' %></p>
+            </div>
             <div class="col-md-4">
               <small class="text-muted">Fecha reunión</small>
               <p><%= reunion.fecha ? new Date(reunion.fecha).toLocaleDateString('es-CL') : '—' %></p>
             </div>
-            <div class="col-md-4">
-              <small class="text-muted">Catequista asignado</small>
-              <p><%= reunion.id_fk_persona_catequista || '—' %></p>
-            </div>
+           
           </div>
         <% } else { %>
           <p class="text-muted">Sin reunión prebautismal registrada</p>

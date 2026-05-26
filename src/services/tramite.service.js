@@ -140,10 +140,12 @@ const obtenerDetalleTramite = async (id) => {
   const tramite = await obtenerTramitePorId(id);
   const participantes = await participacionService.obtenerParticipantesPorTramite(id);
   let reunion= null;
+  let catequista=null;
   if(tramite.id_fk_reunion_pre_bautizo) {
-     reunion = await obtenerReunionPreBautizoPorId(tramite.id_fk_reunion_pre_bautizo); 
+     reunion = await obtenerReunionPreBautizoPorId(tramite.id_fk_reunion_pre_bautizo);
+    catequista= await obtenerPersonaPorId(reunion.id_fk_persona_catequista);
   }
-  return { tramite, participantes, reunion };
+  return { tramite, participantes, reunion,catequista };
 };
 module.exports = {
   crearTramite,
