@@ -30,7 +30,7 @@
         <div class="row">
           <div class="col-md-4">
             <small class="text-muted">Fecha ingreso</small>
-            <p><%= tramite.fecha_ingreso || '—' %></p>
+            <p><%= tramite.fecha_ingreso ? new Date(tramite.fecha_ingreso).toLocaleDateString('es-CL') : '—' %></p>
           </div>
           <div class="col-md-4">
             <small class="text-muted">Fecha bautismo</small>
@@ -111,7 +111,11 @@
             </div>
             <div class="col-md-4">
               <small class="text-muted">Fecha reunión</small>
-              <p><%= reunion.fecha || '—' %></p>
+              <p><%= reunion.fecha ? new Date(reunion.fecha).toLocaleDateString('es-CL') : '—' %></p>
+            </div>
+            <div class="col-md-4">
+              <small class="text-muted">Catequista asignado</small>
+              <p><%= reunion.id_fk_persona_catequista || '—' %></p>
             </div>
           </div>
         <% } else { %>
@@ -146,7 +150,7 @@
                   </div>
                   <div class="col-md-3">
                     <small class="text-muted">Fecha entrega</small>
-                    <p><%= p.documento.fecha_entrega || '—' %></p>
+                    <p><%= p.documento.fecha_entrega ? new Date(p.documento.fecha_entrega).toLocaleDateString('es-CL') : '—' %></p>
                   </div>
                 </div>
               </div>
