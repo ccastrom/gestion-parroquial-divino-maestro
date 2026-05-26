@@ -30,7 +30,7 @@
       </thead>
       <tbody>
         <% tramites.forEach(function(item){ %>
-          <% const bautizado = item.Participacions && item.Participacions[0] ? item.Participacions[0].Persona : null; %>
+          <% const bautizado = item.participacion && item.participacion[0] ? item.participacion[0].Persona : null; %>
           <tr>
               <td><%= item.id %></td>
               <td><%= bautizado ? bautizado.nombre + ' ' + bautizado.apellido : '—' %></td>

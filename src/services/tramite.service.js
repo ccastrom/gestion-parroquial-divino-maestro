@@ -19,6 +19,7 @@ const obtenerTramitesConBautizado = async () => {
   return await Tramite.findAll({
     include: [{
       model: Participacion,
+      as: 'participacion',
       where: { rol: 'Bautizado' },
       required: false,
       include: [{ model: Persona, attributes: ['nombre', 'apellido'] }]
@@ -135,7 +136,15 @@ const modificarTramite = async (id, tramiteDatos) => {
   await tramite.save();
   return tramite;
 };
-
+const obtenerDetalleTramite = async (id) => {
+  const tramite = await obtenerTramitePorId(id);
+  const participantes = await participacionService.obtenerParticipantesPorTramite(id);
+  let reunion= null;
+  if(tramite.id_fk_reunion_pre_bautizo) {
+     reunion = await obtenerReunionPreBautizoPorId(tramite.id_fk_reunion_pre_bautizo); 
+  }
+  return { tramite, participantes, reunion };
+};
 module.exports = {
   crearTramite,
   obtenerTramites,
@@ -146,4 +155,5 @@ module.exports = {
   agregarParticipante,
   completarReunion,
   agregarDocumentoParticipacion,
+  obtenerDetalleTramite,
 };

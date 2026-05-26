@@ -44,27 +44,91 @@
       </div>
     </div>
 
-    <!-- Participantes (próximamente) -->
+    <!-- Participantes -->
     <div class="card mb-4">
       <div class="card-header">Participantes</div>
-      <div class="card-body text-muted">
-        Próximamente
+      <div class="card-body">
+        <% if (participantes && participantes.length > 0) { %>
+          <% participantes.forEach(function(p) { %>
+            <div class="mb-3 p-3 border rounded">
+              <div class="row">
+                <div class="col-md-4">
+                  <small class="text-muted">Rol</small>
+                  <p><strong><%= p.rol %></strong></p>
+                </div>
+                <div class="col-md-4">
+                  <small class="text-muted">Nombre</small>
+                  <p><%= p.Persona.nombre %> <%= p.Persona.apellido %></p>
+                </div>
+                <div class="col-md-4">
+                  <small class="text-muted">RUT</small>
+                  <p><%= p.Persona.rut || '—' %></p>
+                </div>
+              </div>
+            </div>
+          <% }); %>
+        <% } else { %>
+          <p class="text-muted">Sin participantes agregados</p>
+        <% } %>
       </div>
     </div>
 
-    <!-- Reunión Prebautismal (próximamente) -->
+    <!-- Reunión Prebautismal -->
     <div class="card mb-4">
       <div class="card-header">Reunión Prebautismal</div>
-      <div class="card-body text-muted">
-        Próximamente
+      <div class="card-body">
+        <% if (reunion) { %>
+          <div class="row">
+            <div class="col-md-4">
+              <small class="text-muted">Estado</small>
+              <p><%= reunion.estado || '—' %></p>
+            </div>
+            <div class="col-md-4">
+              <small class="text-muted">Fecha reunión</small>
+              <p><%= reunion.fecha || '—' %></p>
+            </div>
+          </div>
+        <% } else { %>
+          <p class="text-muted">Sin reunión prebautismal registrada</p>
+        <% } %>
       </div>
     </div>
 
-    <!-- Documento (próximamente) -->
+    <!-- Documentos -->
     <div class="card mb-4">
-      <div class="card-header">Documento</div>
-      <div class="card-body text-muted">
-        Próximamente
+      <div class="card-header">Documentos</div>
+      <div class="card-body">
+        <%
+          const tieneDocumentos = participantes && participantes.some(p => p.documento);
+        %>
+        <% if (tieneDocumentos) { %>
+          <% participantes.forEach(function(p) { %>
+            <% if (p.documento) { %>
+              <div class="mb-3 p-3 border rounded">
+                <div class="row">
+                  <div class="col-md-3">
+                    <small class="text-muted">Participante</small>
+                    <p><strong><%= p.Persona.nombre %> <%= p.Persona.apellido %></strong></p>
+                  </div>
+                  <div class="col-md-3">
+                    <small class="text-muted">Tipo de documento</small>
+                    <p><%= p.documento.tipo_documento %></p>
+                  </div>
+                  <div class="col-md-3">
+                    <small class="text-muted">Estado</small>
+                    <p><%= p.documento.estado_documento %></p>
+                  </div>
+                  <div class="col-md-3">
+                    <small class="text-muted">Fecha entrega</small>
+                    <p><%= p.documento.fecha_entrega || '—' %></p>
+                  </div>
+                </div>
+              </div>
+            <% } %>
+          <% }); %>
+        <% } else { %>
+          <p class="text-muted">Sin documentos registrados</p>
+        <% } %>
       </div>
     </div>
 

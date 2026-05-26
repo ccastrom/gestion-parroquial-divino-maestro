@@ -7,8 +7,8 @@ const GET_Tramites_Web= asyncHandler(async(req,res)=>{
 });
 
 const GET_TramitesById_Web= asyncHandler(async(req,res)=>{
-    const tramite= await tramiteService.obtenerTramitePorId(req.params.id)
-    res.render('tramites/detalle',{tramite});
+    const {tramite, participantes, reunion} = await tramiteService.obtenerDetalleTramite(req.params.id);
+    res.render('tramites/detalle', {tramite, participantes, reunion});
 })
 
 

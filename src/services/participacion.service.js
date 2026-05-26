@@ -1,5 +1,4 @@
-const { Participacion } = require('../models/participacion.model');
-const { Persona } = require('../models/persona.model');
+const { Participacion, Persona, Documento } = require('../models');
 
 const crearParticipacion = async (participanteData, idPersona, transaction) => {
   await Participacion.create(
@@ -30,7 +29,13 @@ const obtenerParticipantesPorTramite = async (id) => {
         model: Persona,
         attributes: ["nombre", "apellido", "fecha_nacimiento", "rut", "fono", "direccion"],
       },
+        {
+        model: Documento,
+        attributes: ["id", "tipo_documento", "estado_documento", "fecha_entrega"],
+        required: false
+      }
     ],
+    
   });
   return participantes;
 };
