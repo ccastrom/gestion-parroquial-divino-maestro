@@ -13,8 +13,8 @@ const GET_Tramites_Web= asyncHandler(async(req,res)=>{
 });
 
 const GET_TramitesById_Web= asyncHandler(async(req,res)=>{
-    const {tramite, participantes, reunion,catequista} = await tramiteService.obtenerDetalleTramite(req.params.id);
-    res.render('bautismos/detalle', {tramite, participantes, reunion,catequista, estados: Object.values(ESTADOS_VALIDOS)});
+    const {tramite, participantes, reunion,catequista, ListaDecatequistas} = await tramiteService.obtenerDetalleTramite(req.params.id);
+    res.render('bautismos/detalle', {tramite, participantes,catequista, reunion,ListaDecatequistas, estados: Object.values(ESTADOS_VALIDOS)});
 });
 
 const POST_CambiarEstado_Web = asyncHandler(async(req, res)=>{
@@ -23,9 +23,16 @@ const POST_CambiarEstado_Web = asyncHandler(async(req, res)=>{
     res.redirect(`/web/tramites/${req.params.id}`);
 });
 
+const POST_CambiarReunion_Web= asyncHandler(async(req,res)=>{
+    const {id_fk_persona_catequista,fecha,estado}= req.body;
+    await tramiteService.actualizarReunionPorId(req.params.id,{id_fk_persona_catequista,fecha,estado})
+    res.redirect(`/web/tramites/${req.params.id}`);
+})
+
 module.exports={
     POST_Tramites_Web,
     GET_Tramites_Web,
     GET_TramitesById_Web,
     POST_CambiarEstado_Web,
+    POST_CambiarReunion_Web
 }

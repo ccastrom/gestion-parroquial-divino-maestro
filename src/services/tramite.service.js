@@ -139,15 +139,19 @@ const modificarTramite = async (id, tramiteDatos) => {
 const obtenerDetalleTramite = async (id) => {
   const tramite = await obtenerTramitePorId(id);
   const participantes = await participacionService.obtenerParticipantesPorTramite(id);
-  let reunion= null;
-  let catequista=null;
+  let reunion = null;
+  let catequista = null;
   if (tramite.id_fk_reunion_pre_bautizo) {
     reunion = await obtenerReunionPreBautizoPorId(tramite.id_fk_reunion_pre_bautizo);
     if (reunion.id_fk_persona_catequista) {
       catequista = await obtenerPersonaPorId(reunion.id_fk_persona_catequista);
     }
   }
-  return { tramite, participantes, reunion,catequista };
+  const ListaDecatequistas = await Participacion.findAll({
+    where: { rol: ROLES_VALIDOS.Catequista },
+    include: [{ model: Persona, attributes: ['id', 'nombre', 'apellido'] }],
+  });
+  return { tramite, participantes, reunion, catequista, ListaDecatequistas };
 };
 module.exports = {
   crearTramite,

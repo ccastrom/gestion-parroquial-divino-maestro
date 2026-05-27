@@ -149,9 +149,15 @@
           <form action="/web/tramites/<%= tramite.id %>/reunion" method="POST">
             <div class="modal-body">
               <div class="mb-3">
-                <label class="form-label">ID Catequista</label>
-                <input type="number" name="id_fk_persona_catequista" class="form-control"
-                  value="<%= reunion ? reunion.id_fk_persona_catequista || '' : '' %>">
+                <label class="form-label">Catequista</label>
+                <select name="id_fk_persona_catequista" class="form-select" required>
+                  <option value="">-- Seleccionar --</option>
+                  <% ListaDecatequistas.forEach(function(c) { %>
+                    <option value="<%= c.Persona.id %>" <%= reunion && reunion.id_fk_persona_catequista === c.Persona.id ? 'selected' : '' %>>
+                      <%= c.Persona.nombre %> <%= c.Persona.apellido %>
+                    </option>
+                  <% }); %>
+                </select>
               </div>
               <div class="mb-3">
                 <label class="form-label">Fecha reunión</label>
