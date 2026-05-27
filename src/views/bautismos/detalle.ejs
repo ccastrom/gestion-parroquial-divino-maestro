@@ -111,7 +111,7 @@
             </div>
              <div class="col-md-4">
               <small class="text-muted">Catequista asignado</small>
-              <p><%= catequista.nombre || '—' %> <%= catequista.apellido || '—' %></p>
+              <p><%= catequista ? `${catequista.nombre} ${catequista.apellido}` : '—' %></p>
             </div>
             <div class="col-md-4">
               <small class="text-muted">Fecha reunión</small>
