@@ -1,7 +1,7 @@
 const { Sequelize, Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/database.js');
 
-const Reunion_prebautizmal= sequelize.define('reunion_prebautizmal',{
+const Reunion_prebautizmal= sequelize.define('reunion_prebaustizmal',{
     id:{
         type:DataTypes.INTEGER,
             primaryKey: true,
