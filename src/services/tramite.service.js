@@ -83,14 +83,18 @@ const actualizarReunionPorId = async (id, datos) => {
   return await actualizarReunionPreBautizoPorId(tramite.id_fk_reunion_pre_bautizo, datos);
 };
 
-const completarReunion = async (idTramite, estadoReunion) => {
-  validarEstado(estadoReunion.estado);
+const completarReunion = async (idTramite) => {
   const tramite = await obtenerTramitePorId(idTramite);
   const reunion = await obtenerReunionPreBautizoPorId(tramite.id_fk_reunion_pre_bautizo);
+  if(!reunion.id_fk_persona_catequista || !reunion.fecha){
+    const error = new Error("No se puede completar la reunión sin catequista asignado y fecha establecida");
+    error.statusCode = 400;
+    throw error;
+  }
   const transaction = await sequelize.transaction();
   try {
     await Reunion_prebautizmal.update(
-      { estado: estadoReunion.estado },
+      { estado: ESTADOS_VALIDOS.Reunion_Pre_Bautizo_Completada },
       { where: { id: reunion.id }, transaction }
     );
     await Tramite.update(

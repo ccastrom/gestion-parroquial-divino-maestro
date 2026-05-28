@@ -129,8 +129,12 @@
             </div>
            
           </div>
-          <div class="mt-3">
+          <div class="mt-3 d-flex gap-2">
             <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#modalEditarReunion">Editar Reunión</button>
+            <form action="/web/tramites/<%= tramite.id %>/completar-reunion" method="POST"
+              onsubmit="return confirm('¿Confirmas que la reunión fue completada? Esta acción no se puede deshacer.')">
+              <button type="submit" class="btn btn-success btn-sm">Marcar como completada</button>
+            </form>
           </div>
         <% } else { %>
           <p class="text-muted">Sin reunión prebautismal registrada</p>

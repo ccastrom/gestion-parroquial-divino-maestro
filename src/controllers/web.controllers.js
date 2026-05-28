@@ -28,11 +28,16 @@ const POST_CambiarReunion_Web= asyncHandler(async(req,res)=>{
     await tramiteService.actualizarReunionPorId(req.params.id,{id_fk_persona_catequista,fecha,estado})
     res.redirect(`/web/tramites/${req.params.id}`);
 })
+const POST_CompletarReunion_Web= asyncHandler(async(req,res)=>{
+    await tramiteService.completarReunion(req.params.id)
+    res.redirect(`/web/tramites/${req.params.id}`);
+})
 
 module.exports={
     POST_Tramites_Web,
     GET_Tramites_Web,
     GET_TramitesById_Web,
     POST_CambiarEstado_Web,
-    POST_CambiarReunion_Web
+    POST_CambiarReunion_Web,
+    POST_CompletarReunion_Web
 }
