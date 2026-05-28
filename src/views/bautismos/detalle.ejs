@@ -22,6 +22,12 @@
         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
       </div>
     <% } %>
+    <% if (locals.query && query.success) { %>
+      <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <%= decodeURIComponent(query.success) %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      </div>
+    <% } %>
 
     <!-- Encabezado -->
     <div class="d-flex align-items-center gap-3 mb-4">
@@ -161,7 +167,7 @@
             <div class="modal-body">
               <div class="mb-3">
                 <label class="form-label">Catequista</label>
-                <select name="id_fk_persona_catequista" class="form-select" required>
+                <select name="id_fk_persona_catequista" class="form-select">
                   <option value="">-- Seleccionar --</option>
                   <% ListaDecatequistas.forEach(function(c) { %>
                     <option value="<%= c.Persona.id %>" <%= reunion && reunion.id_fk_persona_catequista === c.Persona.id ? 'selected' : '' %>>

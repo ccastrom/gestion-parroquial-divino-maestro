@@ -79,7 +79,6 @@ const agregarParticipante = async (id, participante) => {
 const actualizarReunionPorId = async (id, datos) => {
   validarEstado(datos.estado);
   const tramite = await obtenerTramitePorId(id);
-  await obtenerPersonaPorId(datos.id_fk_persona_catequista);
   return await actualizarReunionPreBautizoPorId(tramite.id_fk_reunion_pre_bautizo, datos);
 };
 
