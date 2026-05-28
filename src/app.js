@@ -9,6 +9,7 @@ const personasRoutes= require('./routes/personas.routes');
 const tramitesRoutes= require('./routes/tramites.routes');
 const webRoutes= require('./routes/web.routes');
 const errorHandler=require('./middleware/errorHandler');
+const webErrorHandler=require('./middleware/webErrorHandler');
 
 
 
@@ -17,6 +18,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.use('/web',webRoutes);
+app.use(webErrorHandler);
 app.use('/personas',personasRoutes);
 app.use('/tramites',tramitesRoutes);
 app.use(express.static(path.join(__dirname, 'public')));
