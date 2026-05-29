@@ -4,7 +4,7 @@ const { ESTADOS_VALIDOS, validarEstado } = require("../constants/estados_tramite
 const { ROLES_VALIDOS, ROLES_UNICOS, validarRol } = require("../constants/roles_Participantes");
 const { obtenerPersonaPorId, crearPersona } = require("./persona.service");
 const { crearReunionPreBautizo, actualizarReunionPreBautizoPorId, obtenerReunionPreBautizoPorId } = require("./reunion_pre_bautizo.service.js");
-const { crearDocumento, obtenerDocumentoParticipacion } = require("./documento.service.js");
+const { crearDocumento, obtenerDocumentoParticipacion, obtenerDocumentoPorId, actualizarDocumento } = require("./documento.service.js");
 const participacionService = require('./participacion.service');
 
 const crearTramite = async () => {
@@ -109,24 +109,22 @@ const completarReunion = async (idTramite) => {
   return await obtenerTramitePorId(idTramite);
 };
 
-const agregarDocumentoParticipacion = async (documento) => {
-  validarEstado(documento.documento.estado_documento);
-  await obtenerTramitePorId(documento.idTramite);
-  const participacion = await participacionService.obtenerParticipacionPorId(documento.idParticipacion);
-  const obtenerDocumento = await obtenerDocumentoParticipacion(documento.idParticipacion);
-  const NuevoDocumento = {
-    id_fk_participacion: participacion.id,
-    tipo_documento: documento.documento.tipo_documento,
-    estado_documento: documento.documento.estado_documento,
-    fecha_entrega: documento.documento.fecha_entrega,
-  };
-  if (!obtenerDocumento) {
-    return await crearDocumento(NuevoDocumento);
-  } else {
+const agregarDocumentoParticipacion = async ({ idTramite, idParticipacion, documento }) => {
+  validarEstado(documento.estado_documento);
+  await obtenerTramitePorId(idTramite);
+  const participacion = await participacionService.obtenerParticipacionPorId(idParticipacion);
+  const documentoExistente = await obtenerDocumentoParticipacion(idParticipacion);
+  if (documentoExistente) {
     const error = new Error("Documento ya existente en participación");
     error.statusCode = 409;
     throw error;
   }
+  return await crearDocumento({
+    id_fk_participacion: participacion.id,
+    tipo_documento: documento.tipo_documento,
+    estado_documento: documento.estado_documento,
+    fecha_entrega: documento.fecha_entrega,
+  });
 };
 
 const modificarTramite = async (id, tramiteDatos) => {
@@ -156,6 +154,18 @@ const obtenerDetalleTramite = async (id) => {
   });
   return { tramite, participantes, reunion, catequista, ListaDecatequistas };
 };
+const modificarDocumentoParticipacion = async ({ idTramite, idDocumento, documento }) => {
+  validarEstado(documento.estado_documento);
+  await obtenerTramitePorId(idTramite);
+  const doc = await obtenerDocumentoPorId(idDocumento);
+  const participacion = await participacionService.obtenerParticipacionPorId(doc.id_fk_participacion);
+  if (String(participacion.id_fk_tramite) !== String(idTramite)) {
+    const error = new Error('El documento no pertenece a este trámite');
+    error.statusCode = 403;
+    throw error;
+  }
+  return await actualizarDocumento(idDocumento, documento);
+};
 module.exports = {
   crearTramite,
   obtenerTramites,
@@ -167,4 +177,5 @@ module.exports = {
   completarReunion,
   agregarDocumentoParticipacion,
   obtenerDetalleTramite,
+  modificarDocumentoParticipacion
 };

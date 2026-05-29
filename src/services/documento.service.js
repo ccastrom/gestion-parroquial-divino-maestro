@@ -16,7 +16,29 @@ const obtenerDocumentoParticipacion = async (id) => {
   return documento;
 };
 
+const obtenerDocumentoPorId = async (id) => {
+  const documento = await Documento.findByPk(id);
+  if (!documento) {
+    const error = new Error('Documento no encontrado');
+    error.statusCode = 404;
+    throw error;
+  }
+  return documento;
+};
+const actualizarDocumento = async (id,documentoDatos)=>{
+  const documento = await Documento.findByPk(id);
+  if (!documento) {
+    const error = new Error('Documento no encontrado');
+    error.statusCode = 404;
+    throw error;
+  }
+  await documento.update(documentoDatos);
+  return documento;
+}
+
 module.exports = {
   crearDocumento,
   obtenerDocumentoParticipacion,
+  obtenerDocumentoPorId,
+  actualizarDocumento
 };

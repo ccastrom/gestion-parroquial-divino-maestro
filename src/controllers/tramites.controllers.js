@@ -48,25 +48,28 @@ const PUT_ReunionById=asyncHandler(async(req,res)=>{
          res.status(200).json(reunion);
 })
 
-const completarReunion=asyncHandler(async(req,res)=>{
+const PATCHcompletarReunion=asyncHandler(async(req,res)=>{
         const tramiteId=req.params.id
         const estadoReunion=req.body;
         const reunion=await tramiteService.completarReunion(tramiteId,estadoReunion);
         res.status(200).json(reunion);
 })
 
-const agregarDocumento=asyncHandler(async(req,res)=>{
-        const documentoDatos={
-                idTramite:req.params.idTramite,
-                idParticipacion:req.params.idParticipacion,
-                documento:req.body
-        }
-        const documento= await tramiteService.agregarDocumentoParticipacion(documentoDatos)
-          res.status(200).json(documento);
-
+const POSTagregarDocumento = asyncHandler(async (req, res) => {
+    const { idTramite, idParticipacion } = req.params;
+    const documento = await tramiteService.agregarDocumentoParticipacion({
+        idTramite,
+        idParticipacion,
+        documento: req.body
+    });
+    res.status(201).json(documento);
 });
 
-
+const PATCHmodificarDocumento = asyncHandler(async (req, res) => {
+    const { idTramite, idDocumento } = req.params;
+    const documento = await tramiteService.modificarDocumentoParticipacion({ idTramite, idDocumento, documento: req.body });
+    res.status(200).json(documento);
+});
 
 
 
@@ -79,6 +82,7 @@ module.exports={
     PATCH_Tramites,
     PUT_ReunionById,
     POST_Tramites_Agregar_Participantes,
-    completarReunion,
-    agregarDocumento
+    PATCHcompletarReunion,
+    POSTagregarDocumento,
+    PATCHmodificarDocumento
 }

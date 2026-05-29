@@ -11,8 +11,9 @@ const
     POST_Tramites_Agregar_Participantes,
     PATCH_Tramites,
     PUT_ReunionById,
-    completarReunion,
-    agregarDocumento
+    POSTagregarDocumento,
+    PATCHmodificarDocumento,
+    PATCHcompletarReunion
 }=require('../controllers/tramites.controllers');
 const router= Router();
 
@@ -22,7 +23,9 @@ router.post('/:id/participantes',validateBody(agregarParticipanteSchema),POST_Tr
 router.get('/:id',GET_TramitesById);
 router.patch('/:id/estado',PATCH_Tramites);
 router.put('/:id/reunion',validateBody(actualizarReunionSchema),PUT_ReunionById)
-router.patch('/:id/reunion',validateBody(actualizarReunionSchema),completarReunion)
-router.post('/:idTramite/participacion/:idParticipacion/documento',validateBody(documentoParticipante),agregarDocumento);
+router.patch('/:id/reunion',validateBody(actualizarReunionSchema),PATCHcompletarReunion)
+router.post('/:idTramite/participacion/:idParticipacion/documento',validateBody(documentoParticipante),POSTagregarDocumento);
+router.patch('/:idTramite/documento/:idDocumento', validateBody(documentoParticipante), PATCHmodificarDocumento);
+
 
 module.exports = router;
