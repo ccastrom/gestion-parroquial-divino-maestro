@@ -5,7 +5,8 @@ const {POST_Tramites_Web,
     POST_CambiarEstado_Web,
     POST_CambiarReunion_Web, 
     POST_CompletarReunion_Web,
-    POST_AgregarDocumento_Web } = require('../controllers/web.controllers.js');
+    POST_AgregarDocumento_Web,
+    POST_ModificarDocumento_Web } = require('../controllers/web.controllers.js');
 
 const router= Router();
 router.post('/tramites',POST_Tramites_Web)
@@ -15,5 +16,6 @@ router.post('/tramites/:id/estado', POST_CambiarEstado_Web);
 router.post('/tramites/:id/reunion',POST_CambiarReunion_Web);
 router.post('/tramites/:id/completar-reunion',POST_CompletarReunion_Web);
 router.post('/tramites/:id/documento',POST_AgregarDocumento_Web);
+router.post('/tramites/:id/documento/:idDocumento',POST_ModificarDocumento_Web);
 
 module.exports=router;

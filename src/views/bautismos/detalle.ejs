@@ -226,9 +226,53 @@
                     <small class="text-muted">Estado</small>
                     <p><%= p.documento.estado_documento %></p>
                   </div>
-                  <div class="col-md-3">
+                  <div class="col-md-2">
                     <small class="text-muted">Fecha entrega</small>
                     <p><%= p.documento.fecha_entrega ? new Date(p.documento.fecha_entrega).toLocaleDateString('es-CL') : '—' %></p>
+                  </div>
+                  <div class="col-md-1 d-flex align-items-center">
+                    <button class="btn btn-warning btn-sm"
+                      data-bs-toggle="modal"
+                      data-bs-target="#modalEditarDocumento-<%= p.documento.id %>">
+                      Editar
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Modal Editar Documento -->
+              <div class="modal fade" id="modalEditarDocumento-<%= p.documento.id %>" tabindex="-1">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header bg-primary text-white">
+                      <h5 class="modal-title">Editar Documento — <%= p.Persona.nombre %> <%= p.Persona.apellido %></h5>
+                      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <form action="/web/tramites/<%= tramite.id %>/documento/<%= p.documento.id %>" method="POST">
+                      <div class="modal-body">
+                        <div class="mb-3">
+                          <label class="form-label">Tipo de documento</label>
+                          <input type="text" name="tipo_documento" class="form-control" value="<%= p.documento.tipo_documento || '' %>">
+                        </div>
+                        <div class="mb-3">
+                          <label class="form-label">Estado</label>
+                          <select name="estado_documento" class="form-select" required>
+                            <option value="Documento Pendiente" <%= p.documento.estado_documento === 'Documento Pendiente' ? 'selected' : '' %>>Documento Pendiente</option>
+                            <option value="Documento Entregado" <%= p.documento.estado_documento === 'Documento Entregado' ? 'selected' : '' %>>Documento Entregado</option>
+                            <option value="Documento no entregado" <%= p.documento.estado_documento === 'Documento no entregado' ? 'selected' : '' %>>Documento no entregado</option>
+                            <option value="Documento próximo a entregar" <%= p.documento.estado_documento === 'Documento próximo a entregar' ? 'selected' : '' %>>Documento próximo a entregar</option>
+                          </select>
+                        </div>
+                        <div class="mb-3">
+                          <label class="form-label">Fecha entrega</label>
+                          <input type="date" name="fecha_entrega" class="form-control" value="<%= p.documento.fecha_entrega || '' %>">
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                      </div>
+                    </form>
                   </div>
                 </div>
               </div>
