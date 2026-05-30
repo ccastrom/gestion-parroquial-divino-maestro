@@ -113,8 +113,8 @@ const agregarDocumentoParticipacion = async ({ idTramite, idParticipacion, docum
   validarEstado(documento.estado_documento);
   await obtenerTramitePorId(idTramite);
   const participacion = await participacionService.obtenerParticipacionPorId(idParticipacion);
-  const documentoExistente = await obtenerDocumentoParticipacion(idParticipacion);
-  if (documentoExistente) {
+  const documentoParticipanteExistente = await obtenerDocumentoParticipacion(idParticipacion);
+  if (documentoParticipanteExistente) {
     const error = new Error("Documento ya existente en participación");
     error.statusCode = 409;
     throw error;

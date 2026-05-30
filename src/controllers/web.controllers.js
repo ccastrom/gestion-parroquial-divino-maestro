@@ -33,11 +33,19 @@ const POST_CompletarReunion_Web= asyncHandler(async(req,res)=>{
     res.redirect(`/web/tramites/${req.params.id}?success=Reunión%20completada%20exitosamente`);
 })
 
+const POST_AgregarDocumento_Web = asyncHandler(async(req,res)=>{
+    const {id_participacion, tipo_documento, estado_documento, fecha_entrega} = req.body;
+    await tramiteService.agregarDocumentoParticipacion({ idTramite: req.params.id,  idParticipacion:id_participacion, documento: { tipo_documento, estado_documento, fecha_entrega } });
+    res.redirect(`/web/tramites/${req.params.id}?success=Documento%20agregado%20exitosamente`);
+
+});
+
 module.exports={
     POST_Tramites_Web,
     GET_Tramites_Web,
     GET_TramitesById_Web,
     POST_CambiarEstado_Web,
     POST_CambiarReunion_Web,
-    POST_CompletarReunion_Web
+    POST_CompletarReunion_Web,
+    POST_AgregarDocumento_Web
 }
