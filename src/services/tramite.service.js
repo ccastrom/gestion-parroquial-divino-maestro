@@ -155,24 +155,16 @@ const obtenerDetalleTramite = async (id) => {
   return { tramite, participantes, reunion, catequista, ListaDecatequistas };
 };
 const modificarDocumentoParticipacion = async ({ idTramite, idDocumento, documento }) => {
-  console.log('[1] idTramite recibido (URL):', idTramite);
-  console.log('[1] idDocumento recibido (URL):', idDocumento);
-  console.log('[1] datos a actualizar:', documento);
   validarEstado(documento.estado_documento);
   await obtenerTramitePorId(idTramite);
-  const doc = await obtenerDocumentoPorId(idDocumento); // obtenerDocumentoPorId(idDocumento)
-  console.log(`[2] obtenerDocumentoPorId(${idDocumento}) → doc.id:`, doc.id, '| doc.id_fk_participacion:', doc.id_fk_participacion);
-  const participacion = await participacionService.obtenerParticipacionPorId(doc.id_fk_participacion); // obtenerParticipacionPorId(doc.id_fk_participacion)
-  console.log(`[3] obtenerParticipacionPorId(${doc.id_fk_participacion}) → participacion.id:`, participacion.id, '| participacion.id_fk_tramite:', participacion.id_fk_tramite);
-  console.log('[4] comparando — tramite BD:', String(participacion.id_fk_tramite), 'vs tramite URL:', String(idTramite));
-  if (String(participacion.id_fk_tramite) !== String(idTramite)) {
-    console.log('[5] BLOQUEADO — no coinciden');
+  const documentoEncontrado = await obtenerDocumentoPorId(idDocumento); 
+  const documentoParticipanteTramite = await participacionService.obtenerParticipacionPorId(documentoEncontrado.id_fk_participacion);
+  if (String(documentoParticipanteTramite.id_fk_tramite) !== String(idTramite)) {
     const error = new Error('El documento no pertenece a este trámite');
     error.statusCode = 403;
     throw error;
   }
-  console.log('[5] PERMITIDO — actualizarDocumento ejecutado');
-  return await actualizarDocumento(idDocumento, documento); // actualizarDocumento
+  return await actualizarDocumento(idDocumento, documento); 
 };
 module.exports = {
   crearTramite,
