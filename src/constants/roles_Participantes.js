@@ -7,8 +7,7 @@ const ROLES_VALIDOS =
     Padrino:'Padrino',
     Madrina:'Madrina',
     Celebrante:'Celebrante',
-    Testigo:'Testigo',
-    Catequista:'Catequista'
+    Testigo:'Testigo'
 };
 const ROLES_UNICOS= [ROLES_VALIDOS.Bautizado,ROLES_VALIDOS.Madre,ROLES_VALIDOS.Padre,ROLES_VALIDOS.Celebrante];
 

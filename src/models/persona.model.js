@@ -27,6 +27,10 @@ const Persona= sequelize.define('Persona',{
     },
     direccion:{
         type:DataTypes.STRING,
+    },
+    tipo:{
+        type:DataTypes.STRING,
+        allowNull: true,
     }
 },
 

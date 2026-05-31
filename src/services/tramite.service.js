@@ -148,9 +148,10 @@ const obtenerDetalleTramite = async (id) => {
       catequista = await obtenerPersonaPorId(reunion.id_fk_persona_catequista);
     }
   }
-  const ListaDecatequistas = await Participacion.findAll({
-    where: { rol: ROLES_VALIDOS.Catequista },
-    include: [{ model: Persona, attributes: ['id', 'nombre', 'apellido'] }],
+  const ListaDecatequistas = await Persona.findAll({
+    where: { tipo: 'catequista' },
+    attributes: ['id', 'nombre', 'apellido'],
+    order: [['apellido', 'ASC']],
   });
   const ListaDePersonas= await Persona.findAll({ attributes: ['id', 'nombre', 'apellido'],
     order:[['apellido','ASC']]

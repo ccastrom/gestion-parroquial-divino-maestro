@@ -173,8 +173,8 @@
                 <select name="id_fk_persona_catequista" class="form-select">
                   <option value="">-- Seleccionar --</option>
                   <% ListaDecatequistas.forEach(function(c) { %>
-                    <option value="<%= c.Persona.id %>" <%= reunion && reunion.id_fk_persona_catequista === c.Persona.id ? 'selected' : '' %>>
-                      <%= c.Persona.nombre %> <%= c.Persona.apellido %>
+                    <option value="<%= c.id %>" <%= reunion && reunion.id_fk_persona_catequista === c.id ? 'selected' : '' %>>
+                      <%= c.nombre %> <%= c.apellido %>
                     </option>
                   <% }); %>
                 </select>
@@ -338,7 +338,7 @@
 
     <!-- Modal Agregar Participante -->
     <%
-      const todosLosRoles = ['Bautizado', 'Padre', 'Madre', 'Padrino', 'Madrina', 'Celebrante', 'Catequista', 'Tutor Legal', 'Testigo'];
+      const todosLosRoles = ['Bautizado', 'Padre', 'Madre', 'Padrino', 'Madrina', 'Celebrante', 'Tutor Legal', 'Testigo'];
       const rolesUnicos = ['Bautizado', 'Padre', 'Madre', 'Celebrante'];
       const rolesTomados = participantes.map(function(p) { return p.rol; });
       const rolesDisponibles = todosLosRoles.filter(function(r) {
