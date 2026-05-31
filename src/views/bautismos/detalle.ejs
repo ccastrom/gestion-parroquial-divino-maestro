@@ -338,12 +338,13 @@
 
     <!-- Modal Agregar Participante -->
     <%
-      const todosLosRoles = ['Bautizado', 'Padre', 'Madre', 'Padrino', 'Madrina', 'Celebrante', 'Tutor Legal', 'Testigo'];
-      const rolesUnicos = ['Bautizado', 'Padre', 'Madre', 'Celebrante'];
+      const rolesUnicos       = ['Bautizado', 'Padre', 'Madre', 'Celebrante'];
+      const rolesTabNuevo     = ['Bautizado', 'Padre', 'Madre', 'Padrino', 'Madrina', 'Tutor Legal', 'Testigo'];
+      const rolesTabExistente = ['Bautizado', 'Padre', 'Madre', 'Padrino', 'Madrina', 'Celebrante', 'Tutor Legal', 'Testigo'];
+
       const rolesTomados = participantes.map(function(p) { return p.rol; });
-      const rolesDisponibles = todosLosRoles.filter(function(r) {
-        return !rolesUnicos.includes(r) || !rolesTomados.includes(r);
-      });
+      const rolesDisponiblesNuevo     = rolesTabNuevo.filter(function(r) { return !rolesUnicos.includes(r) || !rolesTomados.includes(r); });
+      const rolesDisponiblesExistente = rolesTabExistente.filter(function(r) { return !rolesUnicos.includes(r) || !rolesTomados.includes(r); });
     %>
     <div class="modal fade" id="modalAgregarParticipante" tabindex="-1">
       <div class="modal-dialog modal-lg">
@@ -373,7 +374,7 @@
                     <label class="form-label">Rol</label>
                     <select name="rol" class="form-select" required>
                       <option value="">-- Seleccionar --</option>
-                      <% rolesDisponibles.forEach(function(r) { %>
+                      <% rolesDisponiblesNuevo.forEach(function(r) { %>
                         <option value="<%= r %>"><%= r %></option>
                       <% }); %>
                     </select>
@@ -416,7 +417,7 @@
                     <label class="form-label">Rol</label>
                     <select name="rol" class="form-select" required>
                       <option value="">-- Seleccionar --</option>
-                      <% rolesDisponibles.forEach(function(r) { %>
+                      <% rolesDisponiblesExistente.forEach(function(r) { %>
                         <option value="<%= r %>"><%= r %></option>
                       <% }); %>
                     </select>
