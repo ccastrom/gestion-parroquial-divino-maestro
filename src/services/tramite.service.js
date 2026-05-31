@@ -152,7 +152,11 @@ const obtenerDetalleTramite = async (id) => {
     where: { rol: ROLES_VALIDOS.Catequista },
     include: [{ model: Persona, attributes: ['id', 'nombre', 'apellido'] }],
   });
-  return { tramite, participantes, reunion, catequista, ListaDecatequistas };
+  const ListaDePersonas= await Persona.findAll({ attributes: ['id', 'nombre', 'apellido'],
+    order:[['apellido','ASC']]
+   });
+
+  return { tramite, participantes, reunion, catequista, ListaDecatequistas,ListaDePersonas };
 };
 const modificarDocumentoParticipacion = async ({ idTramite, idDocumento, documento }) => {
   validarEstado(documento.estado_documento);

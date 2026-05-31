@@ -13,8 +13,8 @@ const GET_Tramites_Web= asyncHandler(async(req,res)=>{
 });
 
 const GET_TramitesById_Web= asyncHandler(async(req,res)=>{
-    const {tramite, participantes, reunion,catequista, ListaDecatequistas} = await tramiteService.obtenerDetalleTramite(req.params.id);
-    res.render('bautismos/detalle', {tramite, participantes, catequista, reunion, ListaDecatequistas, estados: Object.values(ESTADOS_VALIDOS), query: req.query});
+    const {tramite, participantes, reunion,catequista, ListaDecatequistas, ListaDePersonas} = await tramiteService.obtenerDetalleTramite(req.params.id);
+    res.render('bautismos/detalle', {tramite, participantes, catequista, reunion, ListaDecatequistas, ListaDePersonas, estados: Object.values(ESTADOS_VALIDOS), query: req.query});
 });
 
 const POST_CambiarEstado_Web = asyncHandler(async(req, res)=>{
@@ -44,6 +44,16 @@ const POST_ModificarDocumento_Web = asyncHandler(async(req,res)=>{
     await tramiteService.modificarDocumentoParticipacion({ idTramite: req.params.id, idDocumento: req.params.idDocumento, documento: { tipo_documento, estado_documento, fecha_entrega } });
     res.redirect(`/web/tramites/${req.params.id}?success=Documento%20modificado%20exitosamente`);
 })
+const POST_CrearParticipante_Web = asyncHandler(async(req, res) => {
+    const { rol, personaId, nombre, apellido, rut, fecha_nacimiento, fono, direccion } = req.body;
+
+    const participante = personaId
+        ? { rol, personaId }
+        : { rol, persona: { nombre, apellido, rut, fecha_nacimiento, fono, direccion } };
+
+    await tramiteService.agregarParticipante(req.params.id, participante);
+    res.redirect(`/web/tramites/${req.params.id}?success=Participante%20agregado%20exitosamente`);
+})
 
 module.exports={
     POST_Tramites_Web,
@@ -53,5 +63,6 @@ module.exports={
     POST_CambiarReunion_Web,
     POST_CompletarReunion_Web,
     POST_AgregarDocumento_Web,
-    POST_ModificarDocumento_Web
+    POST_ModificarDocumento_Web,
+    POST_CrearParticipante_Web
 }

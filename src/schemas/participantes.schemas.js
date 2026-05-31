@@ -16,12 +16,39 @@ const personaNueva = Joi.object({
             otherwise:Joi.allow(null),
         }),
         fono:  Joi.string().trim().allow(null,'').optional(),
-        direccion: Joi.string().trim().allow(null,'').optional(),  
+        direccion: Joi.string().trim().allow(null,'').optional(),
     }),
     rol: Joi.string().trim().required()
 }).xor('personaId', 'persona');
 
+const agregarParticipanteWebSchema = Joi.object({
+    rol: Joi.string().trim().required(),
+    personaId: Joi.number().integer().positive(),
+    nombre: Joi.string().trim().min(1).when('personaId', {
+        is: Joi.exist(),
+        then: Joi.forbidden(),
+        otherwise: Joi.required(),
+    }),
+    apellido: Joi.string().trim().min(1).when('personaId', {
+        is: Joi.exist(),
+        then: Joi.forbidden(),
+        otherwise: Joi.required(),
+    }),
+    rut: Joi.string().trim().uppercase().when('rol', {
+        is: 'Bautizado',
+        then: Joi.required(),
+        otherwise: Joi.string().empty('').default(null).optional(),
+    }),
+    fecha_nacimiento: Joi.date().max('now').when('rol', {
+        is: 'Bautizado',
+        then: Joi.required(),
+        otherwise: Joi.date().empty('').default(null).optional(),
+    }),
+    fono: Joi.string().trim().empty('').default(null).optional(),
+    direccion: Joi.string().trim().empty('').default(null).optional(),
+});
 
 module.exports = {
-     agregarParticipanteSchema: personaNueva
+    agregarParticipanteSchema: personaNueva,
+    agregarParticipanteWebSchema,
 }

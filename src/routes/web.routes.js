@@ -1,12 +1,15 @@
 const {Router} = require('express');
-const {POST_Tramites_Web, 
-    GET_Tramites_Web, 
-    GET_TramitesById_Web, 
+const {POST_Tramites_Web,
+    GET_Tramites_Web,
+    GET_TramitesById_Web,
     POST_CambiarEstado_Web,
-    POST_CambiarReunion_Web, 
+    POST_CambiarReunion_Web,
     POST_CompletarReunion_Web,
     POST_AgregarDocumento_Web,
-    POST_ModificarDocumento_Web } = require('../controllers/web.controllers.js');
+    POST_ModificarDocumento_Web,
+    POST_CrearParticipante_Web } = require('../controllers/web.controllers.js');
+const { validarBodyWeb } = require('../middleware/validarBodyWeb.js');
+const { agregarParticipanteWebSchema } = require('../schemas/participantes.schemas.js');
 
 const router= Router();
 router.post('/tramites',POST_Tramites_Web)
@@ -17,5 +20,6 @@ router.post('/tramites/:id/reunion',POST_CambiarReunion_Web);
 router.post('/tramites/:id/completar-reunion',POST_CompletarReunion_Web);
 router.post('/tramites/:id/documento',POST_AgregarDocumento_Web);
 router.post('/tramites/:id/documento/:idDocumento',POST_ModificarDocumento_Web);
+router.post('/tramites/:id/participantes', validarBodyWeb(agregarParticipanteWebSchema), POST_CrearParticipante_Web);
 
 module.exports=router;
