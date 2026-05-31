@@ -11,6 +11,17 @@ const crearPersonaSchema = Joi.object({
 }).unknown(false);
 
 
+const crearPersonaWebSchema = Joi.object({
+    nombre: Joi.string().trim().min(1).required(),
+    apellido: Joi.string().trim().min(1).required(),
+    rut: Joi.string().trim().uppercase().empty('').default(null).optional(),
+    fecha_nacimiento: Joi.date().max('now').empty('').default(null).optional(),
+    fono: Joi.string().trim().empty('').default(null).optional(),
+    direccion: Joi.string().trim().empty('').default(null).optional(),
+    tipo: Joi.string().valid('catequista', 'celebrante').empty('').default(null).optional(),
+});
+
 module.exports = {
-    crearPersonaSchema
+    crearPersonaSchema,
+    crearPersonaWebSchema
 };

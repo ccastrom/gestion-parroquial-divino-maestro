@@ -7,19 +7,24 @@ const {POST_Tramites_Web,
     POST_CompletarReunion_Web,
     POST_AgregarDocumento_Web,
     POST_ModificarDocumento_Web,
-    POST_CrearParticipante_Web } = require('../controllers/web.controllers.js');
+    POST_CrearParticipante_Web,
+    GET_Personas_Web,
+    POST_CrearPersona_Web } = require('../controllers/web.controllers.js');
 const { validarBodyWeb } = require('../middleware/validarBodyWeb.js');
 const { agregarParticipanteWebSchema } = require('../schemas/participantes.schemas.js');
+const { crearPersonaWebSchema } = require('../schemas/persona.schema.js');
 
 const router= Router();
-router.post('/tramites',POST_Tramites_Web)
+router.post('/tramites', POST_Tramites_Web);
 router.get('/', GET_Tramites_Web);
 router.get('/tramites/:id', GET_TramitesById_Web);
 router.post('/tramites/:id/estado', POST_CambiarEstado_Web);
-router.post('/tramites/:id/reunion',POST_CambiarReunion_Web);
-router.post('/tramites/:id/completar-reunion',POST_CompletarReunion_Web);
-router.post('/tramites/:id/documento',POST_AgregarDocumento_Web);
-router.post('/tramites/:id/documento/:idDocumento',POST_ModificarDocumento_Web);
+router.post('/tramites/:id/reunion', POST_CambiarReunion_Web);
+router.post('/tramites/:id/completar-reunion', POST_CompletarReunion_Web);
+router.post('/tramites/:id/documento', POST_AgregarDocumento_Web);
+router.post('/tramites/:id/documento/:idDocumento', POST_ModificarDocumento_Web);
 router.post('/tramites/:id/participantes', validarBodyWeb(agregarParticipanteWebSchema), POST_CrearParticipante_Web);
+router.get('/personas', GET_Personas_Web);
+router.post('/personas', validarBodyWeb(crearPersonaWebSchema), POST_CrearPersona_Web);
 
 module.exports=router;
