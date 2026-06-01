@@ -48,6 +48,17 @@ const agregarParticipante = async (id, participante) => {
     await participacionService.verificarRolUnicoExistente({ tramiteId: id, rol: participante.rol });
   }
 
+  if (participante.rol === ROLES_VALIDOS.Bautizado && participante.personaId) {
+    const bautizadoPrevio = await Participacion.findOne({
+      where: { id_fk_persona: participante.personaId, rol: ROLES_VALIDOS.Bautizado },
+    });
+    if (bautizadoPrevio) {
+      const error = new Error('Esta persona ya está registrada como Bautizado en otro trámite');
+      error.statusCode = 409;
+      throw error;
+    }
+  }
+
   const transaction = await sequelize.transaction();
   try {
     const personaId = participante.personaId
