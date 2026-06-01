@@ -1,0 +1,166 @@
+<%
+  const bautizadoFicha  = participantes.find(p => p.rol === 'Bautizado');
+  const padreFicha      = participantes.find(p => p.rol === 'Padre' || p.rol === 'Padre 2');
+  const madreFicha      = participantes.find(p => p.rol === 'Madre' || p.rol === 'Madre 2');
+  const padrinosFicha   = participantes.filter(p => p.rol === 'Padrino' || p.rol === 'Madrina');
+  const celebranteFicha = participantes.find(p => p.rol === 'Celebrante');
+
+  const safeDate = (v) => {
+    if (!v) return null;
+    if (typeof v === 'string' && v.length === 10) return new Date(v + 'T12:00:00');
+    return new Date(v);
+  };
+
+  const meses = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+  const fechaNacimiento = safeDate(bautizadoFicha && bautizadoFicha.Persona.fecha_nacimiento);
+  const fechaBautismo   = safeDate(tramite.fecha_bautismo);
+  const fechaReunion    = safeDate(reunion && reunion.fecha);
+%>
+
+<div class="ficha-print">
+
+  <header class="fp-head">
+    <p class="fp-kicker">Comunidad Parroquial</p>
+    <h1 class="fp-title">Petición de Bautismo</h1>
+  </header>
+
+  <div class="fp-topbar">
+    <div class="fp-tile">
+      <span class="fp-label">Pedimos fecha de bautismo</span>
+      <span class="fp-value"><%= fechaBautismo ? fechaBautismo.getDate() + ' de ' + meses[fechaBautismo.getMonth()] + ' de ' + fechaBautismo.getFullYear() : '' %></span>
+    </div>
+    <div class="fp-tile fp-tile--blank">
+      <span class="fp-label">Hora</span>
+      <span class="fp-value"></span>
+    </div>
+  </div>
+
+  <section class="fp-section">
+    <h2 class="fp-section-title">Datos del bautizado</h2>
+    <div class="fp-table">
+      <div class="fp-row">
+        <div class="fp-cell">
+          <span class="fp-label">Nombres</span>
+          <span class="fp-value"><%= bautizadoFicha ? bautizadoFicha.Persona.nombre + ' ' + bautizadoFicha.Persona.apellido : '' %></span>
+        </div>
+      </div>
+      <div class="fp-row fp-row--ci">
+        <div class="fp-cell">
+          <span class="fp-label">C.I.</span>
+          <span class="fp-value"><%= bautizadoFicha && bautizadoFicha.Persona.rut ? bautizadoFicha.Persona.rut : '' %></span>
+        </div>
+        <div class="fp-cell fp-cell--blank">
+          <span class="fp-label">Lugar de nacimiento</span>
+          <span class="fp-value"></span>
+        </div>
+      </div>
+      <div class="fp-row fp-row--born">
+        <div class="fp-cell fp-cell--rowlabel">
+          <span class="fp-label">Nació el</span>
+        </div>
+        <div class="fp-cell">
+          <span class="fp-label">Día</span>
+          <span class="fp-value"><%= fechaNacimiento ? fechaNacimiento.getDate() : '' %></span>
+        </div>
+        <div class="fp-cell">
+          <span class="fp-label">Mes</span>
+          <span class="fp-value"><%= fechaNacimiento ? meses[fechaNacimiento.getMonth()] : '' %></span>
+        </div>
+        <div class="fp-cell">
+          <span class="fp-label">Año</span>
+          <span class="fp-value"><%= fechaNacimiento ? fechaNacimiento.getFullYear() : '' %></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="fp-section">
+    <h2 class="fp-section-title">Filiación</h2>
+    <div class="fp-table">
+      <div class="fp-row fp-row--2">
+        <div class="fp-cell">
+          <span class="fp-label">Hijo de · Papá</span>
+          <span class="fp-value"><%= padreFicha ? padreFicha.Persona.nombre + ' ' + padreFicha.Persona.apellido : '' %></span>
+        </div>
+        <div class="fp-cell">
+          <span class="fp-label">Celular padre / tutor</span>
+          <span class="fp-value"><%= padreFicha && padreFicha.Persona.fono ? padreFicha.Persona.fono : '' %></span>
+        </div>
+      </div>
+      <div class="fp-row fp-row--2">
+        <div class="fp-cell">
+          <span class="fp-label">Y de · Mamá</span>
+          <span class="fp-value"><%= madreFicha ? madreFicha.Persona.nombre + ' ' + madreFicha.Persona.apellido : '' %></span>
+        </div>
+        <div class="fp-cell">
+          <span class="fp-label">Celular madre</span>
+          <span class="fp-value"><%= madreFicha && madreFicha.Persona.fono ? madreFicha.Persona.fono : '' %></span>
+        </div>
+      </div>
+      <div class="fp-row">
+        <div class="fp-cell">
+          <span class="fp-label">Dirección</span>
+          <span class="fp-value"><%= bautizadoFicha && bautizadoFicha.Persona.direccion ? bautizadoFicha.Persona.direccion : '' %></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="fp-section">
+    <h2 class="fp-section-title">Padrinos y madrinas</h2>
+    <div class="fp-padrinos">
+      <div class="fp-phead">
+        <span>Padrino / Madrina</span>
+        <span>Celular</span>
+      </div>
+      <% padrinosFicha.forEach(function(p) { %>
+        <div class="fp-prow">
+          <div>
+            <span class="fp-rol"><%= p.rol %></span>
+            <span class="fp-pname"><%= p.Persona.nombre %> <%= p.Persona.apellido %></span>
+          </div>
+          <div><span class="fp-pname"><%= p.Persona.fono || '' %></span></div>
+        </div>
+      <% }); %>
+      <% for (var i = padrinosFicha.length; i < 4; i++) { %>
+        <div class="fp-prow"><div></div><div></div></div>
+      <% } %>
+    </div>
+  </section>
+
+  <section class="fp-section">
+    <h2 class="fp-section-title">Celebración</h2>
+    <div class="fp-table">
+      <div class="fp-row">
+        <div class="fp-cell">
+          <span class="fp-label">Celebrante</span>
+          <span class="fp-value"><%= celebranteFicha ? celebranteFicha.Persona.nombre + ' ' + celebranteFicha.Persona.apellido : '' %></span>
+        </div>
+      </div>
+      <div class="fp-row">
+        <div class="fp-cell fp-cell--note">
+          <span class="fp-label">Charla prebautismal</span>
+          <span class="fp-value"><%= fechaReunion ? fechaReunion.getDate() + ' de ' + meses[fechaReunion.getMonth()] : '' %></span>
+          <span class="fp-time">HORAS</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="fp-foot">
+    <div class="fp-sign">
+      <div class="fp-sign-line"></div>
+      <div class="fp-sign-name"><%= catequista ? catequista.nombre + ' ' + catequista.apellido : '' %></div>
+      <div class="fp-sign-role">Firma del catequista</div>
+    </div>
+    <div class="fp-seal-wrap">
+      <div class="fp-seal">Sello<br>parroquial</div>
+    </div>
+    <div class="fp-sign">
+      <div class="fp-sign-line"></div>
+      <div class="fp-sign-name">Cristián Giadach Castillo</div>
+      <div class="fp-sign-role">Párroco</div>
+    </div>
+  </div>
+
+</div>

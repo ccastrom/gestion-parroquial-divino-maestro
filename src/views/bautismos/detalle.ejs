@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Trámite #<%= tramite.id %></title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/css/print.css" rel="stylesheet">
+  <link href="/css/ficha-bautismo.css" rel="stylesheet">
 </head>
 <body class="bg-light">
 
@@ -35,9 +37,10 @@
 
     <!-- Encabezado -->
     <div class="d-flex align-items-center gap-3 mb-4">
-      <a href="/web" class="btn btn-outline-secondary btn-sm">← Volver</a>
+      <a href="/web" class="btn btn-outline-secondary btn-sm no-print">← Volver</a>
       <h2 class="mb-0">Trámite #<%= tramite.id %></h2>
       <span class="badge bg-secondary fs-6"><%= tramite.estado || 'Sin estado' %></span>
+      <button onclick="window.print()" class="btn btn-outline-dark btn-sm ms-auto no-print">Imprimir ficha</button>
     </div>
 
     <!-- Datos del trámite -->
@@ -59,7 +62,7 @@
             <p><%= tramite.estado || '—' %></p>
           </div>
         </div>
-        <div class="mt-3">
+        <div class="mt-3 no-print">
           <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#modalEditarEstado">Editar Estado</button>
         </div>
       </div>
@@ -101,7 +104,7 @@
     <div class="card mb-4">
       <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
         Participantes
-        <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#modalAgregarParticipante">+ Agregar</button>
+        <button class="btn btn-light btn-sm no-print" data-bs-toggle="modal" data-bs-target="#modalAgregarParticipante">+ Agregar</button>
       </div>
       <div class="card-body">
         <% if (participantes && participantes.length > 0) { %>
@@ -149,7 +152,7 @@
             </div>
            
           </div>
-          <div class="mt-3 d-flex gap-2">
+          <div class="mt-3 d-flex gap-2 no-print">
             <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#modalEditarReunion">Editar Reunión</button>
             <form action="/web/tramites/<%= tramite.id %>/completar-reunion" method="POST"
               onsubmit="return confirm('¿Confirmas que la reunión fue completada? Esta acción no se puede deshacer.')">
@@ -210,7 +213,7 @@
     <div class="card mb-4">
       <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
         Documentos
-        <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#modalAgregarDocumento">+ Agregar</button>
+        <button class="btn btn-light btn-sm no-print" data-bs-toggle="modal" data-bs-target="#modalAgregarDocumento">+ Agregar</button>
       </div>
       <div class="card-body">
         <%
@@ -237,7 +240,7 @@
                     <small class="text-muted">Fecha entrega</small>
                     <p><%= p.documento.fecha_entrega ? new Date(p.documento.fecha_entrega).toLocaleDateString('es-CL') : '—' %></p>
                   </div>
-                  <div class="col-md-1 d-flex align-items-center">
+                  <div class="col-md-1 d-flex align-items-center no-print">
                     <button class="btn btn-warning btn-sm"
                       data-bs-toggle="modal"
                       data-bs-target="#modalEditarDocumento-<%= p.documento.id %>">
@@ -456,6 +459,8 @@
         </div>
       </div>
     </div>
+
+  <%- include('ficha') %>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="/js/detalle.js"></script>

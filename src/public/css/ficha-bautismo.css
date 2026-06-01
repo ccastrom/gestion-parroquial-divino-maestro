@@ -1,0 +1,229 @@
+/* ============================================================
+   Ficha · Petición de Bautismo
+   Hoja imprimible A4 — estilos separados (sin estilos inline)
+   Ámbito: todo vive bajo .ficha-print para no afectar la app.
+   ============================================================ */
+
+.ficha-print {
+  --fp-ink:    #1d1714;   /* texto principal, negro cálido          */
+  --fp-soft:   #5e524b;   /* texto secundario                       */
+  --fp-muted:  #8a7b72;   /* etiquetas                              */
+  --fp-accent: #7c2230;   /* burdeo litúrgico (reemplaza el rojo)   */
+  --fp-hair:   #ddd3cc;   /* líneas de la retícula                  */
+  --fp-tint:   #f6f1ed;   /* fondo de cabeceras                     */
+  --fp-fill:   #b9ada4;   /* líneas para rellenar a mano            */
+  --fp-paper:  #ffffff;
+
+  color: var(--fp-ink);
+  background: var(--fp-paper);
+  font-family: "Helvetica Neue", Helvetica, Arial, "Segoe UI", system-ui, sans-serif;
+  font-size: 11pt;
+  line-height: 1.25;
+  width: 100%;
+  margin: 0 auto;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+.ficha-print * { box-sizing: border-box; }
+
+/* La ficha solo se muestra al imprimir (según especificación). */
+.ficha-print { display: none; }
+@media print {
+  .ficha-print { display: block; }
+  @page { size: A4 portrait; margin: 13mm 14mm; }
+  html, body { background: #fff; margin: 0; }
+}
+
+/* ---------- Cabecera ---------------------------------------- */
+.fp-head {
+  text-align: center;
+  padding-bottom: 8pt;
+  border-bottom: 1.6pt solid var(--fp-ink);
+  margin-bottom: 12pt;
+}
+.fp-kicker {
+  margin: 0 0 5pt;
+  font-size: 7.5pt;
+  letter-spacing: .34em;
+  text-transform: uppercase;
+  color: var(--fp-muted);
+}
+.fp-title {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 600;
+  font-size: 22pt;
+  letter-spacing: .015em;
+  color: var(--fp-ink);
+}
+
+/* ---------- Barra superior: fecha + hora -------------------- */
+.fp-topbar {
+  display: grid;
+  grid-template-columns: 1fr 0.42fr;
+  gap: 10pt;
+  margin-bottom: 13pt;
+}
+.fp-tile {
+  border: 1pt solid var(--fp-hair);
+  border-radius: 3pt;
+  padding: 7pt 11pt 8pt;
+  background: var(--fp-tint);
+}
+.fp-tile .fp-label {
+  display: block;
+  font-size: 7.5pt;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--fp-accent);
+  font-weight: 700;
+  margin-bottom: 3pt;
+}
+.fp-tile .fp-value {
+  font-size: 13pt;
+  font-weight: 600;
+  color: var(--fp-ink);
+}
+.fp-tile--blank .fp-value { min-height: 16pt; border-bottom: 1pt solid var(--fp-fill); }
+
+/* ---------- Secciones --------------------------------------- */
+.fp-section { margin-bottom: 11pt; }
+.fp-section-title {
+  margin: 0 0 5pt;
+  font-size: 8pt;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--fp-accent);
+  font-weight: 700;
+}
+
+/* ---------- Retícula de campos ------------------------------ */
+.fp-table {
+  border: 1pt solid var(--fp-hair);
+  border-radius: 3pt;
+  overflow: hidden;
+}
+.fp-row { display: grid; border-top: 1pt solid var(--fp-hair); }
+.fp-row:first-child { border-top: 0; }
+.fp-row--2  { grid-template-columns: 1fr 1fr; }
+.fp-row--ci { grid-template-columns: 0.9fr 1.1fr; }
+.fp-row--born { grid-template-columns: 0.65fr 0.5fr 1fr 0.6fr; }
+.fp-cell--rowlabel { background: var(--fp-tint); }
+
+.fp-cell {
+  display: flex;
+  align-items: baseline;
+  gap: 9pt;
+  padding: 6pt 11pt;
+  min-height: 24pt;
+}
+.fp-cell + .fp-cell { border-left: 1pt solid var(--fp-hair); }
+.fp-cell .fp-label {
+  flex: 0 0 auto;
+  font-size: 7.5pt;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--fp-muted);
+  font-weight: 700;
+  white-space: nowrap;
+}
+.fp-cell .fp-value {
+  flex: 1 1 auto;
+  font-size: 11pt;
+  font-weight: 500;
+  color: var(--fp-ink);
+}
+.fp-cell--blank .fp-value { color: var(--fp-fill); }
+
+/* ---------- Padrinos / madrinas ----------------------------- */
+.fp-padrinos { border: 1pt solid var(--fp-hair); border-radius: 3pt; overflow: hidden; }
+.fp-phead {
+  display: grid;
+  grid-template-columns: 1fr 150pt;
+  background: var(--fp-tint);
+}
+.fp-phead > span {
+  padding: 5pt 11pt;
+  font-size: 7.5pt;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--fp-accent);
+  font-weight: 700;
+}
+.fp-phead > span + span { border-left: 1pt solid var(--fp-hair); }
+
+.fp-prow {
+  display: grid;
+  grid-template-columns: 1fr 150pt;
+  border-top: 1pt solid var(--fp-hair);
+  min-height: 27pt;
+}
+.fp-prow > div {
+  display: flex;
+  align-items: center;
+  padding: 5pt 11pt;
+}
+.fp-prow > div + div { border-left: 1pt solid var(--fp-hair); }
+.fp-rol {
+  flex: 0 0 auto;
+  margin-right: 8pt;
+  font-size: 6.8pt;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--fp-muted);
+  font-weight: 700;
+}
+.fp-pname { font-size: 11pt; font-weight: 500; }
+
+/* ---------- Charla / celebrante ----------------------------- */
+.fp-cell--note .fp-value { font-weight: 500; }
+.fp-cell--note .fp-value strong { font-weight: 700; }
+.fp-time {
+  margin-left: auto;
+  font-size: 9pt;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--fp-soft);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* ---------- Firmas ------------------------------------------ */
+.fp-foot {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 24pt;
+  align-items: end;
+  margin-top: 26pt;
+}
+.fp-sign { text-align: center; }
+.fp-sign-line {
+  border-top: 1pt solid var(--fp-ink);
+  margin-top: 30pt;
+  padding-top: 5pt;
+}
+.fp-sign-name { font-size: 10.5pt; font-weight: 600; color: var(--fp-ink); }
+.fp-sign-role {
+  margin-top: 2pt;
+  font-size: 7.5pt;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--fp-muted);
+}
+.fp-seal-wrap { display: flex; justify-content: center; align-items: flex-end; }
+.fp-seal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 66pt;
+  height: 66pt;
+  border: 1.2pt dashed var(--fp-fill);
+  border-radius: 50%;
+  font-size: 6.5pt;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--fp-muted);
+  text-align: center;
+  line-height: 1.4;
+}

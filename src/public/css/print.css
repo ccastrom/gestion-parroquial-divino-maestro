@@ -1,0 +1,12 @@
+.ficha-print {
+  display: none;
+}
+
+@media print {
+  .ficha-print {
+    display: block;
+  }
+  nav, .container, .modal, .no-print {
+    display: none !important;
+  }
+}
