@@ -22,7 +22,7 @@ const obtenerTramitesConBautizado = async () => {
       as: 'participacion',
       where: { rol: 'Bautizado' },
       required: false,
-      include: [{ model: Persona, attributes: ['nombre', 'apellido'] }]
+      include: [{ model: Persona, attributes: ['id', 'nombre', 'apellido'] }]
     }],
     order: [['fecha_ingreso', 'DESC']]
   });

@@ -46,7 +46,12 @@
               <td><%= item.fecha_ingreso ? new Date(item.fecha_ingreso).toLocaleDateString('es-CL') : '—' %></td>
               <td><%= item.estado %></td>
               <td><%= item.fecha_bautismo ? new Date(item.fecha_bautismo).toLocaleDateString('es-CL'): '—' %></td>
-              <td><a href="/web/tramites/<%= item.id %>" class="btn btn-primary btn-sm">Ver</a></td>
+              <td class="d-flex gap-1">
+                <a href="/web/tramites/<%= item.id %>" class="btn btn-primary btn-sm">Ver</a>
+                <% if (bautizado) { %>
+                  <a href="/web/personas?edit=<%= bautizado.id %>" class="btn btn-outline-secondary btn-sm">Editar persona</a>
+                <% } %>
+              </td>
           </tr>
        <% }); %>
 

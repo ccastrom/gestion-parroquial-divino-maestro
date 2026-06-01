@@ -65,7 +65,10 @@ const POST_CrearPersona_Web = asyncHandler(async(req, res) => {
     await personaService.crearPersona(req.body);
     res.redirect('/web/personas?success=Persona%20agregada%20exitosamente');
 });
-
+const POST_EditarPersona_Web = asyncHandler(async(req, res) => {
+    await personaService.actualizarPersonaPorId(req.params.id, req.body);
+    res.redirect('/web/personas?success=Persona%20modificada%20exitosamente');
+});
 module.exports={
     POST_Tramites_Web,
     GET_Tramites_Web,
@@ -77,5 +80,6 @@ module.exports={
     POST_ModificarDocumento_Web,
     POST_CrearParticipante_Web,
     GET_Personas_Web,
-    POST_CrearPersona_Web
+    POST_CrearPersona_Web,
+    POST_EditarPersona_Web
 }

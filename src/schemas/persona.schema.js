@@ -19,6 +19,7 @@ const crearPersonaWebSchema = Joi.object({
     fono: Joi.string().trim().empty('').default(null).optional(),
     direccion: Joi.string().trim().empty('').default(null).optional(),
     tipo: Joi.string().valid('catequista', 'celebrante').empty('').default(null).optional(),
+    observaciones: Joi.string().trim().empty('').default(null).optional()
 });
 
 module.exports = {

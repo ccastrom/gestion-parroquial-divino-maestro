@@ -9,7 +9,8 @@ const {POST_Tramites_Web,
     POST_ModificarDocumento_Web,
     POST_CrearParticipante_Web,
     GET_Personas_Web,
-    POST_CrearPersona_Web } = require('../controllers/web.controllers.js');
+    POST_CrearPersona_Web,
+    POST_EditarPersona_Web } = require('../controllers/web.controllers.js');
 const { validarBodyWeb } = require('../middleware/validarBodyWeb.js');
 const { agregarParticipanteWebSchema } = require('../schemas/participantes.schemas.js');
 const { crearPersonaWebSchema } = require('../schemas/persona.schema.js');
@@ -26,5 +27,7 @@ router.post('/tramites/:id/documento/:idDocumento', POST_ModificarDocumento_Web)
 router.post('/tramites/:id/participantes', validarBodyWeb(agregarParticipanteWebSchema), POST_CrearParticipante_Web);
 router.get('/personas', GET_Personas_Web);
 router.post('/personas', validarBodyWeb(crearPersonaWebSchema), POST_CrearPersona_Web);
+router.post('/personas/:id', validarBodyWeb(crearPersonaWebSchema), POST_EditarPersona_Web);
+
 
 module.exports=router;

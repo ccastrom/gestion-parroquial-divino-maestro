@@ -31,6 +31,10 @@ const Persona= sequelize.define('Persona',{
     tipo:{
         type:DataTypes.STRING,
         allowNull: true,
+    },
+    observaciones:{
+        type:DataTypes.TEXT,
+        allowNull: true,
     }
 },
 
