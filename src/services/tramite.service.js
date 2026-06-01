@@ -153,11 +153,18 @@ const obtenerDetalleTramite = async (id) => {
     attributes: ['id', 'nombre', 'apellido'],
     order: [['apellido', 'ASC']],
   });
-  const ListaDePersonas= await Persona.findAll({ attributes: ['id', 'nombre', 'apellido'],
-    order:[['apellido','ASC']]
-   });
+  const ListaDePersonas = await Persona.findAll({
+    where: { tipo: null },
+    attributes: ['id', 'nombre', 'apellido'],
+    order: [['apellido', 'ASC']],
+  });
+  const ListaDeCelebrantes = await Persona.findAll({
+    where: { tipo: 'celebrante' },
+    attributes: ['id', 'nombre', 'apellido'],
+    order: [['apellido', 'ASC']],
+  });
 
-  return { tramite, participantes, reunion, catequista, ListaDecatequistas,ListaDePersonas };
+  return { tramite, participantes, reunion, catequista, ListaDecatequistas, ListaDePersonas, ListaDeCelebrantes };
 };
 const modificarDocumentoParticipacion = async ({ idTramite, idDocumento, documento }) => {
   validarEstado(documento.estado_documento);

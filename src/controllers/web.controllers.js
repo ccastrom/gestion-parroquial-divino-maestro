@@ -14,8 +14,8 @@ const GET_Tramites_Web= asyncHandler(async(req,res)=>{
 });
 
 const GET_TramitesById_Web= asyncHandler(async(req,res)=>{
-    const {tramite, participantes, reunion,catequista, ListaDecatequistas, ListaDePersonas} = await tramiteService.obtenerDetalleTramite(req.params.id);
-    res.render('bautismos/detalle', {tramite, participantes, catequista, reunion, ListaDecatequistas, ListaDePersonas, estados: Object.values(ESTADOS_VALIDOS), query: req.query});
+    const {tramite, participantes, reunion, catequista, ListaDecatequistas, ListaDePersonas, ListaDeCelebrantes} = await tramiteService.obtenerDetalleTramite(req.params.id);
+    res.render('bautismos/detalle', {tramite, participantes, catequista, reunion, ListaDecatequistas, ListaDePersonas, ListaDeCelebrantes, estados: Object.values(ESTADOS_VALIDOS), query: req.query});
 });
 
 const POST_CambiarEstado_Web = asyncHandler(async(req, res)=>{
