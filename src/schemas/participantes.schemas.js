@@ -34,16 +34,20 @@ const agregarParticipanteWebSchema = Joi.object({
         then: Joi.forbidden(),
         otherwise: Joi.required(),
     }),
-    rut: Joi.string().trim().uppercase().when('rol', {
-        is: 'Bautizado',
-        then: Joi.required(),
+    rut: Joi.string().trim().uppercase().when('personaId', {
+        is: Joi.exist(),
+        then: Joi.forbidden(),
         otherwise: Joi.string().empty('').default(null).optional(),
     }),
-    fecha_nacimiento: Joi.date().max('now').when('rol', {
+    fecha_nacimiento: Joi.date().max('now').when('personaId', {
+    is: Joi.exist(),
+    then: Joi.date().empty('').default(null).optional(),
+    otherwise: Joi.when('rol', {
         is: 'Bautizado',
         then: Joi.required(),
         otherwise: Joi.date().empty('').default(null).optional(),
     }),
+}),
     fono: Joi.string().trim().empty('').default(null).optional(),
     direccion: Joi.string().trim().empty('').default(null).optional(),
 });
