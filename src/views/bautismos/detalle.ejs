@@ -376,31 +376,36 @@
 
               <!-- Pestaña 1: Nueva persona -->
               <div class="tab-pane fade show active" id="tabNuevo">
-                <form action="/web/tramites/<%= tramite.id %>/participantes" method="POST">
+                <form id="formNuevoParticipante" action="/web/tramites/<%= tramite.id %>/participantes" method="POST" novalidate>
                   <div class="mb-3">
                     <label class="form-label">Rol</label>
-                    <select name="rol" class="form-select" required>
+                    <select name="rol" id="rolNuevo" class="form-select">
                       <option value="">-- Seleccionar --</option>
                       <% rolesDisponiblesNuevo.forEach(function(r) { %>
                         <option value="<%= r %>"><%= r %></option>
                       <% }); %>
                     </select>
+                    <div class="invalid-feedback">Selecciona un rol</div>
                   </div>
                   <div class="mb-3">
                     <label class="form-label">Nombre</label>
-                    <input type="text" name="nombre" class="form-control" required>
+                    <input type="text" name="nombre" id="nombreNuevo" class="form-control">
+                    <div class="invalid-feedback">El nombre es obligatorio</div>
                   </div>
                   <div class="mb-3">
                     <label class="form-label">Apellido</label>
-                    <input type="text" name="apellido" class="form-control" required>
+                    <input type="text" name="apellido" id="apellidoNuevo" class="form-control">
+                    <div class="invalid-feedback">El apellido es obligatorio</div>
                   </div>
                   <div class="mb-3">
-                    <label class="form-label">RUT</label>
-                    <input type="text" name="rut" class="form-control">
+                    <label id="labelRutNuevo" class="form-label">RUT</label>
+                    <input type="text" name="rut" id="rutNuevo" class="form-control">
+                    <div class="invalid-feedback">El RUT es obligatorio para el Bautizado</div>
                   </div>
                   <div class="mb-3">
-                    <label class="form-label">Fecha de nacimiento</label>
-                    <input type="date" name="fecha_nacimiento" class="form-control">
+                    <label id="labelFechaNuevo" class="form-label">Fecha de nacimiento</label>
+                    <input type="date" name="fecha_nacimiento" id="fechaNacimientoNuevo" class="form-control">
+                    <div class="invalid-feedback">La fecha de nacimiento es obligatoria para el Bautizado</div>
                   </div>
                   <div class="mb-3">
                     <label class="form-label">Teléfono</label>
