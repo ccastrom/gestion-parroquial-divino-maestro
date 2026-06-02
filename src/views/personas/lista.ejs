@@ -106,15 +106,17 @@
           <h5 class="modal-title">Agregar Persona</h5>
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
         </div>
-        <form action="/web/personas" method="POST">
+        <form id="formAgregarPersona" action="/web/personas" method="POST" novalidate>
           <div class="modal-body">
             <div class="mb-3">
               <label class="form-label">Nombre</label>
-              <input type="text" name="nombre" class="form-control" required>
+              <input type="text" name="nombre" id="agregarNombre" class="form-control">
+              <div class="invalid-feedback">El nombre es obligatorio</div>
             </div>
             <div class="mb-3">
               <label class="form-label">Apellido</label>
-              <input type="text" name="apellido" class="form-control" required>
+              <input type="text" name="apellido" id="agregarApellido" class="form-control">
+              <div class="invalid-feedback">El apellido es obligatorio</div>
             </div>
             <div class="mb-3">
               <label class="form-label">RUT</label>
@@ -162,15 +164,17 @@
           <h5 class="modal-title">Editar Persona</h5>
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
         </div>
-        <form id="formEditarPersona" action="" method="POST">
+        <form id="formEditarPersona" action="" method="POST" novalidate>
           <div class="modal-body">
             <div class="mb-3">
               <label class="form-label">Nombre</label>
-              <input type="text" id="editNombre" name="nombre" class="form-control" required>
+              <input type="text" id="editNombre" name="nombre" class="form-control">
+              <div class="invalid-feedback">El nombre es obligatorio</div>
             </div>
             <div class="mb-3">
               <label class="form-label">Apellido</label>
-              <input type="text" id="editApellido" name="apellido" class="form-control" required>
+              <input type="text" id="editApellido" name="apellido" class="form-control">
+              <div class="invalid-feedback">El apellido es obligatorio</div>
             </div>
             <div class="mb-3">
               <label class="form-label">RUT</label>
