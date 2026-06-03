@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Calendario — Bautismos</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.css" rel="stylesheet">
+  <style>
+    .fc-event { cursor: pointer; }
+    .fc { font-size: 0.85rem; }
+  </style>
+</head>
+<body class="bg-light">
+
+  <nav class="navbar navbar-dark bg-dark">
+    <div class="container">
+      <a class="navbar-brand" href="/web">Parroquia &mdash; Bautismos</a>
+      <div class="d-flex gap-2">
+        <a href="/web" class="btn btn-outline-light btn-sm">Trámites</a>
+        <a href="/web/calendario" class="btn btn-light btn-sm">Calendario</a>
+        <a href="/web/personas" class="btn btn-outline-light btn-sm">Personas</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container py-4">
+
+    <!-- Alerta de error -->
+    <% if (locals.query && query.error) { %>
+      <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <%= decodeURIComponent(query.error) %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      </div>
+    <% } %>
+
+    <!-- Calendario -->
+    <div class="card mb-4">
+      <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+        <span class="fw-semibold">Calendario de Bautismos</span>
+        <input type="text" id="buscarBautizado" class="form-control form-control-sm ms-3" style="max-width:220px" placeholder="Buscar bautizado...">
+      </div>
+      <div class="card-body">
+        <div class="d-flex gap-3 mb-3 small text-muted">
+          <span><span class="badge" style="background:#198754">&nbsp;</span> Finalizado</span>
+          <span><span class="badge bg-primary">&nbsp;</span> Agendado</span>
+        </div>
+        <div id="calendario"></div>
+      </div>
+    </div>
+
+    <!-- Trámites sin fecha -->
+    <div class="card">
+      <div class="card-header bg-secondary text-white fw-semibold">Trámites sin fecha de bautismo</div>
+      <div class="card-body p-0">
+        <table class="table table-hover mb-0">
+          <thead class="table-light">
+            <tr>
+              <th>#</th>
+              <th>Bautizado</th>
+              <th>Estado</th>
+              <th>Ingreso</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="tablaSinFecha">
+            <!-- Prototipo: datos hardcodeados -->
+            <tr>
+              <td>1</td><td class="text-muted fst-italic">Sin bautizado</td>
+              <td><span class="badge bg-secondary">iniciado</span></td>
+              <td>28/05/2026</td>
+              <td><a href="/web/tramites/1" class="btn btn-outline-secondary btn-sm">Ver</a></td>
+            </tr>
+            <tr>
+              <td>2</td><td>Emilio Fernández</td>
+              <td><span class="badge bg-secondary">Reunión Pre bautizo creada</span></td>
+              <td>20/05/2026</td>
+              <td><a href="/web/tramites/2" class="btn btn-outline-secondary btn-sm">Ver</a></td>
+            </tr>
+            <tr>
+              <td>3</td><td>Valentina Castro</td>
+              <td><span class="badge bg-secondary">Reunión Pre bautizo creada</span></td>
+              <td>15/05/2026</td>
+              <td><a href="/web/tramites/3" class="btn btn-outline-secondary btn-sm">Ver</a></td>
+            </tr>
+            <tr>
+              <td>4</td><td>Mateo Herrera</td>
+              <td><span class="badge bg-secondary">Reunión Pre bautizo creada</span></td>
+              <td>10/05/2026</td>
+              <td><a href="/web/tramites/4" class="btn btn-outline-secondary btn-sm">Ver</a></td>
+            </tr>
+            <tr>
+              <td>5</td><td>Isabella Pérez</td>
+              <td><span class="badge bg-info text-dark">Reunion Pre bautizo asignada</span></td>
+              <td>20/04/2026</td>
+              <td><a href="/web/tramites/5" class="btn btn-outline-secondary btn-sm">Ver</a></td>
+            </tr>
+            <tr>
+              <td>8</td><td>Matías Ríos</td>
+              <td><span class="badge bg-warning text-dark">Bautizo derivado a otra parroquia</span></td>
+              <td>01/05/2026</td>
+              <td><a href="/web/tramites/8" class="btn btn-outline-secondary btn-sm">Ver</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Modal reservar fecha -->
+  <div class="modal fade" id="modalNuevoTramite" tabindex="-1">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header bg-success text-white">
+          <h6 class="modal-title mb-0">Reservar bautismo</h6>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <form action="/web/tramites" method="POST">
+          <div class="modal-body">
+            <div class="mb-3">
+              <label class="form-label small fw-semibold">Fecha</label>
+              <input type="date" id="nuevaFecha" name="fecha_bautismo" class="form-control form-control-sm">
+            </div>
+            <div class="mb-2">
+              <label class="form-label small fw-semibold">Hora</label>
+              <input type="time" id="nuevaHora" name="hora_bautismo" class="form-control form-control-sm">
+            </div>
+          </div>
+          <div class="modal-footer py-2">
+            <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-success btn-sm">Reservar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
+  <script>
+    // Prototipo: eventos hardcodeados — se reemplazarán con datos reales del servidor
+    var todosLosEventos = [
+      {
+        id: 6,
+        title: 'Sebastián Ramírez',
+        start: '2026-07-05T11:00:00',
+        url: '/web/tramites/6',
+        backgroundColor: '#0d6efd',
+        borderColor: '#0d6efd',
+        extendedProps: { estado: 'Evento bautizo agendado', celebrante: 'Cristián Giadach' }
+      },
+      {
+        id: 7,
+        title: 'Antonia Leal',
+        start: '2026-03-08T11:00:00',
+        url: '/web/tramites/7',
+        backgroundColor: '#198754',
+        borderColor: '#198754',
+        extendedProps: { estado: 'Bautizo finalizado con éxito', celebrante: 'Marcos Vidal' }
+      }
+    ];
+
+    var calEl = document.getElementById('calendario');
+    var calendar = new FullCalendar.Calendar(calEl, {
+      locale: 'es',
+      initialView: 'dayGridMonth',
+      height: 'auto',
+      headerToolbar: {
+        left: 'prev,next today',
+        center: 'title',
+        right: 'dayGridMonth,timeGridWeek'
+      },
+      buttonText: { today: 'Hoy', month: 'Mes', week: 'Semana' },
+      events: todosLosEventos,
+
+      eventDidMount: function(info) {
+        var props = info.event.extendedProps;
+        var texto = props.estado;
+        if (props.celebrante) texto += ' · ' + props.celebrante;
+        new bootstrap.Tooltip(info.el, {
+          title: texto,
+          placement: 'top',
+          trigger: 'hover',
+          container: 'body'
+        });
+      },
+
+      eventClick: function(info) {
+        info.jsEvent.preventDefault();
+        window.location.href = info.event.url;
+      },
+
+      dateClick: function(info) {
+        document.getElementById('nuevaFecha').value = info.dateStr;
+        document.getElementById('nuevaHora').value = '';
+        new bootstrap.Modal(document.getElementById('modalNuevoTramite')).show();
+      }
+    });
+
+    calendar.render();
+
+    // Buscador — filtra eventos del calendario en tiempo real
+    document.getElementById('buscarBautizado').addEventListener('input', function() {
+      var q = this.value.toLowerCase().trim();
+      calendar.removeAllEvents();
+      calendar.addEventSource(
+        q ? todosLosEventos.filter(function(e) { return e.title.toLowerCase().includes(q); })
+          : todosLosEventos
+      );
+    });
+  </script>
+</body>
+</html>

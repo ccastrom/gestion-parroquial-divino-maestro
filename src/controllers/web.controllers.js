@@ -69,6 +69,10 @@ const POST_EditarPersona_Web = asyncHandler(async(req, res) => {
     await personaService.actualizarPersonaPorId(req.params.id, req.body);
     res.redirect('/web/personas?success=Persona%20modificada%20exitosamente');
 });
+const GET_CalendarioTramites_Web = asyncHandler(async(req, res) => {
+    //const tramites = await tramiteService.obtenerTramitesConBautizado();
+    res.render('bautismos/calendario');
+});
 module.exports={
     POST_Tramites_Web,
     GET_Tramites_Web,
@@ -81,5 +85,6 @@ module.exports={
     POST_CrearParticipante_Web,
     GET_Personas_Web,
     POST_CrearPersona_Web,
-    POST_EditarPersona_Web
+    POST_EditarPersona_Web,
+    GET_CalendarioTramites_Web
 }

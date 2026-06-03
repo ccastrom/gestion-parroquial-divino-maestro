@@ -9,6 +9,7 @@ const {POST_Tramites_Web,
     POST_ModificarDocumento_Web,
     POST_CrearParticipante_Web,
     GET_Personas_Web,
+    GET_CalendarioTramites_Web,
     POST_CrearPersona_Web,
     POST_EditarPersona_Web } = require('../controllers/web.controllers.js');
 const { validarBodyWeb } = require('../middleware/validarBodyWeb.js');
@@ -19,6 +20,7 @@ const router= Router();
 router.post('/tramites', POST_Tramites_Web);
 router.get('/', GET_Tramites_Web);
 router.get('/tramites/:id', GET_TramitesById_Web);
+router.get('/calendario',GET_CalendarioTramites_Web);
 router.post('/tramites/:id/estado', POST_CambiarEstado_Web);
 router.post('/tramites/:id/reunion', POST_CambiarReunion_Web);
 router.post('/tramites/:id/completar-reunion', POST_CompletarReunion_Web);
