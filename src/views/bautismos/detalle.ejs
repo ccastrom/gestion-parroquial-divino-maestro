@@ -88,7 +88,7 @@
               </div>
               <div class="mb-3">
                 <label class="form-label">Fecha bautismo</label>
-                <input type="date" name="fecha_bautismo" class="form-control" value="<%= tramite.fecha_bautismo || '' %>">
+                <input type="date" name="fecha_bautismo" class="form-control" value="<%= tramite.fecha_bautismo ? new Date(tramite.fecha_bautismo).toISOString().split('T')[0] : '' %>">
               </div>
             </div>
             <div class="modal-footer">
@@ -189,7 +189,7 @@
               <div class="mb-3">
                 <label class="form-label">Fecha reunión</label>
                 <input type="date" name="fecha" class="form-control"
-                  value="<%= reunion ? reunion.fecha || '' : '' %>">
+                  value="<%= reunion && reunion.fecha ? new Date(reunion.fecha).toISOString().split('T')[0] : '' %>">
               </div>
               <div class="mb-3">
                 <label class="form-label">Estado</label>

@@ -8,7 +8,7 @@ const Reunion_prebautizmal= sequelize.define('reunion_prebaustizmal',{
         autoIncrement: true
     },
     fecha:{
-        type:DataTypes.DATEONLY,
+        type:DataTypes.DATE,
     },
     id_fk_persona_catequista:{
         type:DataTypes.INTEGER,
