@@ -13,16 +13,7 @@
 </head>
 <body class="bg-light">
 
-  <nav class="navbar navbar-dark bg-dark">
-    <div class="container">
-      <a class="navbar-brand" href="/web">Parroquia &mdash; Bautismos</a>
-      <div class="d-flex gap-2">
-        <a href="/web" class="btn btn-outline-light btn-sm">Trámites</a>
-        <a href="/web/calendario" class="btn btn-light btn-sm">Calendario</a>
-        <a href="/web/personas" class="btn btn-outline-light btn-sm">Personas</a>
-      </div>
-    </div>
-  </nav>
+  <%- include('../partials/navbar', { paginaActual: 'calendario' }) %>
 
   <%
     // ── helpers ─────────────────────────────────────────────────────────────
