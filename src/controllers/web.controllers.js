@@ -4,8 +4,14 @@ const asyncHandler=require('../utils/asyncHandler');
 const { ESTADOS_VALIDOS } = require('../constants/estados_tramites');
 
 const POST_Tramites_Web= asyncHandler(async(req,res)=>{
-    const tramites = await tramiteService.crearTramite();
-    res.redirect('/web')
+    const { fecha_bautismo, hora_bautismo, origen } = req.body;
+    const datos = {};
+    if (fecha_bautismo) {
+        const hora = hora_bautismo || '00:00';
+        datos.fecha_bautismo = new Date(`${fecha_bautismo}T${hora}:00.000Z`);
+    }
+    await tramiteService.crearTramite(datos);
+    res.redirect(origen === 'calendario' ? '/web/calendario' : '/web');
 })
 
 const GET_Tramites_Web= asyncHandler(async(req,res)=>{
@@ -22,12 +28,6 @@ const POST_CambiarEstado_Web = asyncHandler(async(req, res)=>{
     const { estado, fecha_bautismo, hora_bautismo } = req.body;
     let fechaFinal = null;
     if (fecha_bautismo) {
-        const hoy = new Date().toISOString().split('T')[0];
-        if (fecha_bautismo < hoy) {
-            const err = new Error('La fecha de bautismo no puede ser anterior a hoy');
-            err.statusCode = 400;
-            throw err;
-        }
         const hora = hora_bautismo || '00:00';
         fechaFinal = new Date(`${fecha_bautismo}T${hora}:00.000Z`);
     }

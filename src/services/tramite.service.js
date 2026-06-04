@@ -7,8 +7,19 @@ const { crearReunionPreBautizo, actualizarReunionPreBautizoPorId, obtenerReunion
 const { crearDocumento, obtenerDocumentoParticipacion, obtenerDocumentoPorId, actualizarDocumento } = require("./documento.service.js");
 const participacionService = require('./participacion.service');
 
-const crearTramite = async () => {
-  return await Tramite.create();
+const validarFechaNoPasada = (fecha) => {
+  const hoy = new Date().toISOString().split('T')[0];
+  const fechaStr = new Date(fecha).toISOString().split('T')[0];
+  if (fechaStr < hoy) {
+    const err = new Error('La fecha de bautismo no puede ser anterior a hoy');
+    err.statusCode = 400;
+    throw err;
+  }
+};
+
+const crearTramite = async (datos = {}) => {
+  if (datos.fecha_bautismo) validarFechaNoPasada(datos.fecha_bautismo);
+  return await Tramite.create(datos);
 };
 
 const obtenerTramites = async () => {
@@ -156,6 +167,7 @@ const modificarTramite = async (id, tramiteDatos) => {
   const tramite = await obtenerTramitePorId(id);
   tramite.estado = tramiteDatos.estado;
   if (tramiteDatos.fecha_bautismo) {
+    validarFechaNoPasada(tramiteDatos.fecha_bautismo);
     tramite.fecha_bautismo = tramiteDatos.fecha_bautismo;
   }
   await tramite.save();
