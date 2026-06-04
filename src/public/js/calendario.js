@@ -1,5 +1,6 @@
 var calendar = new FullCalendar.Calendar(document.getElementById('calendario'), {
   locale: 'es',
+  timeZone: 'UTC',
   initialView: 'dayGridMonth',
   height: 'auto',
   headerToolbar: {
