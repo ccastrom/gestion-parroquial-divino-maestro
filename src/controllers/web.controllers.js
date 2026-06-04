@@ -22,6 +22,12 @@ const POST_CambiarEstado_Web = asyncHandler(async(req, res)=>{
     const { estado, fecha_bautismo, hora_bautismo } = req.body;
     let fechaFinal = null;
     if (fecha_bautismo) {
+        const hoy = new Date().toISOString().split('T')[0];
+        if (fecha_bautismo < hoy) {
+            const err = new Error('La fecha de bautismo no puede ser anterior a hoy');
+            err.statusCode = 400;
+            throw err;
+        }
         const hora = hora_bautismo || '00:00';
         fechaFinal = new Date(`${fecha_bautismo}T${hora}:00.000Z`);
     }

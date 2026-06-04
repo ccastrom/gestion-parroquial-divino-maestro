@@ -1,3 +1,8 @@
+var inputFechaBautismo = document.querySelector('#modalEditarEstado input[name="fecha_bautismo"]');
+if (inputFechaBautismo) {
+  inputFechaBautismo.setAttribute('min', new Date().toISOString().split('T')[0]);
+}
+
 // Tab 2: intercambio familiares / celebrantes según rol
 document.getElementById('rolExistente').addEventListener('change', function() {
   const esCelebrante = this.value === 'Celebrante';

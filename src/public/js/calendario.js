@@ -28,13 +28,23 @@ var calendar = new FullCalendar.Calendar(document.getElementById('calendario'), 
   },
 
   dateClick: function(info) {
+    var hoy = new Date().toISOString().split('T')[0];
+    if (info.dateStr < hoy) return;
     document.getElementById('nuevaFecha').value = info.dateStr;
     document.getElementById('nuevaHora').value = '';
     new bootstrap.Modal(document.getElementById('modalNuevoTramite')).show();
+  },
+
+  dayCellClassNames: function(info) {
+    var hoy = new Date().toISOString().split('T')[0];
+    return info.dateStr < hoy ? ['fc-dia-pasado'] : [];
   }
 });
 
 calendar.render();
+
+var hoy = new Date().toISOString().split('T')[0];
+document.getElementById('nuevaFecha').setAttribute('min', hoy);
 
 document.getElementById('buscarBautizado').addEventListener('input', function() {
   var q = this.value.toLowerCase().trim();
