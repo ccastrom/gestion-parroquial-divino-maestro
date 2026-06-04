@@ -12,6 +12,14 @@
   <%- include('../partials/navbar', { paginaActual: 'tramites' }) %>
 
   <div class="container py-4">
+
+    <% if (locals.query && query.success) { %>
+      <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <%= decodeURIComponent(query.success) %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      </div>
+    <% } %>
+
     <div class="d-flex justify-content-between align-items-center mb-3">
       <h2 class="mb-0">Trámites de Bautismo</h2>
       <form action="/web/tramites" method="POST">
@@ -55,6 +63,50 @@
 
       </tbody>
     </table>
+    <!-- Archivados -->
+    <% if (tramitesEliminados && tramitesEliminados.length > 0) { %>
+      <div class="mt-4">
+        <button class="btn btn-outline-secondary btn-sm mb-2" type="button" data-bs-toggle="collapse" data-bs-target="#tablaArchivados">
+          Archivados <span class="badge bg-secondary ms-1"><%= tramitesEliminados.length %></span>
+        </button>
+        <div class="collapse" id="tablaArchivados">
+          <div class="card">
+            <div class="card-header bg-secondary text-white fw-semibold">Trámites archivados</div>
+            <div class="card-body p-0">
+              <table class="table table-hover mb-0">
+                <thead class="table-light">
+                  <tr>
+                    <th>ID</th>
+                    <th>Bautizado</th>
+                    <th>Estado</th>
+                    <th>Eliminado</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% tramitesEliminados.forEach(function(item) { %>
+                    <% var bautizado = item.participacion && item.participacion[0] ? item.participacion[0].Persona : null; %>
+                    <% var fechaElim = new Date(item.fecha_eliminacion).toISOString().split('T')[0].split('-').reverse().join('-'); %>
+                    <tr class="text-muted">
+                      <td><%= item.id %></td>
+                      <td><%= bautizado ? bautizado.nombre + ' ' + bautizado.apellido : '—' %></td>
+                      <td><%= item.estado || '—' %></td>
+                      <td><small><%= fechaElim %></small></td>
+                      <td>
+                        <form action="/web/tramites/<%= item.id %>/restaurar" method="POST" style="display:inline">
+                          <button type="submit" class="btn btn-outline-success btn-sm">Restaurar</button>
+                        </form>
+                      </td>
+                    </tr>
+                  <% }); %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% } %>
+
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

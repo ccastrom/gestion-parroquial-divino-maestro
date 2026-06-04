@@ -16,7 +16,18 @@ const POST_Tramites_Web= asyncHandler(async(req,res)=>{
 
 const GET_Tramites_Web= asyncHandler(async(req,res)=>{
     const tramites = await tramiteService.obtenerTramitesConBautizado();
-    res.render('bautismos/lista', {tramites:tramites});
+    const tramitesEliminados = await tramiteService.obtenerTramitesEliminados();
+    res.render('bautismos/lista', { tramites, tramitesEliminados, query: req.query });
+});
+
+const POST_eliminarTramite_Web = asyncHandler(async(req, res) => {
+    await tramiteService.eliminarTramite(req.params.id);
+    res.redirect('/web/calendario?success=Trámite%20eliminado%20exitosamente');
+});
+
+const POST_restaurarTramite_Web = asyncHandler(async(req, res) => {
+    await tramiteService.restaurarTramite(req.params.id);
+    res.redirect('/web?success=Trámite%20restaurado%20exitosamente');
 });
 
 const GET_TramitesById_Web= asyncHandler(async(req,res)=>{
@@ -89,6 +100,8 @@ const GET_CalendarioTramites_Web = asyncHandler(async(req, res) => {
 module.exports={
     POST_Tramites_Web,
     GET_Tramites_Web,
+    POST_eliminarTramite_Web,
+    POST_restaurarTramite_Web,
     GET_TramitesById_Web,
     POST_CambiarEstado_Web,
     POST_CambiarReunion_Web,

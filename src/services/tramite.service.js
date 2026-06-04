@@ -1,4 +1,5 @@
 const sequelize = require("../config/database.js");
+const { Op } = require('sequelize');
 const { Tramite, Reunion_prebautizmal, Participacion, Persona } = require("../models");
 const { ESTADOS_VALIDOS, validarEstado } = require("../constants/estados_tramites");
 const { ROLES_VALIDOS, ROLES_UNICOS, validarRol } = require("../constants/roles_Participantes");
@@ -28,6 +29,7 @@ const obtenerTramites = async () => {
 
 const obtenerTramitesConBautizado = async () => {
   return await Tramite.findAll({
+    where: { fecha_eliminacion: null },
     include: [{
       model: Participacion,
       as: 'participacion',
@@ -38,8 +40,23 @@ const obtenerTramitesConBautizado = async () => {
     order: [['fecha_ingreso', 'DESC']]
   });
 };
+
+const obtenerTramitesEliminados = async () => {
+  return await Tramite.findAll({
+    where: { fecha_eliminacion: { [Op.ne]: null } },
+    include: [{
+      model: Participacion,
+      as: 'participacion',
+      where: { rol: 'Bautizado' },
+      required: false,
+      include: [{ model: Persona, attributes: ['id', 'nombre', 'apellido'] }]
+    }],
+    order: [['fecha_eliminacion', 'DESC']]
+  });
+};
 const obtenerTramitesParaCalendario = async () => {
   return await Tramite.findAll({
+    where: { fecha_eliminacion: null },
     attributes: ['id', 'fecha_bautismo', 'estado', 'fecha_ingreso'],
     include: [{
       model: Participacion,
@@ -60,6 +77,18 @@ const obtenerTramitePorId = async (id) => {
     throw error;
   }
   return tramite;
+};
+
+const eliminarTramite = async (id) => {
+  const tramite = await obtenerTramitePorId(id);
+  tramite.fecha_eliminacion = new Date();
+  await tramite.save();
+};
+
+const restaurarTramite = async (id) => {
+  const tramite = await obtenerTramitePorId(id);
+  tramite.fecha_eliminacion = null;
+  await tramite.save();
 };
 
 const agregarParticipante = async (id, participante) => {
@@ -218,6 +247,7 @@ module.exports = {
   crearTramite,
   obtenerTramites,
   obtenerTramitesConBautizado,
+  obtenerTramitesEliminados,
   obtenerTramitePorId,
   modificarTramite,
   actualizarReunionPorId,
@@ -226,5 +256,7 @@ module.exports = {
   agregarDocumentoParticipacion,
   obtenerDetalleTramite,
   modificarDocumentoParticipacion,
-  obtenerTramitesParaCalendario
+  obtenerTramitesParaCalendario,
+  eliminarTramite,
+  restaurarTramite,
 };
