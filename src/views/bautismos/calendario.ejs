@@ -141,13 +141,14 @@
         </div>
         <form action="/web/tramites" method="POST">
           <input type="hidden" name="origen" value="calendario">
+          <input type="hidden" id="nuevaFecha" name="fecha_bautismo">
           <div class="modal-body">
             <div class="mb-3">
-              <label class="form-label small fw-semibold">Fecha</label>
-              <input type="date" id="nuevaFecha" name="fecha_bautismo" class="form-control form-control-sm">
+              <label class="form-label small fw-semibold text-muted">Fecha seleccionada</label>
+              <p id="nuevaFechaTexto" class="mb-0 fw-semibold">—</p>
             </div>
             <div class="mb-2">
-              <label class="form-label small fw-semibold">Hora</label>
+              <label class="form-label small fw-semibold">Hora <span class="text-muted fw-normal">(opcional)</span></label>
               <input type="time" id="nuevaHora" name="hora_bautismo" class="form-control form-control-sm">
             </div>
           </div>

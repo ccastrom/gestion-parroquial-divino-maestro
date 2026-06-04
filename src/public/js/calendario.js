@@ -31,6 +31,7 @@ var calendar = new FullCalendar.Calendar(document.getElementById('calendario'), 
     var hoy = new Date().toISOString().split('T')[0];
     if (info.dateStr < hoy) return;
     document.getElementById('nuevaFecha').value = info.dateStr;
+    document.getElementById('nuevaFechaTexto').textContent = info.dateStr.split('-').reverse().join('-');
     document.getElementById('nuevaHora').value = '';
     new bootstrap.Modal(document.getElementById('modalNuevoTramite')).show();
   },
@@ -42,9 +43,6 @@ var calendar = new FullCalendar.Calendar(document.getElementById('calendario'), 
 });
 
 calendar.render();
-
-var hoy = new Date().toISOString().split('T')[0];
-document.getElementById('nuevaFecha').setAttribute('min', hoy);
 
 document.getElementById('buscarBautizado').addEventListener('input', function() {
   var q = this.value.toLowerCase().trim();
