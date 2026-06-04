@@ -24,9 +24,49 @@
     </div>
   </nav>
 
+  <%
+    // ── helpers ─────────────────────────────────────────────────────────────
+
+    var COLORES = {
+      'Bautizo finalizado con éxito':          '#198754',
+      'Evento bautizo agendado':               '#0d6efd',
+      'Bautizo reabierto':                     '#ffc107',
+      'Bautizo derivado a otra parroquia':     '#6f42c1',
+      'Bautizo cancelado':                     '#dc3545',
+    };
+
+    function getBautizado(t) {
+      return t.participacion && t.participacion[0] && t.participacion[0].Persona || null;
+    }
+
+    function getColor(t) {
+      if (!getBautizado(t)) return '#6c757d';          // gris — reserva sin bautizado
+      return COLORES[t.estado] || '#fd7e14';            // naranja — en proceso
+    }
+
+    var eventosCalendario = eventos.map(function(t) {
+      var p = getBautizado(t);
+      return {
+        id:              t.id,
+        title:           p ? p.nombre + ' ' + p.apellido : 'Reserva sin confirmar',
+        start:           t.fecha_bautismo,
+        url:             '/web/tramites/' + t.id,
+        backgroundColor: getColor(t),
+        borderColor:     getColor(t),
+        extendedProps:   {
+          estado: t.estado,
+          hora: (function() {
+            if (!t.fecha_bautismo) return null;
+            var h = new Date(t.fecha_bautismo).toISOString().split('T')[1].substring(0,5);
+            return h === '00:00' ? null : h;
+          })()
+        }
+      };
+    });
+  %>
+
   <div class="container py-4">
 
-    <!-- Alerta de error -->
     <% if (locals.query && query.error) { %>
       <div class="alert alert-danger alert-dismissible fade show" role="alert">
         <%= decodeURIComponent(query.error) %>
@@ -41,9 +81,14 @@
         <input type="text" id="buscarBautizado" class="form-control form-control-sm ms-3" style="max-width:220px" placeholder="Buscar bautizado...">
       </div>
       <div class="card-body">
-        <div class="d-flex gap-3 mb-3 small text-muted">
+        <div class="d-flex flex-wrap gap-3 mb-3 small text-muted">
+          <span><span class="badge" style="background:#6c757d">&nbsp;</span> Reserva sin confirmar</span>
+          <span><span class="badge" style="background:#fd7e14">&nbsp;</span> En proceso</span>
+          <span><span class="badge" style="background:#0d6efd">&nbsp;</span> Agendado</span>
+          <span><span class="badge" style="background:#ffc107">&nbsp;</span> Reabierto</span>
           <span><span class="badge" style="background:#198754">&nbsp;</span> Finalizado</span>
-          <span><span class="badge bg-primary">&nbsp;</span> Agendado</span>
+          <span><span class="badge" style="background:#6f42c1">&nbsp;</span> Derivado</span>
+          <span><span class="badge" style="background:#dc3545">&nbsp;</span> Cancelado</span>
         </div>
         <div id="calendario"></div>
       </div>
@@ -51,7 +96,10 @@
 
     <!-- Trámites sin fecha -->
     <div class="card">
-      <div class="card-header bg-secondary text-white fw-semibold">Trámites sin fecha de bautismo</div>
+      <div class="card-header bg-secondary text-white fw-semibold">
+        Trámites sin fecha de bautismo
+        <span class="badge bg-light text-dark ms-2"><%= sinFecha.length %></span>
+      </div>
       <div class="card-body p-0">
         <table class="table table-hover mb-0">
           <thead class="table-light">
@@ -63,44 +111,27 @@
               <th></th>
             </tr>
           </thead>
-          <tbody id="tablaSinFecha">
-            <!-- Prototipo: datos hardcodeados -->
-            <tr>
-              <td>1</td><td class="text-muted fst-italic">Sin bautizado</td>
-              <td><span class="badge bg-secondary">iniciado</span></td>
-              <td>28/05/2026</td>
-              <td><a href="/web/tramites/1" class="btn btn-outline-secondary btn-sm">Ver</a></td>
-            </tr>
-            <tr>
-              <td>2</td><td>Emilio Fernández</td>
-              <td><span class="badge bg-secondary">Reunión Pre bautizo creada</span></td>
-              <td>20/05/2026</td>
-              <td><a href="/web/tramites/2" class="btn btn-outline-secondary btn-sm">Ver</a></td>
-            </tr>
-            <tr>
-              <td>3</td><td>Valentina Castro</td>
-              <td><span class="badge bg-secondary">Reunión Pre bautizo creada</span></td>
-              <td>15/05/2026</td>
-              <td><a href="/web/tramites/3" class="btn btn-outline-secondary btn-sm">Ver</a></td>
-            </tr>
-            <tr>
-              <td>4</td><td>Mateo Herrera</td>
-              <td><span class="badge bg-secondary">Reunión Pre bautizo creada</span></td>
-              <td>10/05/2026</td>
-              <td><a href="/web/tramites/4" class="btn btn-outline-secondary btn-sm">Ver</a></td>
-            </tr>
-            <tr>
-              <td>5</td><td>Isabella Pérez</td>
-              <td><span class="badge bg-info text-dark">Reunion Pre bautizo asignada</span></td>
-              <td>20/04/2026</td>
-              <td><a href="/web/tramites/5" class="btn btn-outline-secondary btn-sm">Ver</a></td>
-            </tr>
-            <tr>
-              <td>8</td><td>Matías Ríos</td>
-              <td><span class="badge bg-warning text-dark">Bautizo derivado a otra parroquia</span></td>
-              <td>01/05/2026</td>
-              <td><a href="/web/tramites/8" class="btn btn-outline-secondary btn-sm">Ver</a></td>
-            </tr>
+          <tbody>
+            <% if (sinFecha.length > 0) { %>
+              <% sinFecha.forEach(function(t) { %>
+                <% var p = getBautizado(t); %>
+                <tr>
+                  <td><%= t.id %></td>
+                  <td>
+                    <% if (p) { %>
+                      <%= p.nombre %> <%= p.apellido %>
+                    <% } else { %>
+                      <span class="text-muted fst-italic">Sin bautizado</span>
+                    <% } %>
+                  </td>
+                  <td><span class="badge bg-secondary"><%= t.estado %></span></td>
+                  <td><%= t.fecha_ingreso ? t.fecha_ingreso.split('-').reverse().join('-') : '—' %></td>
+                  <td><a href="/web/tramites/<%= t.id %>" class="btn btn-outline-secondary btn-sm">Ver</a></td>
+                </tr>
+              <% }); %>
+            <% } else { %>
+              <tr><td colspan="5" class="text-center text-muted py-3">Todos los trámites tienen fecha asignada</td></tr>
+            <% } %>
           </tbody>
         </table>
       </div>
@@ -139,30 +170,9 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
   <script>
-    // Prototipo: eventos hardcodeados — se reemplazarán con datos reales del servidor
-    var todosLosEventos = [
-      {
-        id: 6,
-        title: 'Sebastián Ramírez',
-        start: '2026-07-05T11:00:00',
-        url: '/web/tramites/6',
-        backgroundColor: '#0d6efd',
-        borderColor: '#0d6efd',
-        extendedProps: { estado: 'Evento bautizo agendado', celebrante: 'Cristián Giadach' }
-      },
-      {
-        id: 7,
-        title: 'Antonia Leal',
-        start: '2026-03-08T11:00:00',
-        url: '/web/tramites/7',
-        backgroundColor: '#198754',
-        borderColor: '#198754',
-        extendedProps: { estado: 'Bautizo finalizado con éxito', celebrante: 'Marcos Vidal' }
-      }
-    ];
+    var todosLosEventos = <%- JSON.stringify(eventosCalendario) %>;
 
-    var calEl = document.getElementById('calendario');
-    var calendar = new FullCalendar.Calendar(calEl, {
+    var calendar = new FullCalendar.Calendar(document.getElementById('calendario'), {
       locale: 'es',
       initialView: 'dayGridMonth',
       height: 'auto',
@@ -176,8 +186,7 @@
 
       eventDidMount: function(info) {
         var props = info.event.extendedProps;
-        var texto = props.estado;
-        if (props.celebrante) texto += ' · ' + props.celebrante;
+        var texto = props.hora ? props.hora + 'h · ' + props.estado : props.estado;
         new bootstrap.Tooltip(info.el, {
           title: texto,
           placement: 'top',
@@ -200,7 +209,6 @@
 
     calendar.render();
 
-    // Buscador — filtra eventos del calendario en tiempo real
     document.getElementById('buscarBautizado').addEventListener('input', function() {
       var q = this.value.toLowerCase().trim();
       calendar.removeAllEvents();

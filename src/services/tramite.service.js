@@ -27,6 +27,19 @@ const obtenerTramitesConBautizado = async () => {
     order: [['fecha_ingreso', 'DESC']]
   });
 };
+const obtenerTramitesParaCalendario = async () => {
+  return await Tramite.findAll({
+    attributes: ['id', 'fecha_bautismo', 'estado', 'fecha_ingreso'],
+    include: [{
+      model: Participacion,
+      as: 'participacion',
+      where: { rol: 'Bautizado' },
+      required: false,
+      include: [{ model: Persona, attributes: ['nombre', 'apellido'] }]
+    }],
+    order: [['fecha_bautismo', 'ASC']]
+  });
+};
 
 const obtenerTramitePorId = async (id) => {
   const tramite = await Tramite.findByPk(id);
@@ -200,5 +213,6 @@ module.exports = {
   completarReunion,
   agregarDocumentoParticipacion,
   obtenerDetalleTramite,
-  modificarDocumentoParticipacion
+  modificarDocumentoParticipacion,
+  obtenerTramitesParaCalendario
 };
