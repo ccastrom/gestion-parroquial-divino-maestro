@@ -41,12 +41,18 @@
       <tbody>
         <% tramites.forEach(function(item){ %>
           <% const bautizado = item.participacion && item.participacion[0] ? item.participacion[0].Persona : null; %>
+          <%
+            var _fbIso = item.fecha_bautismo ? new Date(item.fecha_bautismo).toISOString() : null;
+            var _fbFecha = _fbIso ? _fbIso.split('T')[0].split('-').reverse().join('-') : '—';
+            var _fbHora  = _fbIso ? _fbIso.split('T')[1].substring(0,5) : null;
+            if (_fbHora === '00:00') _fbHora = null;
+          %>
           <tr>
               <td><%= item.id %></td>
               <td><%= bautizado ? bautizado.nombre + ' ' + bautizado.apellido : '—' %></td>
-              <td><%= item.fecha_ingreso ? new Date(item.fecha_ingreso).toLocaleDateString('es-CL') : '—' %></td>
+              <td><%= item.fecha_ingreso ? item.fecha_ingreso.split('-').reverse().join('-') : '—' %></td>
               <td><%= item.estado %></td>
-              <td><%= item.fecha_bautismo ? new Date(item.fecha_bautismo).toLocaleDateString('es-CL'): '—' %></td>
+              <td><%= _fbFecha %><% if (_fbHora) { %> <small class="text-muted"><%= _fbHora %>h</small><% } %></td>
               <td class="d-flex gap-1">
                 <a href="/web/tramites/<%= item.id %>" class="btn btn-primary btn-sm">Ver</a>
                 <% if (bautizado) { %>

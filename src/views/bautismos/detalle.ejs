@@ -9,6 +9,13 @@
   <link href="/css/ficha-bautismo.css" rel="stylesheet">
 </head>
 <body class="bg-light">
+<%
+  function isoHora(val) {
+    if (!val) return null;
+    var t = new Date(val).toISOString().split('T')[1].substring(0, 5);
+    return t === '00:00' ? null : t;
+  }
+%>
 
   <nav class="navbar navbar-dark bg-dark">
     <div class="container">
@@ -38,7 +45,7 @@
 
     <!-- Encabezado -->
     <div class="d-flex align-items-center gap-3 mb-4">
-      <a href="/web" class="btn btn-outline-secondary btn-sm no-print">← Volver</a>
+      <a href="javascript:history.back()" class="btn btn-outline-secondary btn-sm no-print">← Volver</a>
       <h2 class="mb-0">Trámite #<%= tramite.id %></h2>
       <span class="badge bg-secondary fs-6"><%= tramite.estado || 'Sin estado' %></span>
       <button onclick="window.print()" class="btn btn-outline-dark btn-sm ms-auto no-print">Imprimir ficha</button>
@@ -51,12 +58,14 @@
         <div class="row">
           <div class="col-md-4">
             <small class="text-muted">Fecha ingreso</small>
-            <p><%= tramite.fecha_ingreso ? new Date(tramite.fecha_ingreso).toLocaleDateString('es-CL') : '—' %></p>
+            <p><%= tramite.fecha_ingreso ? tramite.fecha_ingreso.split('-').reverse().join('-') : '—' %></p>
           </div>
           <div class="col-md-4">
             <small class="text-muted">Fecha bautismo</small>
-            <p><%= tramite.fecha_bautismo ? new Date(tramite.fecha_bautismo).toLocaleDateString('es-CL') : '—' %>
-</p>
+            <p>
+              <%= tramite.fecha_bautismo ? new Date(tramite.fecha_bautismo).toISOString().split('T')[0].split('-').reverse().join('-') : '—' %>
+              <% if (isoHora(tramite.fecha_bautismo)) { %><span class="text-muted ms-1"><%= isoHora(tramite.fecha_bautismo) %>h</span><% } %>
+            </p>
           </div>
           <div class="col-md-4">
             <small class="text-muted">Estado</small>
@@ -90,6 +99,10 @@
               <div class="mb-3">
                 <label class="form-label">Fecha bautismo</label>
                 <input type="date" name="fecha_bautismo" class="form-control" value="<%= tramite.fecha_bautismo ? new Date(tramite.fecha_bautismo).toISOString().split('T')[0] : '' %>">
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Hora bautismo</label>
+                <input type="time" name="hora_bautismo" class="form-control" value="<%= isoHora(tramite.fecha_bautismo) || '' %>">
               </div>
             </div>
             <div class="modal-footer">
@@ -149,7 +162,7 @@
             </div>
             <div class="col-md-4">
               <small class="text-muted">Fecha reunión</small>
-              <p><%= reunion.fecha ? new Date(reunion.fecha).toLocaleDateString('es-CL') : '—' %></p>
+              <p><%= reunion.fecha ? new Date(reunion.fecha).toISOString().split('T')[0].split('-').reverse().join('-') : '—' %></p>
             </div>
            
           </div>
@@ -239,7 +252,7 @@
                   </div>
                   <div class="col-md-2">
                     <small class="text-muted">Fecha entrega</small>
-                    <p><%= p.documento.fecha_entrega ? new Date(p.documento.fecha_entrega).toLocaleDateString('es-CL') : '—' %></p>
+                    <p><%= p.documento.fecha_entrega ? new Date(p.documento.fecha_entrega).toISOString().split('T')[0].split('-').reverse().join('-') : '—' %></p>
                   </div>
                   <div class="col-md-1 d-flex align-items-center no-print">
                     <button class="btn btn-warning btn-sm"

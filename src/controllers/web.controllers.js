@@ -19,8 +19,13 @@ const GET_TramitesById_Web= asyncHandler(async(req,res)=>{
 });
 
 const POST_CambiarEstado_Web = asyncHandler(async(req, res)=>{
-    const { estado, fecha_bautismo } = req.body;
-    await tramiteService.modificarTramite(req.params.id, { estado, fecha_bautismo: fecha_bautismo || null });
+    const { estado, fecha_bautismo, hora_bautismo } = req.body;
+    let fechaFinal = null;
+    if (fecha_bautismo) {
+        const hora = hora_bautismo || '00:00';
+        fechaFinal = new Date(`${fecha_bautismo}T${hora}:00.000Z`);
+    }
+    await tramiteService.modificarTramite(req.params.id, { estado, fecha_bautismo: fechaFinal });
     res.redirect(`/web/tramites/${req.params.id}`);
 });
 
@@ -70,8 +75,10 @@ const POST_EditarPersona_Web = asyncHandler(async(req, res) => {
     res.redirect('/web/personas?success=Persona%20modificada%20exitosamente');
 });
 const GET_CalendarioTramites_Web = asyncHandler(async(req, res) => {
-    //const tramites = await tramiteService.obtenerTramitesConBautizado();
-    res.render('bautismos/calendario');
+    const calendarioTramites = await tramiteService.obtenerTramitesParaCalendario();
+    const eventos = calendarioTramites.filter(t=>t.fecha_bautismo);
+    const sinFecha= calendarioTramites.filter(t=>!t.fecha_bautismo);
+    res.render('bautismos/calendario', { eventos, sinFecha, query: req.query });
 });
 module.exports={
     POST_Tramites_Web,
