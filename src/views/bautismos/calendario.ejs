@@ -171,52 +171,7 @@
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
   <script>
     var todosLosEventos = <%- JSON.stringify(eventosCalendario) %>;
-
-    var calendar = new FullCalendar.Calendar(document.getElementById('calendario'), {
-      locale: 'es',
-      initialView: 'dayGridMonth',
-      height: 'auto',
-      headerToolbar: {
-        left: 'prev,next today',
-        center: 'title',
-        right: 'dayGridMonth,timeGridWeek'
-      },
-      buttonText: { today: 'Hoy', month: 'Mes', week: 'Semana' },
-      events: todosLosEventos,
-
-      eventDidMount: function(info) {
-        var props = info.event.extendedProps;
-        var texto = props.hora ? props.hora + 'h · ' + props.estado : props.estado;
-        new bootstrap.Tooltip(info.el, {
-          title: texto,
-          placement: 'top',
-          trigger: 'hover',
-          container: 'body'
-        });
-      },
-
-      eventClick: function(info) {
-        info.jsEvent.preventDefault();
-        window.location.href = info.event.url;
-      },
-
-      dateClick: function(info) {
-        document.getElementById('nuevaFecha').value = info.dateStr;
-        document.getElementById('nuevaHora').value = '';
-        new bootstrap.Modal(document.getElementById('modalNuevoTramite')).show();
-      }
-    });
-
-    calendar.render();
-
-    document.getElementById('buscarBautizado').addEventListener('input', function() {
-      var q = this.value.toLowerCase().trim();
-      calendar.removeAllEvents();
-      calendar.addEventSource(
-        q ? todosLosEventos.filter(function(e) { return e.title.toLowerCase().includes(q); })
-          : todosLosEventos
-      );
-    });
   </script>
+  <script src="/js/calendario.js"></script>
 </body>
 </html>
