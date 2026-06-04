@@ -40,7 +40,7 @@
       var p = getBautizado(t);
       return {
         id:              t.id,
-        title:           p ? p.nombre + ' ' + p.apellido : 'Reserva sin confirmar',
+        title:           p ? p.nombre + ' ' + p.apellido : 'Reserva #' + t.id,
         start:           t.fecha_bautismo,
         url:             '/web/tramites/' + t.id,
         backgroundColor: getColor(t),
@@ -129,6 +129,44 @@
       </div>
     </div>
 
+  </div>
+
+  <!-- Modal evento (editar fecha/hora, ver detalle, eliminar) -->
+  <div class="modal fade" id="modalEvento" tabindex="-1">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header text-white" id="modalEventoHeader">
+          <div>
+            <h6 class="modal-title mb-0" id="modalEventoTitulo">—</h6>
+            <small id="modalEventoEstadoTexto" class="opacity-75"></small>
+          </div>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <form id="formEditarEvento" action="" method="POST">
+          <input type="hidden" name="origen" value="calendario">
+          <input type="hidden" name="estado" id="modalEventoEstado">
+          <div class="modal-body">
+            <div class="mb-3">
+              <label class="form-label small fw-semibold">Fecha bautismo</label>
+              <input type="date" name="fecha_bautismo" id="modalEventoFecha" class="form-control form-control-sm">
+            </div>
+            <div class="mb-2">
+              <label class="form-label small fw-semibold">Hora <span class="text-muted fw-normal">(opcional)</span></label>
+              <input type="time" name="hora_bautismo" id="modalEventoHora" class="form-control form-control-sm">
+            </div>
+          </div>
+          <div class="modal-footer py-2 d-flex justify-content-between">
+            <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" title="Próximamente: borrado lógico">
+              <button type="button" class="btn btn-outline-danger btn-sm" disabled style="pointer-events:none">Eliminar</button>
+            </span>
+            <div class="d-flex gap-2">
+              <a id="modalEventoLink" href="#" class="btn btn-outline-secondary btn-sm">Ver detalle</a>
+              <button type="submit" class="btn btn-primary btn-sm">Guardar</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
 
   <!-- Modal reservar fecha -->

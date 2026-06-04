@@ -25,14 +25,14 @@ const GET_TramitesById_Web= asyncHandler(async(req,res)=>{
 });
 
 const POST_CambiarEstado_Web = asyncHandler(async(req, res)=>{
-    const { estado, fecha_bautismo, hora_bautismo } = req.body;
+    const { estado, fecha_bautismo, hora_bautismo, origen } = req.body;
     let fechaFinal = null;
     if (fecha_bautismo) {
         const hora = hora_bautismo || '00:00';
         fechaFinal = new Date(`${fecha_bautismo}T${hora}:00.000Z`);
     }
     await tramiteService.modificarTramite(req.params.id, { estado, fecha_bautismo: fechaFinal });
-    res.redirect(`/web/tramites/${req.params.id}`);
+    res.redirect(origen === 'calendario' ? '/web/calendario' : `/web/tramites/${req.params.id}`);
 });
 
 const POST_CambiarReunion_Web= asyncHandler(async(req,res)=>{

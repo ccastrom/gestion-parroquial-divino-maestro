@@ -24,7 +24,22 @@ var calendar = new FullCalendar.Calendar(document.getElementById('calendario'), 
 
   eventClick: function(info) {
     info.jsEvent.preventDefault();
-    window.location.href = info.event.url;
+    var ev = info.event;
+    var props = ev.extendedProps;
+
+    document.getElementById('modalEventoTitulo').textContent = ev.title;
+    document.getElementById('modalEventoEstadoTexto').textContent = props.estado || '';
+    document.getElementById('modalEventoHeader').style.backgroundColor = ev.backgroundColor;
+    document.getElementById('formEditarEvento').action = '/web/tramites/' + ev.id + '/estado';
+    document.getElementById('modalEventoEstado').value = props.estado || '';
+    document.getElementById('modalEventoLink').href = '/web/tramites/' + ev.id;
+
+    var fechaISO = ev.start ? ev.start.toISOString().split('T')[0] : '';
+    document.getElementById('modalEventoFecha').value = fechaISO;
+    document.getElementById('modalEventoFecha').setAttribute('min', new Date().toISOString().split('T')[0]);
+    document.getElementById('modalEventoHora').value = props.hora || '';
+
+    new bootstrap.Modal(document.getElementById('modalEvento')).show();
   },
 
   dateClick: function(info) {
