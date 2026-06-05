@@ -155,16 +155,16 @@
               <input type="time" name="hora_bautismo" id="modalEventoHora" class="form-control form-control-sm">
             </div>
           </div>
-          <div class="modal-footer py-2 d-flex justify-content-between">
-            <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" title="Próximamente: borrado lógico">
-              <button type="button" class="btn btn-outline-danger btn-sm" disabled style="pointer-events:none">Eliminar</button>
-            </span>
-            <div class="d-flex gap-2">
-              <a id="modalEventoLink" href="#" class="btn btn-outline-secondary btn-sm">Ver detalle</a>
-              <button type="submit" class="btn btn-primary btn-sm">Guardar</button>
-            </div>
-          </div>
         </form>
+        <div class="modal-footer py-2 d-flex justify-content-between">
+          <form id="formEliminarEvento" action="" method="POST">
+            <button type="submit" class="btn btn-outline-danger btn-sm">Eliminar</button>
+          </form>
+          <div class="d-flex gap-2">
+            <a id="modalEventoLink" href="#" class="btn btn-outline-secondary btn-sm">Ver detalle</a>
+            <button type="submit" class="btn btn-primary btn-sm" form="formEditarEvento">Guardar</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>

@@ -31,10 +31,11 @@ var calendar = new FullCalendar.Calendar(document.getElementById('calendario'), 
     document.getElementById('modalEventoEstadoTexto').textContent = props.estado || '';
     document.getElementById('modalEventoHeader').style.backgroundColor = ev.backgroundColor;
     document.getElementById('formEditarEvento').action = '/web/tramites/' + ev.id + '/estado';
+    document.getElementById('formEliminarEvento').action = '/web/tramites/' + ev.id + '/eliminar';
     document.getElementById('modalEventoEstado').value = props.estado || '';
     document.getElementById('modalEventoLink').href = '/web/tramites/' + ev.id;
 
-    var fechaISO = ev.start ? ev.start.toISOString().split('T')[0] : '';
+    var fechaISO = ev.startStr ? ev.startStr.substring(0, 10) : '';
     document.getElementById('modalEventoFecha').value = fechaISO;
     document.getElementById('modalEventoFecha').setAttribute('min', new Date().toISOString().split('T')[0]);
     document.getElementById('modalEventoHora').value = props.hora || '';
