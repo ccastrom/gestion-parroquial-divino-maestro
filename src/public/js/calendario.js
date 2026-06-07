@@ -60,6 +60,12 @@ var calendar = new FullCalendar.Calendar(document.getElementById('calendario'), 
 
 calendar.render();
 
+document.getElementById('formEliminarEvento').addEventListener('submit', function(e) {
+  if (!confirm('¿Desea archivar este trámite? Podrá restaurarlo desde la sección Archivados.')) {
+    e.preventDefault();
+  }
+});
+
 document.getElementById('buscarBautizado').addEventListener('input', function() {
   var q = this.value.toLowerCase().trim();
   calendar.removeAllEvents();
