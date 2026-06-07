@@ -5,3 +5,8 @@ $(document).ready(function() {
     }
   });
 });
+
+document.getElementById('modalConfirmarEliminar').addEventListener('show.bs.modal', function(e) {
+  var id = e.relatedTarget.dataset.id;
+  document.getElementById('formConfirmarEliminar').action = '/web/tramites/' + id + '/eliminar';
+});

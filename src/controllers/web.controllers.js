@@ -22,7 +22,8 @@ const GET_Tramites_Web= asyncHandler(async(req,res)=>{
 
 const POST_eliminarTramite_Web = asyncHandler(async(req, res) => {
     await tramiteService.eliminarTramite(req.params.id);
-    res.redirect('/web/calendario?success=Trámite%20eliminado%20exitosamente');
+    const destino = req.body.origen === 'lista' ? '/web' : '/web/calendario';
+    res.redirect(`${destino}?success=Trámite%20eliminado%20exitosamente`);
 });
 
 const POST_restaurarTramite_Web = asyncHandler(async(req, res) => {
