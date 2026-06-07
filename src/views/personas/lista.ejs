@@ -46,43 +46,39 @@
             </tr>
           </thead>
           <tbody>
-            <% if (personas && personas.length > 0) { %>
-              <% personas.forEach(function(p) { %>
-                <tr>
-                  <td><%= p.nombre %></td>
-                  <td><%= p.apellido %></td>
-                  <td><%= p.rut || '—' %></td>
-                  <td><%= p.fono || '—' %></td>
-                  <td>
-                    <% if (p.tipo === 'catequista') { %>
-                      <span class="badge bg-info text-dark">Catequista</span>
-                    <% } else if (p.tipo === 'celebrante') { %>
-                      <span class="badge bg-warning text-dark">Celebrante</span>
-                    <% } else { %>
-                      <span class="badge bg-secondary">Familiar</span>
-                    <% } %>
-                  </td>
-                  <td>
-                    <button class="btn btn-outline-secondary btn-sm btn-editar-persona"
-                      data-bs-toggle="modal"
-                      data-bs-target="#modalEditarPersona"
-                      data-id="<%= p.id %>"
-                      data-nombre="<%= p.nombre %>"
-                      data-apellido="<%= p.apellido %>"
-                      data-rut="<%= p.rut || '' %>"
-                      data-fono="<%= p.fono || '' %>"
-                      data-direccion="<%= p.direccion || '' %>"
-                      data-tipo="<%= p.tipo || '' %>"
-                      data-fecha_nacimiento="<%= p.fecha_nacimiento ? new Date(p.fecha_nacimiento).toISOString().split('T')[0] : '' %>"
-                      data-observaciones="<%= p.observaciones || '' %>">
-                      Editar
-                    </button>
-                  </td>
-                </tr>
-              <% }); %>
-            <% } else { %>
-              <tr><td colspan="6" class="text-muted text-center py-3">Sin personas registradas</td></tr>
-            <% } %>
+            <% personas.forEach(function(p) { %>
+              <tr>
+                <td><%= p.nombre %></td>
+                <td><%= p.apellido %></td>
+                <td><%= p.rut || '—' %></td>
+                <td><%= p.fono || '—' %></td>
+                <td>
+                  <% if (p.tipo === 'catequista') { %>
+                    <span class="badge bg-info text-dark">Catequista</span>
+                  <% } else if (p.tipo === 'celebrante') { %>
+                    <span class="badge bg-warning text-dark">Celebrante</span>
+                  <% } else { %>
+                    <span class="badge bg-secondary">Familiar</span>
+                  <% } %>
+                </td>
+                <td>
+                  <button class="btn btn-outline-secondary btn-sm btn-editar-persona"
+                    data-bs-toggle="modal"
+                    data-bs-target="#modalEditarPersona"
+                    data-id="<%= p.id %>"
+                    data-nombre="<%= p.nombre %>"
+                    data-apellido="<%= p.apellido %>"
+                    data-rut="<%= p.rut || '' %>"
+                    data-fono="<%= p.fono || '' %>"
+                    data-direccion="<%= p.direccion || '' %>"
+                    data-tipo="<%= p.tipo || '' %>"
+                    data-fecha_nacimiento="<%= p.fecha_nacimiento ? new Date(p.fecha_nacimiento).toISOString().split('T')[0] : '' %>"
+                    data-observaciones="<%= p.observaciones || '' %>">
+                    Editar
+                  </button>
+                </td>
+              </tr>
+            <% }); %>
           </tbody>
         </table>
       </div>
