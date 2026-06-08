@@ -100,8 +100,12 @@ const POST_CrearPersona_Web = asyncHandler(async(req, res) => {
     res.redirect('/web/personas?success=Persona%20agregada%20exitosamente');
 });
 const POST_EditarPersona_Web = asyncHandler(async(req, res) => {
-    await personaService.actualizarPersonaPorId(req.params.id, req.body);
-    res.redirect('/web/personas?success=Persona%20modificada%20exitosamente');
+    const { origen, tramiteId, ...datosPersona } = req.body;
+    await personaService.actualizarPersonaPorId(req.params.id, datosPersona);
+    const destino = origen === 'detalle'
+        ? `/web/tramites/${tramiteId}`
+        : '/web/personas';
+    res.redirect(`${destino}?success=Persona%20modificada%20exitosamente`);
 });
 const GET_CalendarioTramites_Web = asyncHandler(async(req, res) => {
     const calendarioTramites = await tramiteService.obtenerTramitesParaCalendario();
