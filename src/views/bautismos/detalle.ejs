@@ -140,6 +140,10 @@
                     data-bs-target="#modalEditarDatosPersona-<%= p.id %>">
                     Editar datos
                   </button>
+                  <form action="/web/tramites/<%= tramite.id %>/participacion/<%= p.id %>/eliminar" method="POST"
+                    onsubmit="return confirm('¿Quitar a <%= p.Persona.nombre %> <%= p.Persona.apellido %> del trámite? Esta acción no se puede deshacer.')">
+                    <button type="submit" class="btn btn-outline-danger btn-sm w-100">Quitar</button>
+                  </form>
                 </div>
               </div>
             </div>
