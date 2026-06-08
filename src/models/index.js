@@ -4,6 +4,7 @@ const {Tramite} = require('./tramite.model');
 const {Participacion} = require('./participacion.model');
 const {Reunion_prebautizmal} = require('./reunion_pre_bautizo.model.js');
 const {Documento} = require('./documento.model');
+const {Usuario} = require('./usuario.model');
 
 Participacion.belongsTo(Persona, {
   foreignKey: "id_fk_persona"
@@ -32,4 +33,4 @@ Participacion.hasOne(Documento, {
   foreignKey: "id_fk_participacion"
 });
 
-module.exports = { Persona, Tramite, Participacion, Reunion_prebautizmal, Documento };
+module.exports = { Persona, Tramite, Participacion, Reunion_prebautizmal, Documento, Usuario };
