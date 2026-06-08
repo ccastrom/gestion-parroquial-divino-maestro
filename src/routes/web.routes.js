@@ -10,12 +10,13 @@ const {POST_Tramites_Web,
     POST_AgregarDocumento_Web,
     POST_ModificarDocumento_Web,
     POST_CrearParticipante_Web,
+    POST_EditarRolParticipante_Web,
     GET_Personas_Web,
     GET_CalendarioTramites_Web,
     POST_CrearPersona_Web,
     POST_EditarPersona_Web } = require('../controllers/web.controllers.js');
 const { validarBodyWeb } = require('../middleware/validarBodyWeb.js');
-const { agregarParticipanteWebSchema } = require('../schemas/participantes.schemas.js');
+const { agregarParticipanteWebSchema, editarRolParticipanteWebSchema } = require('../schemas/participantes.schemas.js');
 const { crearPersonaWebSchema } = require('../schemas/persona.schema.js');
 
 const router= Router();
@@ -31,6 +32,7 @@ router.post('/tramites/:id/completar-reunion', POST_CompletarReunion_Web);
 router.post('/tramites/:id/documento', POST_AgregarDocumento_Web);
 router.post('/tramites/:id/documento/:idDocumento', POST_ModificarDocumento_Web);
 router.post('/tramites/:id/participantes', validarBodyWeb(agregarParticipanteWebSchema), POST_CrearParticipante_Web);
+router.post('/tramites/:id/participacion/:idParticipacion/rol', validarBodyWeb(editarRolParticipanteWebSchema), POST_EditarRolParticipante_Web);
 router.get('/personas', GET_Personas_Web);
 router.post('/personas', validarBodyWeb(crearPersonaWebSchema), POST_CrearPersona_Web);
 router.post('/personas/:id', validarBodyWeb(crearPersonaWebSchema), POST_EditarPersona_Web);

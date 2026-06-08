@@ -1,5 +1,6 @@
 const tramiteService=require('../services/tramite.service');
 const personaService=require('../services/persona.service');
+const participacionService=require('../services/participacion.service');
 const asyncHandler=require('../utils/asyncHandler');
 const { ESTADOS_TRAMITE, ESTADOS_REUNION, ESTADOS_DOCUMENTO } = require('../constants/estados_tramites');
 
@@ -79,6 +80,16 @@ const POST_CrearParticipante_Web = asyncHandler(async(req, res) => {
     res.redirect(`/web/tramites/${req.params.id}?success=Participante%20agregado%20exitosamente`);
 })
 
+const POST_EditarRolParticipante_Web = asyncHandler(async(req, res) => {
+    const { rol } = req.body;
+    await participacionService.actualizarRolParticipacion({
+        idParticipacion: req.params.idParticipacion,
+        idTramite: req.params.id,
+        nuevoRol: rol,
+    });
+    res.redirect(`/web/tramites/${req.params.id}?success=Rol%20actualizado%20exitosamente`);
+})
+
 const GET_Personas_Web = asyncHandler(async(req, res) => {
     const personas = await personaService.obtenerPersonas();
     res.render('personas/lista', { personas, query: req.query });
@@ -110,6 +121,7 @@ module.exports={
     POST_AgregarDocumento_Web,
     POST_ModificarDocumento_Web,
     POST_CrearParticipante_Web,
+    POST_EditarRolParticipante_Web,
     GET_Personas_Web,
     POST_CrearPersona_Web,
     POST_EditarPersona_Web,
