@@ -1,4 +1,6 @@
+const { Op } = require('sequelize');
 const { Participacion, Persona, Documento } = require('../models');
+const { ROLES_UNICOS, validarRol } = require('../constants/roles_Participantes');
 
 const crearParticipacion = async (participanteData, idPersona, transaction) => {
   await Participacion.create(
@@ -51,9 +53,35 @@ const verificarRolUnicoExistente = async (participante) => {
   }
 };
 
+const actualizarRolParticipacion = async ({ idParticipacion, idTramite, nuevoRol }) => {
+  const participacion = await obtenerParticipacionPorId(idParticipacion);
+
+  if (String(participacion.id_fk_tramite) !== String(idTramite)) {
+    const error = new Error('La participación no pertenece a este trámite.');
+    error.statusCode = 403;
+    throw error;
+  }
+
+  validarRol(nuevoRol);
+
+  if (ROLES_UNICOS.includes(nuevoRol)) {
+    const otroConMismoRol = await Participacion.findOne({
+      where: { id_fk_tramite: idTramite, rol: nuevoRol, id: { [Op.ne]: idParticipacion } },
+    });
+    if (otroConMismoRol) {
+      const error = new Error(`Ya existe un participante con el rol ${nuevoRol} en este trámite.`);
+      error.statusCode = 400;
+      throw error;
+    }
+  }
+
+  return await Participacion.update({ rol: nuevoRol }, { where: { id: idParticipacion } });
+};
+
 module.exports = {
   obtenerParticipacionPorId,
   verificarRolUnicoExistente,
   obtenerParticipantesPorTramite,
   crearParticipacion,
+  actualizarRolParticipacion,
 };
