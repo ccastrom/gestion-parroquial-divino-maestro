@@ -90,6 +90,14 @@ const POST_EditarRolParticipante_Web = asyncHandler(async(req, res) => {
     res.redirect(`/web/tramites/${req.params.id}?success=Rol%20actualizado%20exitosamente`);
 })
 
+const POST_EliminarParticipante_Web = asyncHandler(async(req, res) => {
+    await participacionService.eliminarParticipacion({
+        idParticipacion: req.params.idParticipacion,
+        idTramite: req.params.id,
+    });
+    res.redirect(`/web/tramites/${req.params.id}?success=Participante%20eliminado%20exitosamente`);
+})
+
 const GET_Personas_Web = asyncHandler(async(req, res) => {
     const personas = await personaService.obtenerPersonas();
     res.render('personas/lista', { personas, query: req.query });
@@ -126,6 +134,7 @@ module.exports={
     POST_ModificarDocumento_Web,
     POST_CrearParticipante_Web,
     POST_EditarRolParticipante_Web,
+    POST_EliminarParticipante_Web,
     GET_Personas_Web,
     POST_CrearPersona_Web,
     POST_EditarPersona_Web,

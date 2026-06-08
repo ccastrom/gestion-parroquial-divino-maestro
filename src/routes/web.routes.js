@@ -11,6 +11,7 @@ const {POST_Tramites_Web,
     POST_ModificarDocumento_Web,
     POST_CrearParticipante_Web,
     POST_EditarRolParticipante_Web,
+    POST_EliminarParticipante_Web,
     GET_Personas_Web,
     GET_CalendarioTramites_Web,
     POST_CrearPersona_Web,
@@ -33,6 +34,7 @@ router.post('/tramites/:id/documento', POST_AgregarDocumento_Web);
 router.post('/tramites/:id/documento/:idDocumento', POST_ModificarDocumento_Web);
 router.post('/tramites/:id/participantes', validarBodyWeb(agregarParticipanteWebSchema), POST_CrearParticipante_Web);
 router.post('/tramites/:id/participacion/:idParticipacion/rol', validarBodyWeb(editarRolParticipanteWebSchema), POST_EditarRolParticipante_Web);
+router.post('/tramites/:id/participacion/:idParticipacion/eliminar', POST_EliminarParticipante_Web);
 router.get('/personas', GET_Personas_Web);
 router.post('/personas', validarBodyWeb(crearPersonaWebSchema), POST_CrearPersona_Web);
 router.post('/personas/:id', validarBodyWeb(crearPersonaWebSchema), POST_EditarPersona_Web);
