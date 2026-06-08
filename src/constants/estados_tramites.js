@@ -3,8 +3,8 @@
 const ESTADOS_TRAMITE = {
     Tramite_Iniciado: 'Iniciado',
     Reunion_Pre_Bautizo_Creada: 'Reunión Pre bautizo creada',
-    Reunion_Pre_Bautizo_Asignada: 'Reunion Pre bautizo asignada',
-    Reunion_Pre_Bautizo_Completada: 'Reunion Pre bautizo completada',
+    Reunion_Pre_Bautizo_Asignada: 'Reunión Pre bautizo asignada',
+    Reunion_Pre_Bautizo_Completada: 'Reunión Pre bautizo completada',
     Evento_Bautizo_Agendado: 'Evento bautizo agendado',
     Bautizo_Finalizado_Con_Éxito: 'Bautizo finalizado con éxito',
     Bautizo_Derivado_A_Otra_Parroquia: 'Bautizo derivado a otra parroquia',
