@@ -113,6 +113,7 @@
       </div>
       <div class="card-body">
         <% if (participantes && participantes.length > 0) { %>
+          <% const rolesEdicion = ['Bautizado', 'Padre', 'Madre', 'Padre 2', 'Madre 2', 'Padrino', 'Madrina', 'Celebrante', 'Tutor Legal', 'Testigo']; %>
           <% participantes.forEach(function(p) { %>
             <div class="mb-3 p-3 border rounded">
               <div class="row">
@@ -124,9 +125,44 @@
                   <small class="text-muted">Nombre</small>
                   <p><%= p.Persona.nombre %> <%= p.Persona.apellido %></p>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                   <small class="text-muted">RUT</small>
                   <p><%= p.Persona.rut || '—' %></p>
+                </div>
+                <div class="col-md-1 d-flex align-items-center no-print">
+                  <button class="btn btn-warning btn-sm"
+                    data-bs-toggle="modal"
+                    data-bs-target="#modalEditarRol-<%= p.id %>">
+                    Editar rol
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Modal Editar Rol -->
+            <div class="modal fade" id="modalEditarRol-<%= p.id %>" tabindex="-1">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title">Editar Rol — <%= p.Persona.nombre %> <%= p.Persona.apellido %></h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                  </div>
+                  <form action="/web/tramites/<%= tramite.id %>/participacion/<%= p.id %>/rol" method="POST">
+                    <div class="modal-body">
+                      <div class="mb-3">
+                        <label class="form-label">Rol</label>
+                        <select name="rol" class="form-select" required>
+                          <% rolesEdicion.forEach(function(r) { %>
+                            <option value="<%= r %>" <%= p.rol === r ? 'selected' : '' %>><%= r %></option>
+                          <% }); %>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                      <button type="submit" class="btn btn-primary">Guardar</button>
+                    </div>
+                  </form>
                 </div>
               </div>
             </div>
