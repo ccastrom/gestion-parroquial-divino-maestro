@@ -80,3 +80,11 @@ document.getElementById('modalAgregarParticipante').addEventListener('hidden.bs.
   document.getElementById('selectFamiliares').disabled = false;
   document.getElementById('selectCelebrantes').disabled = true;
 });
+
+// '← Volver' usa history.back() — si la página se restaura desde bfcache
+// (e.persisted), el HTML queda desactualizado tras crear/editar algo. Forzar reload.
+window.addEventListener('pageshow', function(e) {
+  if (e.persisted) {
+    window.location.reload();
+  }
+});
