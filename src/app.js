@@ -13,6 +13,7 @@ const authRoutes= require('./routes/auth.routes');
 const errorHandler=require('./middleware/errorHandler');
 const webErrorHandler=require('./middleware/webErrorHandler');
 const { requireAuth } = require('./middleware/requireAuth');
+const { requireApiKey } = require('./middleware/requireApiKey');
 
 
 
@@ -29,8 +30,8 @@ app.use(session({
 app.use('/', authRoutes);
 app.use('/web', requireAuth, webRoutes);
 app.use(webErrorHandler);
-app.use('/personas',personasRoutes);
-app.use('/tramites',tramitesRoutes);
+app.use('/personas', requireApiKey, personasRoutes);
+app.use('/tramites', requireApiKey, tramitesRoutes);
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(errorHandler);
 module.exports=app;
