@@ -1,3 +1,4 @@
+const sequelize = require('../config/database.js');
 const { Op } = require('sequelize');
 const { Participacion, Persona, Documento } = require('../models');
 const { ROLES_UNICOS, validarRol } = require('../constants/roles_Participantes');
@@ -78,10 +79,31 @@ const actualizarRolParticipacion = async ({ idParticipacion, idTramite, nuevoRol
   return await Participacion.update({ rol: nuevoRol }, { where: { id: idParticipacion } });
 };
 
+const eliminarParticipacion = async ({ idParticipacion, idTramite }) => {
+  const participacion = await obtenerParticipacionPorId(idParticipacion);
+
+  if (String(participacion.id_fk_tramite) !== String(idTramite)) {
+    const error = new Error('La participación no pertenece a este trámite.');
+    error.statusCode = 403;
+    throw error;
+  }
+
+  const transaction = await sequelize.transaction();
+  try {
+    await Documento.destroy({ where: { id_fk_participacion: idParticipacion }, transaction });
+    await participacion.destroy({ transaction });
+    await transaction.commit();
+  } catch (error) {
+    await transaction.rollback();
+    throw error;
+  }
+};
+
 module.exports = {
   obtenerParticipacionPorId,
   verificarRolUnicoExistente,
   obtenerParticipantesPorTramite,
   crearParticipacion,
   actualizarRolParticipacion,
+  eliminarParticipacion,
 };
