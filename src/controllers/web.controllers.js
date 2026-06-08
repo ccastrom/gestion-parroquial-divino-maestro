@@ -1,7 +1,7 @@
 const tramiteService=require('../services/tramite.service');
 const personaService=require('../services/persona.service');
 const asyncHandler=require('../utils/asyncHandler');
-const { ESTADOS_VALIDOS } = require('../constants/estados_tramites');
+const { ESTADOS_TRAMITE, ESTADOS_REUNION, ESTADOS_DOCUMENTO } = require('../constants/estados_tramites');
 
 const POST_Tramites_Web= asyncHandler(async(req,res)=>{
     const { fecha_bautismo, hora_bautismo, origen } = req.body;
@@ -33,7 +33,7 @@ const POST_restaurarTramite_Web = asyncHandler(async(req, res) => {
 
 const GET_TramitesById_Web= asyncHandler(async(req,res)=>{
     const {tramite, participantes, reunion, catequista, ListaDecatequistas, ListaDePersonas, ListaDeCelebrantes} = await tramiteService.obtenerDetalleTramite(req.params.id);
-    res.render('bautismos/detalle', {tramite, participantes, catequista, reunion, ListaDecatequistas, ListaDePersonas, ListaDeCelebrantes, estados: Object.values(ESTADOS_VALIDOS), query: req.query});
+    res.render('bautismos/detalle', {tramite, participantes, catequista, reunion, ListaDecatequistas, ListaDePersonas, ListaDeCelebrantes, estadosTramite: Object.values(ESTADOS_TRAMITE), estadosReunion: Object.values(ESTADOS_REUNION), estadosDocumento: Object.values(ESTADOS_DOCUMENTO), query: req.query});
 });
 
 const POST_CambiarEstado_Web = asyncHandler(async(req, res)=>{

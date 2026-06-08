@@ -82,7 +82,7 @@
               <div class="mb-3">
                 <label class="form-label">Estado</label>
                 <select name="estado" class="form-select" required>
-                  <% estados.forEach(function(e) { %>
+                  <% estadosTramite.forEach(function(e) { %>
                     <option value="<%= e %>" <%= tramite.estado === e ? 'selected' : '' %>><%= e %></option>
                   <% }); %>
                 </select>
@@ -199,7 +199,7 @@
               <div class="mb-3">
                 <label class="form-label">Estado</label>
                 <select name="estado" class="form-select" required>
-                  <% estados.forEach(function(e) { %>
+                  <% estadosReunion.forEach(function(e) { %>
                     <option value="<%= e %>" <%= reunion && reunion.estado === e ? 'selected' : '' %>><%= e %></option>
                   <% }); %>
                 </select>
@@ -272,10 +272,9 @@
                         <div class="mb-3">
                           <label class="form-label">Estado</label>
                           <select name="estado_documento" class="form-select" required>
-                            <option value="Documento Pendiente" <%= p.documento.estado_documento === 'Documento Pendiente' ? 'selected' : '' %>>Documento Pendiente</option>
-                            <option value="Documento Entregado" <%= p.documento.estado_documento === 'Documento Entregado' ? 'selected' : '' %>>Documento Entregado</option>
-                            <option value="Documento no entregado" <%= p.documento.estado_documento === 'Documento no entregado' ? 'selected' : '' %>>Documento no entregado</option>
-                            <option value="Documento próximo a entregar" <%= p.documento.estado_documento === 'Documento próximo a entregar' ? 'selected' : '' %>>Documento próximo a entregar</option>
+                            <% estadosDocumento.forEach(function(e) { %>
+                              <option value="<%= e %>" <%= p.documento.estado_documento === e ? 'selected' : '' %>><%= e %></option>
+                            <% }); %>
                           </select>
                         </div>
                         <div class="mb-3">
@@ -328,10 +327,9 @@
               <div class="mb-3">
                 <label class="form-label">Estado</label>
                 <select name="estado_documento" class="form-select" required>
-                  <option value="Documento Pendiente">Documento Pendiente</option>
-                  <option value="Documento Entregado">Documento Entregado</option>
-                  <option value="Documento no entregado">Documento no entregado</option>
-                  <option value="Documento próximo a entregar">Documento próximo a entregar</option>
+                  <% estadosDocumento.forEach(function(e) { %>
+                    <option value="<%= e %>"><%= e %></option>
+                  <% }); %>
                 </select>
               </div>
               <div class="mb-3">

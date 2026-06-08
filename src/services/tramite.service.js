@@ -1,7 +1,7 @@
 const sequelize = require("../config/database.js");
 const { Op } = require('sequelize');
 const { Tramite, Reunion_prebautizmal, Participacion, Persona } = require("../models");
-const { ESTADOS_VALIDOS, validarEstado } = require("../constants/estados_tramites");
+const { ESTADOS_VALIDOS, validarEstadoTramite, validarEstadoReunion, validarEstadoDocumento } = require("../constants/estados_tramites");
 const { ROLES_VALIDOS, ROLES_UNICOS, validarRol } = require("../constants/roles_Participantes");
 const { obtenerPersonaPorId, crearPersona } = require("./persona.service");
 const { crearReunionPreBautizo, actualizarReunionPreBautizoPorId, obtenerReunionPreBautizoPorId } = require("./reunion_pre_bautizo.service.js");
@@ -141,7 +141,7 @@ const agregarParticipante = async (id, participante) => {
 };
 
 const actualizarReunionPorId = async (id, datos) => {
-  validarEstado(datos.estado);
+  validarEstadoReunion(datos.estado);
   const tramite = await obtenerTramitePorId(id);
   return await actualizarReunionPreBautizoPorId(tramite.id_fk_reunion_pre_bautizo, datos);
 };
@@ -174,7 +174,7 @@ const completarReunion = async (idTramite) => {
 };
 
 const agregarDocumentoParticipacion = async ({ idTramite, idParticipacion, documento }) => {
-  validarEstado(documento.estado_documento);
+  validarEstadoDocumento(documento.estado_documento);
   await obtenerTramitePorId(idTramite);
   const participacion = await participacionService.obtenerParticipacionPorId(idParticipacion);
   const documentoParticipanteExistente = await obtenerDocumentoParticipacion(idParticipacion);
@@ -192,7 +192,7 @@ const agregarDocumentoParticipacion = async ({ idTramite, idParticipacion, docum
 };
 
 const modificarTramite = async (id, tramiteDatos) => {
-  validarEstado(tramiteDatos.estado);
+  validarEstadoTramite(tramiteDatos.estado);
   const tramite = await obtenerTramitePorId(id);
   tramite.estado = tramiteDatos.estado;
   if (tramiteDatos.fecha_bautismo) {
@@ -232,7 +232,7 @@ const obtenerDetalleTramite = async (id) => {
   return { tramite, participantes, reunion, catequista, ListaDecatequistas, ListaDePersonas, ListaDeCelebrantes };
 };
 const modificarDocumentoParticipacion = async ({ idTramite, idDocumento, documento }) => {
-  validarEstado(documento.estado_documento);
+  validarEstadoDocumento(documento.estado_documento);
   await obtenerTramitePorId(idTramite);
   const documentoEncontrado = await obtenerDocumentoPorId(idDocumento); 
   const documentoParticipanteTramite = await participacionService.obtenerParticipacionPorId(documentoEncontrado.id_fk_participacion);

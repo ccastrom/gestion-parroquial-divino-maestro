@@ -3,7 +3,7 @@ const { ESTADOS_VALIDOS } = require("../constants/estados_tramites");
 
 const crearReunionPreBautizo = async (transaction) => {
   const reunion = await Reunion_prebautizmal.create(
-    { estado: ESTADOS_VALIDOS.Reunion_Pre_Bautizo_Asignada },
+    { estado: ESTADOS_VALIDOS.Reunion_Pre_Bautizo_Creada },
     { transaction }
   );
   return reunion;
