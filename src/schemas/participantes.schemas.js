@@ -1,4 +1,5 @@
 const Joi = require('joi');
+const { ROLES_VALIDOS } = require('../constants/roles_Participantes');
 
 const personaNueva = Joi.object({
     personaId: Joi.number().integer().positive(),
@@ -56,7 +57,12 @@ const agregarParticipanteWebSchema = Joi.object({
     direccion: Joi.string().trim().empty('').default(null).optional(),
 });
 
+const editarRolParticipanteWebSchema = Joi.object({
+    rol: Joi.string().trim().valid(...Object.values(ROLES_VALIDOS)).required(),
+});
+
 module.exports = {
     agregarParticipanteSchema: personaNueva,
     agregarParticipanteWebSchema,
+    editarRolParticipanteWebSchema,
 }
