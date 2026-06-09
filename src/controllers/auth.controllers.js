@@ -17,7 +17,7 @@ const POST_Login = asyncHandler(async (req, res) => {
         req.session.debeCambiarPassword = usuario.debe_cambiar_password;
         return res.redirect(usuario.debe_cambiar_password ? '/cambiar-password' : '/web');
     } catch (error) {
-        return res.redirect(`/?error=${encodeURIComponent(error.message)}`);
+        return res.redirect(`/?error=${encodeURIComponent(error.message)}&username=${encodeURIComponent(username)}`);
     }
 });
 
