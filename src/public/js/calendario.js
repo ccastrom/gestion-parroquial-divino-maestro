@@ -1,3 +1,5 @@
+var FERIADOS_FIJOS = ['01-01', '05-01', '05-21', '09-18', '09-19', '12-25'];
+
 var calendar = new FullCalendar.Calendar(document.getElementById('calendario'), {
   locale: 'es',
   timeZone: 'UTC',
@@ -46,6 +48,7 @@ var calendar = new FullCalendar.Calendar(document.getElementById('calendario'), 
   dateClick: function(info) {
     var hoy = new Date().toISOString().split('T')[0];
     if (info.dateStr < hoy) return;
+    if (new Date(info.dateStr + 'T12:00:00Z').getUTCDay() === 0) return;
     document.getElementById('nuevaFecha').value = info.dateStr;
     document.getElementById('nuevaFechaTexto').textContent = info.dateStr.split('-').reverse().join('-');
     document.getElementById('nuevaHora').value = '';
@@ -53,8 +56,37 @@ var calendar = new FullCalendar.Calendar(document.getElementById('calendario'), 
   },
 
   dayCellClassNames: function(info) {
+    var clases = [];
     var hoy = new Date().toISOString().split('T')[0];
-    return info.dateStr < hoy ? ['fc-dia-pasado'] : [];
+    if (info.dateStr < hoy) clases.push('fc-dia-pasado');
+    if (info.date.getUTCDay() === 0) clases.push('fc-dia-domingo');
+    return clases;
+  },
+
+  dayCellDidMount: function(info) {
+    var diaSemana = info.date.getUTCDay();
+    var mm = String(info.date.getUTCMonth() + 1).padStart(2, '0');
+    var dd = String(info.date.getUTCDate()).padStart(2, '0');
+    var esDomingo = diaSemana === 0;
+    var esFeriado = !esDomingo && FERIADOS_FIJOS.includes(mm + '-' + dd);
+    if (!esDomingo && !esFeriado) return;
+    var numEl = info.el.querySelector('.fc-daygrid-day-number');
+    if (!numEl) return;
+    numEl.style.display = 'inline-flex';
+    numEl.style.alignItems = 'center';
+    numEl.style.justifyContent = 'center';
+    numEl.style.width = '24px';
+    numEl.style.height = '24px';
+    numEl.style.borderRadius = '50%';
+    numEl.style.fontWeight = '700';
+    numEl.style.textDecoration = 'none';
+    if (esDomingo) {
+      numEl.style.backgroundColor = '#dc3545';
+      numEl.style.color = 'white';
+    } else {
+      numEl.style.backgroundColor = '#ffc107';
+      numEl.style.color = '#212529';
+    }
   }
 });
 
