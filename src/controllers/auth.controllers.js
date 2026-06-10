@@ -3,7 +3,7 @@ const authService = require('../services/auth.service');
 
 const GET_Login = (req, res) => {
     if (req.session && req.session.usuarioId) {
-        return res.redirect(req.session.debeCambiarPassword ? '/cambiar-password' : '/web');
+        return res.redirect(req.session.debeCambiarPassword ? '/cambiar-password' : '/web/calendario');
     }
     res.render('login', { query: req.query });
 };
@@ -15,7 +15,7 @@ const POST_Login = asyncHandler(async (req, res) => {
         req.session.usuarioId = usuario.id;
         req.session.username = usuario.username;
         req.session.debeCambiarPassword = usuario.debe_cambiar_password;
-        return res.redirect(usuario.debe_cambiar_password ? '/cambiar-password' : '/web');
+        return res.redirect(usuario.debe_cambiar_password ? '/cambiar-password' : '/web/calendario');
     } catch (error) {
         return res.redirect(`/?error=${encodeURIComponent(error.message)}&username=${encodeURIComponent(username)}`);
     }
@@ -30,7 +30,7 @@ const POST_CambiarPassword = asyncHandler(async (req, res) => {
     try {
         await authService.cambiarPassword({ idUsuario: req.session.usuarioId, passwordActual, passwordNueva });
         req.session.debeCambiarPassword = false;
-        return res.redirect(`/web?success=${encodeURIComponent('Contraseña actualizada exitosamente')}`);
+        return res.redirect(`/web/calendario?success=${encodeURIComponent('Contraseña actualizada exitosamente')}`);
     } catch (error) {
         return res.redirect(`/cambiar-password?error=${encodeURIComponent(error.message)}`);
     }
