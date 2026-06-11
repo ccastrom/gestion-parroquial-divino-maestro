@@ -57,6 +57,14 @@
   letter-spacing: .015em;
   color: var(--fp-ink);
 }
+.fp-titulo-numero {
+  font-size: 22pt;
+  font-weight: 600;
+  color: var(--fp-data);
+  letter-spacing: .04em;
+  margin-left: 8pt;
+  vertical-align: middle;
+}
 
 /* ---------- Barra superior: fecha + hora -------------------- */
 .fp-topbar {
