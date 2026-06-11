@@ -15,10 +15,12 @@ const {POST_Tramites_Web,
     GET_Personas_Web,
     GET_CalendarioTramites_Web,
     POST_CrearPersona_Web,
-    POST_EditarPersona_Web } = require('../controllers/web.controllers.js');
+    POST_EditarPersona_Web,
+    POST_RegistrarHistorico_Web } = require('../controllers/web.controllers.js');
 const { validarBodyWeb } = require('../middleware/validarBodyWeb.js');
 const { agregarParticipanteWebSchema, editarRolParticipanteWebSchema } = require('../schemas/participantes.schemas.js');
 const { crearPersonaWebSchema } = require('../schemas/persona.schema.js');
+const { registrarHistoricoWebSchema } = require('../schemas/historico.schema.js');
 
 const router= Router();
 router.post('/tramites', POST_Tramites_Web);
@@ -38,6 +40,7 @@ router.post('/tramites/:id/participacion/:idParticipacion/eliminar', POST_Elimin
 router.get('/personas', GET_Personas_Web);
 router.post('/personas', validarBodyWeb(crearPersonaWebSchema), POST_CrearPersona_Web);
 router.post('/personas/:id', validarBodyWeb(crearPersonaWebSchema), POST_EditarPersona_Web);
+router.post('/tramites/historico', validarBodyWeb(registrarHistoricoWebSchema), POST_RegistrarHistorico_Web);
 
 
 module.exports=router;

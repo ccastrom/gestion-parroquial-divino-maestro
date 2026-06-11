@@ -29,7 +29,7 @@ const obtenerTramites = async () => {
 
 const obtenerTramitesConBautizado = async () => {
   return await Tramite.findAll({
-    where: { fecha_eliminacion: null },
+    where: { fecha_eliminacion: null, es_historico: false },
     include: [{
       model: Participacion,
       as: 'participacion',
@@ -43,7 +43,7 @@ const obtenerTramitesConBautizado = async () => {
 
 const obtenerTramitesEliminados = async () => {
   return await Tramite.findAll({
-    where: { fecha_eliminacion: { [Op.ne]: null } },
+    where: { fecha_eliminacion: { [Op.ne]: null }, es_historico: false },
     include: [{
       model: Participacion,
       as: 'participacion',
@@ -56,7 +56,7 @@ const obtenerTramitesEliminados = async () => {
 };
 const obtenerTramitesParaCalendario = async () => {
   return await Tramite.findAll({
-    where: { fecha_eliminacion: null },
+    where: { fecha_eliminacion: null, es_historico: false },
     attributes: ['id', 'fecha_bautismo', 'estado', 'fecha_ingreso'],
     include: [{
       model: Participacion,
@@ -243,6 +243,71 @@ const modificarDocumentoParticipacion = async ({ idTramite, idDocumento, documen
   }
   return await actualizarDocumento(idDocumento, documento); 
 };
+const registrarBautismoHistorico = async (datos) => {
+  const {
+    bautizado_nombre, bautizado_apellido, bautizado_rut,
+    bautizado_fecha_nacimiento, bautizado_lugar_nacimiento, bautizado_direccion,
+    padre_nombre, padre_apellido,
+    madre_nombre, madre_apellido,
+    padrino_nombre, padrino_apellido,
+  } = datos;
+
+  // El formulario puede enviar uno (string) o varios (array) padrinos según cuántas filas haya
+  const asegurarArray = (valor) => !valor ? [] : Array.isArray(valor) ? valor : [valor];
+  const listaNombresPadrinos   = asegurarArray(padrino_nombre);
+  const listaApellidosPadrinos = asegurarArray(padrino_apellido);
+
+  const padrinosComoParticipantes = listaNombresPadrinos.map((nombre, indice) => ({
+    rol: 'Padrino',
+    nombre,
+    apellido: listaApellidosPadrinos[indice] || null,
+  }));
+
+  const candidatos = [
+    { rol: 'Bautizado', nombre: bautizado_nombre, apellido: bautizado_apellido, rut: bautizado_rut, fecha_nacimiento: bautizado_fecha_nacimiento, lugar_nacimiento: bautizado_lugar_nacimiento, direccion: bautizado_direccion },
+    { rol: 'Padre',  nombre: padre_nombre,  apellido: padre_apellido },
+    { rol: 'Madre',  nombre: madre_nombre,  apellido: madre_apellido },
+    ...padrinosComoParticipantes,
+  ].filter(p => p.nombre && p.apellido);
+
+  const transaction = await sequelize.transaction();
+  try {
+    const tramite = await Tramite.create({
+      estado: ESTADOS_VALIDOS.Bautizo_Finalizado_Con_Éxito,
+      es_historico: true,
+    }, { transaction });
+
+    for (const { rol, ...datoPersona } of candidatos) {
+      const persona = await Persona.create({ ...datoPersona, tipo: 'historico' }, { transaction });
+      await Participacion.create({
+        id_fk_tramite: tramite.id,
+        id_fk_persona: persona.id,
+        rol,
+      }, { transaction });
+    }
+
+    await transaction.commit();
+    return tramite;
+  } catch (error) {
+    await transaction.rollback();
+    throw error;
+  }
+};
+
+const obtenerTramitesHistoricos = async () => {
+  return await Tramite.findAll({
+    where: { es_historico: true, fecha_eliminacion: null },
+    include: [{
+      model: Participacion,
+      as: 'participacion',
+      where: { rol: 'Bautizado' },
+      required: false,
+      include: [{ model: Persona, attributes: ['nombre', 'apellido'] }]
+    }],
+    order: [['id', 'DESC']]
+  });
+};
+
 module.exports = {
   crearTramite,
   obtenerTramites,
@@ -259,4 +324,6 @@ module.exports = {
   obtenerTramitesParaCalendario,
   eliminarTramite,
   restaurarTramite,
+  registrarBautismoHistorico,
+  obtenerTramitesHistoricos,
 };

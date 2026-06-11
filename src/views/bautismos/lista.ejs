@@ -22,9 +22,12 @@
 
     <div class="d-flex justify-content-between align-items-center mb-3">
       <h2 class="mb-0">Trámites de Bautismo</h2>
-      <form action="/web/tramites" method="POST">
-        <button class="btn btn-success">+ Nuevo Trámite</button>
-      </form>
+      <div class="d-flex gap-2">
+        <button class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#modalRegistrarHistorico">Registrar histórico</button>
+        <form action="/web/tramites" method="POST">
+          <button class="btn btn-success">+ Nuevo Trámite</button>
+        </form>
+      </div>
     </div>
     <table class="table" id="tablaTramites">
       <thead>
@@ -110,6 +113,43 @@
       </div>
     <% } %>
 
+    <!-- Históricos -->
+    <% if (tramitesHistoricos && tramitesHistoricos.length > 0) { %>
+      <div class="mt-4">
+        <button class="btn btn-outline-dark btn-sm mb-2" type="button" data-bs-toggle="collapse" data-bs-target="#tablaHistoricos">
+          Registros históricos <span class="badge bg-dark ms-1"><%= tramitesHistoricos.length %></span>
+        </button>
+        <div class="collapse" id="tablaHistoricos">
+          <div class="card">
+            <div class="card-header bg-dark text-white fw-semibold">Bautismos históricos</div>
+            <div class="card-body p-0">
+              <table class="table table-hover mb-0">
+                <thead class="table-light">
+                  <tr>
+                    <th>#</th>
+                    <th>Bautizado</th>
+                    <th>Ingreso</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% tramitesHistoricos.forEach(function(item) { %>
+                    <% var bautizado = item.participacion && item.participacion[0] ? item.participacion[0].Persona : null; %>
+                    <tr>
+                      <td><%= item.id %></td>
+                      <td><%= bautizado ? bautizado.nombre + ' ' + bautizado.apellido : '—' %></td>
+                      <td><small><%= item.fecha_ingreso ? item.fecha_ingreso.split('-').reverse().join('-') : '—' %></small></td>
+                      <td><a href="/web/tramites/<%= item.id %>" class="btn btn-outline-secondary btn-sm">Ver</a></td>
+                    </tr>
+                  <% }); %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% } %>
+
   </div>
 
   <!-- Modal confirmar eliminar -->
@@ -130,6 +170,105 @@
             <button type="submit" class="btn btn-danger btn-sm">Sí, archivar</button>
           </form>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal registrar histórico -->
+  <div class="modal fade" id="modalRegistrarHistorico" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header bg-dark text-white">
+          <h5 class="modal-title">Registrar bautismo histórico</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <form action="/web/tramites/historico" method="POST" novalidate id="formHistorico">
+          <div class="modal-body">
+
+            <!-- Bautizado -->
+            <h6 class="fw-bold border-bottom pb-1 mb-3">Bautizado</h6>
+            <div class="row g-2 mb-2">
+              <div class="col-md-6">
+                <label class="form-label">Nombre *</label>
+                <input type="text" name="bautizado_nombre" id="bautizado_nombre" class="form-control">
+                <div class="invalid-feedback">El nombre es obligatorio</div>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Apellido *</label>
+                <input type="text" name="bautizado_apellido" id="bautizado_apellido" class="form-control">
+                <div class="invalid-feedback">El apellido es obligatorio</div>
+              </div>
+            </div>
+            <div class="row g-2 mb-2">
+              <div class="col-md-4">
+                <label class="form-label">RUT</label>
+                <input type="text" name="bautizado_rut" class="form-control">
+              </div>
+              <div class="col-md-4">
+                <label class="form-label">Fecha de nacimiento</label>
+                <input type="date" name="bautizado_fecha_nacimiento" class="form-control">
+              </div>
+              <div class="col-md-4">
+                <label class="form-label">Lugar de nacimiento</label>
+                <input type="text" name="bautizado_lugar_nacimiento" class="form-control">
+              </div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Dirección</label>
+              <input type="text" name="bautizado_direccion" class="form-control">
+            </div>
+
+            <!-- Padre -->
+            <h6 class="fw-bold border-bottom pb-1 mb-3 mt-4">Padre</h6>
+            <div class="row g-2 mb-3">
+              <div class="col-md-6">
+                <label class="form-label">Nombre</label>
+                <input type="text" name="padre_nombre" class="form-control">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Apellido</label>
+                <input type="text" name="padre_apellido" class="form-control">
+              </div>
+            </div>
+
+            <!-- Madre -->
+            <h6 class="fw-bold border-bottom pb-1 mb-3 mt-2">Madre</h6>
+            <div class="row g-2 mb-3">
+              <div class="col-md-6">
+                <label class="form-label">Nombre</label>
+                <input type="text" name="madre_nombre" class="form-control">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Apellido</label>
+                <input type="text" name="madre_apellido" class="form-control">
+              </div>
+            </div>
+
+            <!-- Padrino/Madrina (cantidad variable) -->
+            <div class="d-flex justify-content-between align-items-center border-bottom pb-1 mb-3 mt-4">
+              <h6 class="fw-bold mb-0">Padrino/Madrina</h6>
+              <button type="button" class="btn btn-outline-secondary btn-sm" id="btnAgregarPadrino">+ Agregar</button>
+            </div>
+            <div id="contenedorFilasPadrino">
+              <div class="row g-2 mb-2 fila-padrino">
+                <div class="col-md-5">
+                  <input type="text" name="padrino_nombre" class="form-control" placeholder="Nombre">
+                </div>
+                <div class="col-md-5">
+                  <input type="text" name="padrino_apellido" class="form-control" placeholder="Apellido">
+                </div>
+                <div class="col-md-2 d-flex align-items-center">
+                  <button type="button" class="btn btn-outline-danger btn-sm btn-eliminar-fila-padrino">×</button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-dark">Guardar registro</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>

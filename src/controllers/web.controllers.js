@@ -18,7 +18,8 @@ const POST_Tramites_Web= asyncHandler(async(req,res)=>{
 const GET_Tramites_Web= asyncHandler(async(req,res)=>{
     const tramites = await tramiteService.obtenerTramitesConBautizado();
     const tramitesEliminados = await tramiteService.obtenerTramitesEliminados();
-    res.render('bautismos/lista', { tramites, tramitesEliminados, query: req.query });
+    const tramitesHistoricos = await tramiteService.obtenerTramitesHistoricos();
+    res.render('bautismos/lista', { tramites, tramitesEliminados, tramitesHistoricos, query: req.query });
 });
 
 const POST_eliminarTramite_Web = asyncHandler(async(req, res) => {
@@ -34,6 +35,9 @@ const POST_restaurarTramite_Web = asyncHandler(async(req, res) => {
 
 const GET_TramitesById_Web= asyncHandler(async(req,res)=>{
     const {tramite, participantes, reunion, catequista, ListaDecatequistas, ListaDePersonas, ListaDeCelebrantes} = await tramiteService.obtenerDetalleTramite(req.params.id);
+    if (tramite.es_historico) {
+        return res.render('bautismos/historico', { tramite, participantes, reunion: null, catequista: null, query: req.query });
+    }
     res.render('bautismos/detalle', {tramite, participantes, catequista, reunion, ListaDecatequistas, ListaDePersonas, ListaDeCelebrantes, estadosTramite: Object.values(ESTADOS_TRAMITE), estadosReunion: Object.values(ESTADOS_REUNION), estadosDocumento: Object.values(ESTADOS_DOCUMENTO), query: req.query});
 });
 
@@ -121,6 +125,11 @@ const GET_CalendarioTramites_Web = asyncHandler(async(req, res) => {
     const sinFecha= calendarioTramites.filter(t=>!t.fecha_bautismo);
     res.render('bautismos/calendario', { eventos, sinFecha, query: req.query });
 });
+const POST_RegistrarHistorico_Web = asyncHandler(async (req, res) => {
+    await tramiteService.registrarBautismoHistorico(req.body);
+    res.redirect('/web?success=Registro%20hist%C3%B3rico%20guardado%20exitosamente');
+});
+
 module.exports={
     POST_Tramites_Web,
     GET_Tramites_Web,
@@ -138,5 +147,6 @@ module.exports={
     GET_Personas_Web,
     POST_CrearPersona_Web,
     POST_EditarPersona_Web,
-    GET_CalendarioTramites_Web
+    GET_CalendarioTramites_Web,
+    POST_RegistrarHistorico_Web
 }
