@@ -29,8 +29,9 @@ function abrirModalEditar(btn) {
   document.getElementById('editFono').value            = btn.dataset.fono;
   document.getElementById('editDireccion').value       = btn.dataset.direccion;
   document.getElementById('editFechaNacimiento').value = btn.dataset.fecha_nacimiento;
-  document.getElementById('editObservaciones').value   = btn.dataset.observaciones;
-  document.getElementById('editTipo').value            = btn.dataset.tipo;
+  document.getElementById('editObservaciones').value      = btn.dataset.observaciones;
+  document.getElementById('editLugarNacimiento').value   = btn.dataset.lugar_nacimiento;
+  document.getElementById('editTipo').value               = btn.dataset.tipo;
   document.getElementById('editNombre').classList.remove('is-invalid');
   document.getElementById('editApellido').classList.remove('is-invalid');
 }

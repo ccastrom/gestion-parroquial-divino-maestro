@@ -13,6 +13,7 @@
   --fp-tint:   #f6f1ed;   /* fondo de cabeceras                     */
   --fp-fill:   #b9ada4;   /* líneas para rellenar a mano            */
   --fp-paper:  #ffffff;
+  --fp-data:   #1a4480;   /* azul oscuro para valores ingresados    */
 
   color: var(--fp-ink);
   background: var(--fp-paper);
@@ -56,6 +57,14 @@
   letter-spacing: .015em;
   color: var(--fp-ink);
 }
+.fp-titulo-numero {
+  font-size: 22pt;
+  font-weight: 600;
+  color: var(--fp-data);
+  letter-spacing: .04em;
+  margin-left: 8pt;
+  vertical-align: middle;
+}
 
 /* ---------- Barra superior: fecha + hora -------------------- */
 .fp-topbar {
@@ -81,8 +90,8 @@
 }
 .fp-tile .fp-value {
   font-size: 13pt;
-  font-weight: 600;
-  color: var(--fp-ink);
+  font-weight: 700;
+  color: var(--fp-data);
 }
 .fp-tile--blank .fp-value { min-height: 16pt; border-bottom: 1pt solid var(--fp-fill); }
 
@@ -130,8 +139,8 @@
 .fp-cell .fp-value {
   flex: 1 1 auto;
   font-size: 11pt;
-  font-weight: 500;
-  color: var(--fp-ink);
+  font-weight: 700;
+  color: var(--fp-data);
 }
 .fp-cell--blank .fp-value { color: var(--fp-fill); }
 
@@ -173,7 +182,7 @@
   color: var(--fp-muted);
   font-weight: 700;
 }
-.fp-pname { font-size: 11pt; font-weight: 500; }
+.fp-pname { font-size: 11pt; font-weight: 700; color: var(--fp-data); }
 
 /* ---------- Charla / celebrante ----------------------------- */
 .fp-cell--note .fp-value { font-weight: 500; }
@@ -202,7 +211,7 @@
   margin-top: 30pt;
   padding-top: 5pt;
 }
-.fp-sign-name { font-size: 10.5pt; font-weight: 600; color: var(--fp-ink); }
+.fp-sign-name { font-size: 10.5pt; font-weight: 700; color: var(--fp-data); }
 .fp-sign-role {
   margin-top: 2pt;
   font-size: 7.5pt;

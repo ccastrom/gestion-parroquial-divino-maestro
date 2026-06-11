@@ -57,6 +57,8 @@
                     <span class="badge bg-info text-dark">Catequista</span>
                   <% } else if (p.tipo === 'celebrante') { %>
                     <span class="badge bg-warning text-dark">Celebrante</span>
+                  <% } else if (p.tipo === 'historico') { %>
+                    <span class="badge bg-dark">Histórico</span>
                   <% } else { %>
                     <span class="badge bg-secondary">Familiar</span>
                   <% } %>
@@ -73,7 +75,8 @@
                     data-direccion="<%= p.direccion || '' %>"
                     data-tipo="<%= p.tipo || '' %>"
                     data-fecha_nacimiento="<%= p.fecha_nacimiento ? new Date(p.fecha_nacimiento).toISOString().split('T')[0] : '' %>"
-                    data-observaciones="<%= p.observaciones || '' %>">
+                    data-observaciones="<%= p.observaciones || '' %>"
+                    data-lugar_nacimiento="<%= p.lugar_nacimiento || '' %>">
                     Editar
                   </button>
                 </td>
@@ -121,6 +124,10 @@
             <div class="mb-3">
               <label class="form-label">Dirección</label>
               <input type="text" name="direccion" class="form-control">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Lugar de nacimiento</label>
+              <input type="text" name="lugar_nacimiento" class="form-control">
             </div>
             <div class="mb-3">
               <label class="form-label">Tipo</label>
@@ -179,6 +186,10 @@
             <div class="mb-3">
               <label class="form-label">Dirección</label>
               <input type="text" id="editDireccion" name="direccion" class="form-control">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Lugar de nacimiento</label>
+              <input type="text" id="editLugarNacimiento" name="lugar_nacimiento" class="form-control">
             </div>
             <div class="mb-3">
               <label class="form-label">Tipo</label>

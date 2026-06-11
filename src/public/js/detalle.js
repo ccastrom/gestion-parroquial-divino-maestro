@@ -17,11 +17,12 @@ document.getElementById('rolExistente').addEventListener('change', function() {
   selCel.disabled  = !esCelebrante;
 });
 
-// Tab 1: marcar RUT y fecha como obligatorios al seleccionar Bautizado
+// Tab 1: mostrar/ocultar RUT y fecha según rol
 document.getElementById('rolNuevo').addEventListener('change', function() {
   const esBautizado = this.value === 'Bautizado';
-  document.getElementById('labelRutNuevo').textContent   = esBautizado ? 'RUT *'                  : 'RUT';
-  document.getElementById('labelFechaNuevo').textContent = esBautizado ? 'Fecha de nacimiento *'  : 'Fecha de nacimiento';
+  document.getElementById('wrapperRutNuevo').classList.toggle('d-none', !esBautizado);
+  document.getElementById('wrapperFechaNuevo').classList.toggle('d-none', !esBautizado);
+  document.getElementById('wrapperLugarNuevo').classList.toggle('d-none', !esBautizado);
   document.getElementById('rutNuevo').classList.remove('is-invalid');
   document.getElementById('fechaNacimientoNuevo').classList.remove('is-invalid');
 });
@@ -71,8 +72,9 @@ document.getElementById('modalAgregarParticipante').addEventListener('hidden.bs.
   ['rolNuevo', 'nombreNuevo', 'apellidoNuevo', 'rutNuevo', 'fechaNacimientoNuevo'].forEach(function(id) {
     document.getElementById(id).classList.remove('is-invalid');
   });
-  document.getElementById('labelRutNuevo').textContent   = 'RUT';
-  document.getElementById('labelFechaNuevo').textContent = 'Fecha de nacimiento';
+  document.getElementById('wrapperRutNuevo').classList.add('d-none');
+  document.getElementById('wrapperFechaNuevo').classList.add('d-none');
+  document.getElementById('wrapperLugarNuevo').classList.add('d-none');
 
   // Restaurar selects Tab 2
   document.getElementById('wrapperFamiliares').classList.remove('d-none');

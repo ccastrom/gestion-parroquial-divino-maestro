@@ -26,6 +26,11 @@ const Tramite = sequelize.define(
         allowNull: true,
         defaultValue: null,
     },
+    es_historico: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+    },
     id_fk_reunion_pre_bautizo: {
       type: DataTypes.INTEGER,
       allowNull: true,

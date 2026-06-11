@@ -35,6 +35,10 @@ const Persona= sequelize.define('Persona',{
     observaciones:{
         type:DataTypes.TEXT,
         allowNull: true,
+    },
+    lugar_nacimiento:{
+        type:DataTypes.TEXT,
+        allowNull:true
     }
 },
 

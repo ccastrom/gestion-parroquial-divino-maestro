@@ -98,6 +98,10 @@ window.addEventListener('pageshow', function(e) {
   }
 });
 
+document.getElementById('modalNuevoTramite').addEventListener('shown.bs.modal', function() {
+  document.getElementById('nuevaHora').focus();
+});
+
 document.getElementById('formEliminarEvento').addEventListener('submit', function(e) {
   if (!confirm('¿Desea archivar este trámite? Podrá restaurarlo desde la sección Archivados.')) {
     e.preventDefault();
