@@ -6,6 +6,33 @@ $(document).ready(function() {
   });
 });
 
+// Inicializar DataTable de históricos cuando el collapse se abre por primera vez
+var tablaArchivadosInicializada = false;
+document.getElementById('tablaArchivados') && document.getElementById('tablaArchivados').addEventListener('show.bs.collapse', function() {
+  if (!tablaArchivadosInicializada) {
+    $('#tablaArchivadosData').DataTable({
+      language: {
+        url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json'
+      },
+      columnDefs: [{ orderable: false, targets: 4 }]
+    });
+    tablaArchivadosInicializada = true;
+  }
+});
+
+var tablaHistoricosInicializada = false;
+document.getElementById('tablaHistoricos') && document.getElementById('tablaHistoricos').addEventListener('show.bs.collapse', function() {
+  if (!tablaHistoricosInicializada) {
+    $('#tablaHistoricosData').DataTable({
+      language: {
+        url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json'
+      },
+      columnDefs: [{ orderable: false, targets: 3 }]
+    });
+    tablaHistoricosInicializada = true;
+  }
+});
+
 document.getElementById('modalConfirmarEliminar').addEventListener('show.bs.modal', function(e) {
   var id = e.relatedTarget.dataset.id;
   document.getElementById('formConfirmarEliminar').action = '/web/tramites/' + id + '/eliminar';

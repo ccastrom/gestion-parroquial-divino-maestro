@@ -82,12 +82,14 @@ const obtenerTramitePorId = async (id) => {
 const eliminarTramite = async (id) => {
   const tramite = await obtenerTramitePorId(id);
   tramite.fecha_eliminacion = new Date();
+  tramite.estado = ESTADOS_VALIDOS.Bautizo_Cancelado;
   await tramite.save();
 };
 
 const restaurarTramite = async (id) => {
   const tramite = await obtenerTramitePorId(id);
   tramite.fecha_eliminacion = null;
+  tramite.estado = ESTADOS_VALIDOS.Bautizo_Reabierto;
   await tramite.save();
 };
 

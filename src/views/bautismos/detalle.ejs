@@ -196,6 +196,7 @@
                         <label class="form-label">Apellido</label>
                         <input type="text" name="apellido" class="form-control" value="<%= p.Persona.apellido %>" required>
                       </div>
+                      <% if (p.rol === 'Bautizado') { %>
                       <div class="mb-3">
                         <label class="form-label">RUT</label>
                         <input type="text" name="rut" class="form-control" value="<%= p.Persona.rut || '' %>">
@@ -206,6 +207,11 @@
                           value="<%= p.Persona.fecha_nacimiento ? new Date(p.Persona.fecha_nacimiento).toISOString().split('T')[0] : '' %>">
                       </div>
                       <div class="mb-3">
+                        <label class="form-label">Lugar de nacimiento</label>
+                        <input type="text" name="lugar_nacimiento" class="form-control" value="<%= p.Persona.lugar_nacimiento || '' %>">
+                      </div>
+                      <% } %>
+                      <div class="mb-3">
                         <label class="form-label">Teléfono</label>
                         <input type="text" name="fono" class="form-control" value="<%= p.Persona.fono || '' %>">
                       </div>
@@ -214,17 +220,10 @@
                         <input type="text" name="direccion" class="form-control" value="<%= p.Persona.direccion || '' %>">
                       </div>
                       <div class="mb-3">
-                        <label class="form-label">Tipo</label>
-                        <select name="tipo" class="form-select">
-                          <option value="" <%= !p.Persona.tipo ? 'selected' : '' %>>Familiar</option>
-                          <option value="catequista" <%= p.Persona.tipo === 'catequista' ? 'selected' : '' %>>Catequista</option>
-                          <option value="celebrante" <%= p.Persona.tipo === 'celebrante' ? 'selected' : '' %>>Celebrante</option>
-                        </select>
-                      </div>
-                      <div class="mb-3">
                         <label class="form-label">Observaciones</label>
                         <textarea name="observaciones" class="form-control" rows="3"><%= p.Persona.observaciones || '' %></textarea>
                       </div>
+                      <input type="hidden" name="tipo" value="<%= p.Persona.tipo || '' %>">
                     </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
