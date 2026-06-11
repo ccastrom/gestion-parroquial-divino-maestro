@@ -70,11 +70,11 @@ const POST_ModificarDocumento_Web = asyncHandler(async(req,res)=>{
     res.redirect(`/web/tramites/${req.params.id}?success=Documento%20modificado%20exitosamente`);
 })
 const POST_CrearParticipante_Web = asyncHandler(async(req, res) => {
-    const { rol, personaId, nombre, apellido, rut, fecha_nacimiento, fono, direccion } = req.body;
+    const { rol, personaId, nombre, apellido, rut, fecha_nacimiento, fono, direccion,lugar_nacimiento,observaciones } = req.body;
 
     const participante = personaId
         ? { rol, personaId }
-        : { rol, persona: { nombre, apellido, rut, fecha_nacimiento, fono, direccion } };
+        : { rol, persona: { nombre, apellido, rut, fecha_nacimiento, fono, direccion,lugar_nacimiento,observaciones } };
 
     await tramiteService.agregarParticipante(req.params.id, participante);
     res.redirect(`/web/tramites/${req.params.id}?success=Participante%20agregado%20exitosamente`);

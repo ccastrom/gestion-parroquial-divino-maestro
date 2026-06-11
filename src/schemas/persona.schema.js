@@ -7,7 +7,10 @@ const crearPersonaSchema = Joi.object({
     fecha_nacimiento: Joi.date().max('now').allow(null).optional(),
     rut: Joi.string().trim().uppercase().allow(null,'').optional().default(null),
     fono: Joi.string().trim().allow(null,'').optional(),
-    direccion: Joi.string().trim().allow(null,'').optional(),  
+    direccion: Joi.string().trim().allow(null,'').optional(), 
+     tipo: Joi.string().valid('catequista', 'celebrante').empty('').default(null).optional(),
+    observaciones: Joi.string().trim().empty('').default(null).optional(),
+    lugar_nacimiento: Joi.string().trim().empty('').default(null).optional(),
 }).unknown(false);
 
 
@@ -20,6 +23,7 @@ const crearPersonaWebSchema = Joi.object({
     direccion: Joi.string().trim().empty('').default(null).optional(),
     tipo: Joi.string().valid('catequista', 'celebrante').empty('').default(null).optional(),
     observaciones: Joi.string().trim().empty('').default(null).optional(),
+    lugar_nacimiento: Joi.string().trim().empty('').default(null).optional(),
     origen: Joi.string().valid('detalle', 'personas').empty('').optional(),
     tramiteId: Joi.number().integer().positive().empty('').optional(),
 });

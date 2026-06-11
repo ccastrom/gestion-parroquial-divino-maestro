@@ -22,6 +22,7 @@ document.getElementById('rolNuevo').addEventListener('change', function() {
   const esBautizado = this.value === 'Bautizado';
   document.getElementById('wrapperRutNuevo').classList.toggle('d-none', !esBautizado);
   document.getElementById('wrapperFechaNuevo').classList.toggle('d-none', !esBautizado);
+  document.getElementById('wrapperLugarNuevo').classList.toggle('d-none', !esBautizado);
   document.getElementById('rutNuevo').classList.remove('is-invalid');
   document.getElementById('fechaNacimientoNuevo').classList.remove('is-invalid');
 });
@@ -73,6 +74,7 @@ document.getElementById('modalAgregarParticipante').addEventListener('hidden.bs.
   });
   document.getElementById('wrapperRutNuevo').classList.add('d-none');
   document.getElementById('wrapperFechaNuevo').classList.add('d-none');
+  document.getElementById('wrapperLugarNuevo').classList.add('d-none');
 
   // Restaurar selects Tab 2
   document.getElementById('wrapperFamiliares').classList.remove('d-none');

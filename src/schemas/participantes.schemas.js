@@ -55,6 +55,8 @@ const agregarParticipanteWebSchema = Joi.object({
     }),
     fono: Joi.string().trim().empty('').default(null).optional(),
     direccion: Joi.string().trim().empty('').default(null).optional(),
+    observaciones: Joi.string().trim().empty('').default(null).optional(),
+    lugar_nacimiento: Joi.string().trim().empty('').default(null).optional(),
 });
 
 const editarRolParticipanteWebSchema = Joi.object({

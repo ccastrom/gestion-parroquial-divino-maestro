@@ -30,7 +30,7 @@ const obtenerParticipantesPorTramite = async (id) => {
     include: [
       {
         model: Persona,
-        attributes: ["id", "nombre", "apellido", "fecha_nacimiento", "rut", "fono", "direccion", "tipo", "observaciones"],
+        attributes: ["id", "nombre", "apellido", "fecha_nacimiento", "rut", "fono", "direccion", "tipo", "observaciones","lugar_nacimiento"],
       },
         {
         model: Documento,
