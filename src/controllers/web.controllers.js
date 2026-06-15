@@ -130,6 +130,10 @@ const POST_RegistrarHistorico_Web = asyncHandler(async (req, res) => {
     res.redirect('/web?success=Registro%20hist%C3%B3rico%20guardado%20exitosamente');
 });
 
+const GET_FichaFuneral_Web = asyncHandler(async(req, res) => {
+    res.render('fichas/funeral');
+});
+
 module.exports={
     POST_Tramites_Web,
     GET_Tramites_Web,
@@ -148,5 +152,6 @@ module.exports={
     POST_CrearPersona_Web,
     POST_EditarPersona_Web,
     GET_CalendarioTramites_Web,
-    POST_RegistrarHistorico_Web
+    POST_RegistrarHistorico_Web,
+    GET_FichaFuneral_Web
 }

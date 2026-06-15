@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ficha — Celebración de Funeral</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/ficha-funeral.css">
+</head>
+<body>
+
+  <div class="toolbar">
+    <div>
+      <div class="toolbar__title">Ficha &mdash; Celebración de Funeral</div>
+      <div class="toolbar__sub">Los cambios se guardan automáticamente en este equipo</div>
+    </div>
+    <div class="toolbar__actions">
+      <a href="/web" class="btn">← Trámites</a>
+      <button class="btn" id="btn-clear">Vaciar ficha</button>
+      <button class="btn btn--primary" id="btn-print">Imprimir / Guardar PDF</button>
+    </div>
+  </div>
+
+  <div class="sheet-wrap">
+    <div class="sheet">
+
+      <div class="head__number">
+        <label class="label" for="f-numero">N.&ordm;</label>
+        <input class="field-input field-input--num" id="f-numero" data-field="numero">
+      </div>
+
+      <div class="head__title-block">
+        <svg class="cross" width="20" height="28" viewBox="0 0 20 28" aria-hidden="true">
+          <rect x="8.6" y="0" width="2.8" height="28"></rect>
+          <rect x="2" y="7.2" width="16" height="2.8"></rect>
+        </svg>
+        <h1 class="title">Celebración de Funeral</h1>
+      </div>
+      <div class="rule-double"></div>
+
+      <div class="grid-head">
+        <div class="stack stack--bottom">
+          <label class="label" for="f-fecha">Fecha de la celebración</label>
+          <input class="field-input field-input--display field-input--date" id="f-fecha" data-field="fecha" placeholder="Viernes 12 de junio de 2026">
+        </div>
+        <div class="stack stack--bottom">
+          <label class="label" for="f-hora">Hora</label>
+          <input class="field-input field-input--display field-input--time" id="f-hora" data-field="hora" placeholder="10:00 hrs">
+        </div>
+      </div>
+
+      <div class="stack name-block">
+        <label class="label" for="f-nombre">Nombre del difunto</label>
+        <input class="field-input field-input--display field-input--name" id="f-nombre" data-field="nombre" placeholder="Nombre y apellidos">
+      </div>
+
+      <div class="section">
+        <span class="section__label">Datos del difunto</span>
+        <span class="section__line"></span>
+      </div>
+
+      <div class="grid-2">
+        <div class="row">
+          <label class="label" for="f-apodo">Le decían</label>
+          <input class="field-input" id="f-apodo" data-field="apodo">
+        </div>
+        <div class="row">
+          <label class="label" for="f-nombrePila">Nombre de pila</label>
+          <input class="field-input" id="f-nombrePila" data-field="nombrePila">
+        </div>
+        <div class="row">
+          <label class="label" for="f-edad">Edad</label>
+          <input class="field-input" id="f-edad" data-field="edad">
+        </div>
+        <div class="row">
+          <label class="label" for="f-estadoCivil">Estado civil</label>
+          <input class="field-input" id="f-estadoCivil" data-field="estadoCivil">
+        </div>
+        <div class="row">
+          <label class="label" for="f-causa">Causa de fallecimiento</label>
+          <input class="field-input" id="f-causa" data-field="causa">
+        </div>
+        <div class="row">
+          <label class="label" for="f-nietos">Nietos</label>
+          <input class="field-input" id="f-nietos" data-field="nietos">
+        </div>
+        <div class="stack span-all">
+          <label class="label" for="f-hijos">Hijos</label>
+          <textarea class="field-area" id="f-hijos" data-field="hijos" rows="1"></textarea>
+        </div>
+      </div>
+
+      <div class="section">
+        <span class="section__label">Características / Semblanza</span>
+        <span class="section__line"></span>
+      </div>
+      <textarea class="semblanza" id="f-caracteristicas" data-field="caracteristicas" rows="6" placeholder="Personalidad, oficios, aficiones, anécdotas, familia que le sobrevive…"></textarea>
+
+      <div class="section">
+        <span class="section__label">Ceremonia</span>
+        <span class="section__line"></span>
+      </div>
+
+      <div class="ceremony-row">
+        <label class="label">Palabras al final</label>
+        <div class="toggle only-screen" id="toggle-palabras">
+          <button class="toggle__btn" data-val="Sí" type="button">Sí</button>
+          <button class="toggle__btn" data-val="No" type="button">No</button>
+        </div>
+        <span class="toggle-print only-print" id="palabras-print"></span>
+      </div>
+
+      <div class="grid-2" style="margin-top:24px;">
+        <div class="row">
+          <label class="label" for="f-celebra">Celebra</label>
+          <input class="field-input" id="f-celebra" data-field="celebra">
+        </div>
+        <div class="row">
+          <label class="label" for="f-canta">Canta</label>
+          <input class="field-input" id="f-canta" data-field="canta">
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="/js/ficha-funeral.js"></script>
+</body>
+</html>

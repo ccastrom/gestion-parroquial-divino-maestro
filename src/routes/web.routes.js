@@ -1,5 +1,6 @@
 const {Router} = require('express');
 const {POST_Tramites_Web,
+    GET_FichaFuneral_Web,
     GET_Tramites_Web,
     GET_TramitesById_Web,
     POST_CambiarEstado_Web,
@@ -41,6 +42,6 @@ router.get('/personas', GET_Personas_Web);
 router.post('/personas', validarBodyWeb(crearPersonaWebSchema), POST_CrearPersona_Web);
 router.post('/personas/:id', validarBodyWeb(crearPersonaWebSchema), POST_EditarPersona_Web);
 router.post('/tramites/historico', validarBodyWeb(registrarHistoricoWebSchema), POST_RegistrarHistorico_Web);
-
+router.get('/fichas/funeral', GET_FichaFuneral_Web);
 
 module.exports=router;
