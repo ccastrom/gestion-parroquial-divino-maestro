@@ -1,10 +1,15 @@
 /* ============================================================
    Ficha — Celebración de Funeral
-   Tipografías requeridas (cargar en el <head>):
-     EB Garamond  ·  Cormorant Garamond  (Google Fonts)
-   Diseño para impresión económica: en papel solo sale texto
-   negro y líneas finas; los tonos marfil/oscuros son
-   únicamente de pantalla y no se imprimen.
+   Enfoque: impresión / PDF fiable (A4).
+
+   En pantalla se rellena con campos de formulario.
+   Al imprimir, cada campo se sustituye por texto plano que
+   fluye y se ajusta (clase .field-print, generada por JS),
+   de modo que nada se recorta aunque el contenido sea largo.
+   Solo se imprime texto negro y líneas finas.
+
+   Tipografías (enlazadas en el <head>):
+     EB Garamond · Cormorant Garamond  (Google Fonts)
    ============================================================ */
 
 :root {
@@ -15,8 +20,8 @@
   --ink-soft:   #262019;
   --label:      #766c5a;
   --section:    #8a8170;
-  --hairline:   #8a7d6a;
-  --hairline-2: #7a6d5a;
+  --hairline:   #d3cab8;
+  --hairline-2: #cfc6b3;
   --section-ln: #d8cfbd;
   --rule:       #2a251d;
   --focus-bg:   #f2ecdd;
@@ -29,7 +34,6 @@
 }
 
 * { box-sizing: border-box; }
-
 html, body { margin: 0; }
 
 body {
@@ -65,7 +69,7 @@ body {
   letter-spacing: .04em;
   color: var(--bar-muted);
 }
-.toolbar__actions { display: flex; align-items: center; gap: 10px; }
+.toolbar__actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 
 .btn {
   font: inherit;
@@ -81,7 +85,6 @@ body {
   transition: border-color .15s, color .15s, background .15s;
 }
 .btn:hover { border-color: #766c5a; color: var(--bar-fg); }
-
 .btn--primary {
   font-weight: 600;
   padding: 8px 18px;
@@ -132,10 +135,7 @@ body {
   text-transform: uppercase;
   color: var(--ink);
 }
-.rule-double {
-  margin-top: 20px;
-  border-top: 2px solid var(--rule);
-}
+.rule-double { margin-top: 20px; border-top: 2px solid var(--rule); }
 .rule-double::after {
   content: "";
   display: block;
@@ -144,7 +144,7 @@ body {
 }
 
 /* ----------------------------------------------------------
-   Etiquetas y campos
+   Etiquetas y campos (pantalla)
    ---------------------------------------------------------- */
 .label {
   font-size: 12px;
@@ -163,28 +163,16 @@ body {
   color: var(--ink);
   background: transparent;
   border: none;
-  outline: none;
+  border-bottom: 1px solid var(--hairline);
   padding: 3px 2px;
-  box-shadow: 0 1px 0 0 #555;
-  -webkit-appearance: none;
-  appearance: none;
+  outline: none;
 }
 .field-input:focus,
-.field-area:focus {
-  background: var(--focus-bg);
-  box-shadow: 0 2px 0 0 var(--ink);
-}
+.field-area:focus { background: var(--focus-bg); border-bottom-color: var(--ink); }
 .field-input::placeholder,
-.field-area::placeholder {
-  color: #b6ad98;
-  font-style: italic;
-}
+.field-area::placeholder { color: #b6ad98; font-style: italic; }
 
-.field-area {
-  line-height: 1.5;
-  resize: none;
-  overflow: hidden;
-}
+.field-area { line-height: 1.5; resize: none; overflow: hidden; }
 
 .field-input--num { width: 62px; }
 
@@ -203,11 +191,7 @@ body {
   padding: 2px 2px 6px;
 }
 
-.row {
-  display: flex;
-  align-items: baseline;
-  gap: 12px;
-}
+.row { display: flex; align-items: baseline; gap: 12px; }
 .row .field-input,
 .row .field-area { flex: 1; min-width: 0; }
 
@@ -217,34 +201,22 @@ body {
 /* ----------------------------------------------------------
    Rejillas
    ---------------------------------------------------------- */
-.grid-2 {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 22px 44px;
-}
-.grid-head {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 18px 40px;
-  margin-top: 32px;
-}
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 22px 44px; }
+.grid-head { display: grid; grid-template-columns: 2fr 1fr; gap: 18px 40px; margin-top: 32px; }
 .span-all { grid-column: 1 / -1; }
 
 /* ----------------------------------------------------------
    Cabecera de sección
    ---------------------------------------------------------- */
-.section {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  margin: 36px 0 16px;
-}
+.section { display: flex; align-items: center; gap: 14px; margin: 36px 0 16px; }
 .section__label {
   font-size: 12.5px;
   font-weight: 700;
   letter-spacing: .24em;
   text-transform: uppercase;
   color: var(--section);
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 .section__line { flex: 1; height: 1px; background: var(--section-ln); }
 
@@ -260,23 +232,18 @@ body {
   line-height: 1.7;
   color: var(--ink-soft);
   background: transparent;
-  border: none;
+  border: 1px solid var(--hairline-2);
   outline: none;
   resize: none;
   overflow: hidden;
   min-height: 120px;
-  padding: 6px 2px;
+  padding: 8px 10px;
   text-align: justify;
 }
-.semblanza:focus { background: var(--focus-bg); }
+.semblanza:focus { background: var(--focus-bg); border-color: var(--ink); }
 .semblanza::placeholder { color: #b6ad98; font-style: italic; }
 
-.ceremony-row {
-  display: flex;
-  align-items: center;
-  gap: 18px;
-  flex-wrap: wrap;
-}
+.ceremony-row { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
 .toggle { display: flex; gap: 8px; }
 .toggle__btn {
   font: inherit;
@@ -299,20 +266,26 @@ body {
 .toggle-print { font-size: 17px; color: var(--ink); }
 
 /* ----------------------------------------------------------
-   Visibilidad pantalla / impresión
+   Espejos de impresión (generados por JS) — ocultos en pantalla
    ---------------------------------------------------------- */
+.field-print { display: none; }
+
 .only-print { display: none; }
 
-/* ----------------------------------------------------------
-   Impresión: A4, solo tinta negra
-   ---------------------------------------------------------- */
+/* ============================================================
+   IMPRESIÓN — A4, solo tinta negra, sin recortes
+   ============================================================ */
 @media print {
-  html, body { background: #fff; }
+  html, body { background: #fff !important; }
+
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 
   .toolbar { display: none !important; }
-  .sheet-wrap { padding: 0 !important; }
+
+  .sheet-wrap { padding: 0 !important; display: block !important; }
   .sheet {
     width: auto !important;
+    max-width: none !important;
     min-height: 0 !important;
     margin: 0 !important;
     padding: 0 !important;
@@ -320,38 +293,58 @@ body {
     box-shadow: none !important;
   }
 
-  /* Forzar líneas negras en todos los campos */
-  .field-input,
-  .field-area { box-shadow: 0 1px 0 0 #000 !important; }
-
+  /* Ocultar controles de formulario al imprimir */
   .field-input,
   .field-area,
-  .semblanza { background: transparent !important; color: #000 !important; }
-
-  /* Textareas: dejar que colapsen a su contenido real */
-  .field-area,
-  .semblanza { height: auto !important; min-height: 0 !important; }
-
-  /* Reducir tamaños de fuente para que quepa en una página */
-  .title           { font-size: 22pt !important; letter-spacing: .12em !important; }
-  .field-input--name { font-size: 18pt !important; }
-  .field-input--date { font-size: 15pt !important; }
-  .field-input--time { font-size: 13pt !important; }
-  .field-input     { font-size: 11pt !important; }
-  .field-area      { font-size: 11pt !important; }
-  .semblanza       { font-size: 10pt !important; line-height: 1.5 !important; }
-  .label           { font-size: 8pt  !important; }
-  .section__label  { font-size: 8pt  !important; }
-
-  /* Reducir márgenes internos */
-  .rule-double  { margin-top: 8px  !important; }
-  .grid-head    { margin-top: 14px !important; gap: 10px 20px !important; }
-  .name-block   { margin-top: 10px !important; }
-  .section      { margin: 14px 0 6px !important; }
-  .grid-2       { gap: 10px 28px !important; }
-
+  .semblanza,
+  .toggle,
   .only-screen { display: none !important; }
-  .only-print  { display: inline !important; }
 
-  @page { size: A4; margin: 14mm; }
+  /* Mostrar texto plano y espejos */
+  .only-print { display: inline !important; }
+
+  .field-print {
+    display: inline-block !important;
+    color: #000 !important;
+    font-family: var(--serif);
+    border-bottom: 1px solid #000;
+    min-height: 1.3em;
+    padding: 1px 2px 2px;
+    line-height: 1.45;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
+  /* Campo en fila (etiqueta + valor en línea): ocupa el resto */
+  .row .field-print { flex: 1 1 auto; min-width: 0; padding-left: 8px; }
+
+  /* Campo en bloque (debajo de su etiqueta) */
+  .field-print--block { display: block !important; width: 100%; }
+
+  /* Número de cabecera */
+  .field-print--num { min-width: 54px; text-align: left; }
+
+  /* Semblanza: párrafo largo, sin línea inferior, fluye libre */
+  .field-print--flow {
+    border: 1px solid #000 !important;
+    white-space: pre-wrap;
+    text-align: justify;
+    line-height: 1.6;
+    min-height: 6em;
+    padding: 6px 8px !important;
+  }
+
+  /* Evitar cortes a mitad de campo o sección */
+  .head__number,
+  .section,
+  .ceremony-row,
+  .row,
+  .stack,
+  .grid-head > *,
+  .grid-2 > * { break-inside: avoid; }
+
+  .grid-2 { gap: 18px 36px; }
+
+  @page { size: A4 portrait; margin: 16mm; }
 }
