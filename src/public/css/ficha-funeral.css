@@ -331,7 +331,7 @@ body {
    IMPRESIÓN — A4, solo tinta negra, sin recortes
    ============================================================ */
 @media print {
-  html, body { background: #fff !important; }
+  html, body { background: #fff !important; font-size: 10pt !important; }
 
   * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 
@@ -347,6 +347,15 @@ body {
     background: #fff !important;
     box-shadow: none !important;
   }
+
+  /* Título principal más compacto */
+  .title { font-size: 20pt !important; }
+
+  /* Espaciado entre secciones reducido */
+  .section        { margin: 18px 0 10px !important; }
+  .grid-head      { margin-top: 18px !important; }
+  .name-block     { margin-top: 14px !important; }
+  .rule-double    { margin-top: 12px !important; }
 
   /* Ocultar controles de formulario al imprimir */
   .field-input,
@@ -381,13 +390,13 @@ body {
   /* Número de cabecera */
   .field-print--num { min-width: 54px; text-align: left; font-size: 17px !important; }
 
-  /* Semblanza: párrafo largo, sin línea inferior, fluye libre */
+  /* Semblanza: párrafo largo, fluye libre con line-height compacto */
   .field-print--flow {
     border: 1px solid #000 !important;
     white-space: pre-wrap;
     text-align: justify;
-    line-height: 1.6;
-    min-height: 6em;
+    line-height: 1.45;
+    min-height: 4em;
     padding: 6px 8px !important;
   }
 
@@ -400,7 +409,7 @@ body {
   .grid-head > *,
   .grid-2 > * { break-inside: avoid; }
 
-  .grid-2 { gap: 18px 36px; }
+  .grid-2 { gap: 14px 28px; }
 
-  @page { size: A4 portrait; margin: 16mm; }
+  @page { size: A4 portrait; margin: 12mm; }
 }
