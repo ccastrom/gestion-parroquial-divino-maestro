@@ -26,7 +26,14 @@
   <div class="sheet-wrap">
     <div class="sheet">
 
-      <div class="head__number">
+      <div class="tipo-row only-screen">
+        <select id="select-tipo" class="tipo-select">
+          <option value="funeral">Celebración de funeral</option>
+          <option value="recuerdo">Celebración de recuerdo</option>
+        </select>
+      </div>
+
+      <div class="head__number" id="wrap-numero">
         <label class="label" for="f-numero">N.&ordm;</label>
         <input class="field-input field-input--num" id="f-numero" data-field="numero">
       </div>
@@ -36,8 +43,16 @@
           <rect x="8.6" y="0" width="2.8" height="28"></rect>
           <rect x="2" y="7.2" width="16" height="2.8"></rect>
         </svg>
-        <h1 class="title">Celebración de Funeral</h1>
+        <h1 class="title" id="titulo-celebracion">Celebración de Funeral</h1>
       </div>
+
+      <div id="wrap-tiempo" class="is-hidden">
+        <div class="tiempo-block">
+          <label class="label" for="f-tiempo">Tiempo fallecido</label>
+          <input class="field-input field-input--tiempo" id="f-tiempo" data-field="tiempo" placeholder="ej. 3 años">
+        </div>
+      </div>
+
       <div class="rule-double"></div>
 
       <div class="grid-head">
@@ -121,6 +136,10 @@
           <label class="label" for="f-canta">Canta</label>
           <input class="field-input" id="f-canta" data-field="canta">
         </div>
+      </div>
+
+      <div class="print-bottom only-screen">
+        <button class="btn btn--primary" id="btn-print-bottom">Imprimir / Guardar PDF</button>
       </div>
 
     </div>

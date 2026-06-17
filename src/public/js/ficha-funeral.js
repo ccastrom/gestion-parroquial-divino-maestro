@@ -1,10 +1,20 @@
 (function () {
   var KEY = 'ficha-funeral-v1';
 
+  var TIPOS_CELEBRACION = {
+    funeral:  'Celebración de Funeral',
+    recuerdo: 'Celebración de Recuerdo'
+  };
+
   var inputs = Array.prototype.slice.call(document.querySelectorAll('[data-field]'));
   var toggleBtns = Array.prototype.slice.call(document.querySelectorAll('#toggle-palabras .toggle__btn'));
   var palabrasPrint = document.getElementById('palabras-print');
+  var selectTipo = document.getElementById('select-tipo');
+  var tituloCelebracion = document.getElementById('titulo-celebracion');
+  var wrapNumero = document.getElementById('wrap-numero');
+  var wrapTiempo = document.getElementById('wrap-tiempo');
   var palabras = 'Sí';
+  var tipo = 'funeral';
   var mirrors = {};
 
   // Crea un <span class="field-print"> espejo por cada campo.
@@ -47,10 +57,24 @@
     el.style.height = el.scrollHeight + 'px';
   }
 
+  function applyTipo(val) {
+    tipo = val;
+    selectTipo.value = val;
+    tituloCelebracion.textContent = TIPOS_CELEBRACION[val];
+    if (val === 'recuerdo') {
+      wrapNumero.classList.add('is-hidden');
+      wrapTiempo.classList.remove('is-hidden');
+    } else {
+      wrapNumero.classList.remove('is-hidden');
+      wrapTiempo.classList.add('is-hidden');
+    }
+  }
+
   function read() {
     var data = {};
     inputs.forEach(function (el) { data[el.getAttribute('data-field')] = el.value; });
     data.palabras = palabras;
+    data.tipo = tipo;
     return data;
   }
 
@@ -73,6 +97,7 @@
     });
     palabras = data.palabras || 'Sí';
     paintToggle();
+    applyTipo(data.tipo || 'funeral');
     syncPrint();
   }
 
@@ -98,11 +123,17 @@
     });
   });
 
+  selectTipo.addEventListener('change', function () {
+    applyTipo(selectTipo.value);
+    persist();
+  });
+
   document.getElementById('btn-print').addEventListener('click', function () { window.print(); });
+  document.getElementById('btn-print-bottom').addEventListener('click', function () { window.print(); });
 
   document.getElementById('btn-clear').addEventListener('click', function () {
     if (window.confirm('¿Vaciar todos los campos de la ficha?')) {
-      apply({ palabras: 'Sí' });
+      apply({ palabras: 'Sí', tipo: 'funeral' });
       persist();
     }
   });
@@ -111,5 +142,5 @@
 
   var saved = null;
   try { saved = JSON.parse(localStorage.getItem(KEY) || 'null'); } catch (e) {}
-  apply(saved && typeof saved === 'object' ? saved : { palabras: 'Sí' });
+  apply(saved && typeof saved === 'object' ? saved : { palabras: 'Sí', tipo: 'funeral' });
 })();

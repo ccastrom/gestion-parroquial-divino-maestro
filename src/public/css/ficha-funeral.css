@@ -174,7 +174,7 @@ body {
 
 .field-area { line-height: 1.5; resize: none; overflow: hidden; }
 
-.field-input--num { width: 62px; }
+.field-input--num { width: 90px; font-size: 32px; }
 
 .field-input--display {
   font-family: var(--display);
@@ -266,6 +266,61 @@ body {
 .toggle-print { font-size: 17px; color: var(--ink); }
 
 /* ----------------------------------------------------------
+   Selector de tipo de celebración (solo pantalla)
+   ---------------------------------------------------------- */
+.tipo-row {
+  text-align: center;
+  margin-bottom: 18px;
+}
+.tipo-select {
+  font-family: var(--display);
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: .10em;
+  text-transform: uppercase;
+  color: var(--label);
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--hairline);
+  padding: 4px 8px;
+  cursor: pointer;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+}
+.tipo-select:focus { border-bottom-color: var(--ink); color: var(--ink); }
+
+/* ----------------------------------------------------------
+   Tiempo fallecido (visible solo en Celebración de Recuerdo)
+   ---------------------------------------------------------- */
+.tiempo-block {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+.field-input--tiempo {
+  font-size: 15px;
+  max-width: 220px;
+  text-align: center;
+}
+
+/* ----------------------------------------------------------
+   Botón inferior de impresión (solo pantalla)
+   ---------------------------------------------------------- */
+.print-bottom {
+  display: flex;
+  justify-content: center;
+  padding: 36px 0 8px;
+}
+
+/* ----------------------------------------------------------
+   Clase utilitaria para ocultar bloques condicionales
+   ---------------------------------------------------------- */
+.is-hidden { display: none !important; }
+
+/* ----------------------------------------------------------
    Espejos de impresión (generados por JS) — ocultos en pantalla
    ---------------------------------------------------------- */
 .field-print { display: none; }
@@ -298,6 +353,7 @@ body {
   .field-area,
   .semblanza,
   .toggle,
+  .tipo-row,
   .only-screen { display: none !important; }
 
   /* Mostrar texto plano y espejos */
@@ -323,7 +379,7 @@ body {
   .field-print--block { display: block !important; width: 100%; }
 
   /* Número de cabecera */
-  .field-print--num { min-width: 54px; text-align: left; }
+  .field-print--num { min-width: 54px; text-align: left; font-size: 17px !important; }
 
   /* Semblanza: párrafo largo, sin línea inferior, fluye libre */
   .field-print--flow {
