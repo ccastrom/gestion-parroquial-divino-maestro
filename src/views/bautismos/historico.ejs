@@ -30,10 +30,10 @@
     </div>
 
     <%
-      const bautizado = participantes.find(p => p.rol === 'Bautizado');
-      const padre     = participantes.find(p => p.rol === 'Padre' || p.rol === 'Padre 2');
-      const madre     = participantes.find(p => p.rol === 'Madre' || p.rol === 'Madre 2');
-      const padrinos  = participantes.filter(p => p.rol === 'Padrino' || p.rol === 'Madrina');
+      const bautizado = ListaDeParticipantes.find(participante => participante.rol === 'Bautizado');
+      const padre     = ListaDeParticipantes.find(participante => participante.rol === 'Padre' || participante.rol === 'Padre 2');
+      const madre     = ListaDeParticipantes.find(participante => participante.rol === 'Madre' || participante.rol === 'Madre 2');
+      const padrinos  = ListaDeParticipantes.filter(participante => participante.rol === 'Padrino' || participante.rol === 'Madrina');
 
       const formatFecha = (val) => {
         if (!val) return '—';
@@ -112,10 +112,10 @@
                     <td><%= madre.Persona.nombre %> <%= madre.Persona.apellido %></td>
                   </tr>
                 <% } %>
-                <% padrinos.forEach(function(p) { %>
+                <% padrinos.forEach(function(padrino) { %>
                   <tr>
                     <td><span class="badge bg-secondary">Padrino/Madrina</span></td>
-                    <td><%= p.Persona.nombre %> <%= p.Persona.apellido %></td>
+                    <td><%= padrino.Persona.nombre %> <%= padrino.Persona.apellido %></td>
                   </tr>
                 <% }); %>
                 <% if (!padre && !madre && padrinos.length === 0) { %>

@@ -206,7 +206,7 @@ const modificarTramite = async (id, tramiteDatos) => {
 };
 const obtenerDetalleTramite = async (id) => {
   const tramite = await obtenerTramitePorId(id);
-  const participantes = await participacionService.obtenerParticipantesPorTramite(id);
+  const ListaDeParticipantes = await participacionService.obtenerParticipantesPorTramite(id);
   let reunion = null;
   let catequista = null;
   if (tramite.id_fk_reunion_pre_bautizo) {
@@ -231,7 +231,7 @@ const obtenerDetalleTramite = async (id) => {
     order: [['apellido', 'ASC']],
   });
 
-  return { tramite, participantes, reunion, catequista, ListaDecatequistas, ListaDePersonas, ListaDeCelebrantes };
+  return { tramite, ListaDeParticipantes, reunion, catequista, ListaDecatequistas, ListaDePersonas, ListaDeCelebrantes };
 };
 const modificarDocumentoParticipacion = async ({ idTramite, idDocumento, documento }) => {
   validarEstadoDocumento(documento.estado_documento);

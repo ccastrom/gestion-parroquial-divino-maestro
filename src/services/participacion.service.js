@@ -25,7 +25,7 @@ const obtenerParticipacionPorId = async (id) => {
 };
 
 const obtenerParticipantesPorTramite = async (id) => {
-  const participantes = await Participacion.findAll({
+  const ListaDeParticipantes = await Participacion.findAll({
     where: { id_fk_tramite: id },
     include: [
       {
@@ -38,9 +38,9 @@ const obtenerParticipantesPorTramite = async (id) => {
         required: false
       }
     ],
-    
+
   });
-  return participantes;
+  return ListaDeParticipantes;
 };
 
 const verificarRolUnicoExistente = async (participante) => {

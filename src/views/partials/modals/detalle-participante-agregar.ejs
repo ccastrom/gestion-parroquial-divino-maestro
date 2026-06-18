@@ -3,7 +3,7 @@
   const rolesTabNuevo     = ['Bautizado', 'Padre', 'Madre', 'Padre 2', 'Madre 2', 'Padrino', 'Madrina', 'Tutor Legal', 'Testigo'];
   const rolesTabExistente = ['Bautizado', 'Padre', 'Madre', 'Padre 2', 'Madre 2', 'Padrino', 'Madrina', 'Celebrante', 'Tutor Legal', 'Testigo'];
 
-  const rolesTomados = participantes.map(function(p) { return p.rol; });
+  const rolesTomados = ListaDeParticipantes.map(function(participante) { return participante.rol; });
   const rolesDisponiblesNuevo     = rolesTabNuevo.filter(function(r) { return !rolesUnicos.includes(r) || !rolesTomados.includes(r); });
   const rolesDisponiblesExistente = rolesTabExistente.filter(function(r) { return !rolesUnicos.includes(r) || !rolesTomados.includes(r); });
 %>

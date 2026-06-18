@@ -12,8 +12,8 @@
             <select name="id_participacion" class="form-select" required>
               <option value="">-- Seleccionar --</option>
               <% const rolesDocumento = ['Bautizado', 'Padrino', 'Madrina']; %>
-              <% participantes.filter(p => rolesDocumento.includes(p.rol)).forEach(function(p) { %>
-                <option value="<%= p.id %>"><%= p.rol %> — <%= p.Persona.nombre %> <%= p.Persona.apellido %></option>
+              <% ListaDeParticipantes.filter(participante => rolesDocumento.includes(participante.rol)).forEach(function(participante) { %>
+                <option value="<%= participante.id %>"><%= participante.rol %> — <%= participante.Persona.nombre %> <%= participante.Persona.apellido %></option>
               <% }); %>
             </select>
           </div>

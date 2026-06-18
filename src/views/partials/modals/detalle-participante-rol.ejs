@@ -1,19 +1,19 @@
 <% var rolesEdicion = ['Bautizado', 'Padre', 'Madre', 'Padre 2', 'Madre 2', 'Padrino', 'Madrina', 'Celebrante', 'Tutor Legal', 'Testigo']; %>
 
-<div class="modal fade" id="modalEditarRol-<%= p.id %>" tabindex="-1">
+<div class="modal fade" id="modalEditarRol-<%= participante.id %>" tabindex="-1">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header bg-primary text-white">
-        <h5 class="modal-title">Editar Rol — <%= p.Persona.nombre %> <%= p.Persona.apellido %></h5>
+        <h5 class="modal-title">Editar Rol — <%= participante.Persona.nombre %> <%= participante.Persona.apellido %></h5>
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
       </div>
-      <form action="/web/tramites/<%= tramite.id %>/participacion/<%= p.id %>/rol" method="POST">
+      <form action="/web/tramites/<%= tramite.id %>/participacion/<%= participante.id %>/rol" method="POST">
         <div class="modal-body">
           <div class="mb-3">
             <label class="form-label">Rol</label>
             <select name="rol" class="form-select" required>
               <% rolesEdicion.forEach(function(r) { %>
-                <option value="<%= r %>" <%= p.rol === r ? 'selected' : '' %>><%= r %></option>
+                <option value="<%= r %>" <%= participante.rol === r ? 'selected' : '' %>><%= r %></option>
               <% }); %>
             </select>
           </div>
