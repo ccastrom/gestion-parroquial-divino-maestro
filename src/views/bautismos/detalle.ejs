@@ -69,41 +69,7 @@
       </div>
     </div>
 
-    <!-- Modal Editar Estado -->
-    <div class="modal fade" id="modalEditarEstado" tabindex="-1">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header bg-primary text-white">
-            <h5 class="modal-title">Editar Estado del Trámite</h5>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-          </div>
-          <form action="/web/tramites/<%= tramite.id %>/estado" method="POST">
-            <div class="modal-body">
-              <div class="mb-3">
-                <label class="form-label">Estado</label>
-                <select name="estado" class="form-select" required>
-                  <% estadosTramite.forEach(function(e) { %>
-                    <option value="<%= e %>" <%= tramite.estado === e ? 'selected' : '' %>><%= e %></option>
-                  <% }); %>
-                </select>
-              </div>
-              <div class="mb-3">
-                <label class="form-label">Fecha bautismo</label>
-                <input type="date" name="fecha_bautismo" class="form-control" value="<%= tramite.fecha_bautismo ? new Date(tramite.fecha_bautismo).toISOString().split('T')[0] : '' %>">
-              </div>
-              <div class="mb-3">
-                <label class="form-label">Hora bautismo</label>
-                <input type="time" name="hora_bautismo" class="form-control" value="<%= isoHora(tramite.fecha_bautismo) || '' %>">
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-              <button type="submit" class="btn btn-primary">Guardar</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
+    <%- include('../partials/modals/detalle-estado') %>
 
     <!-- Participantes -->
     <div class="card mb-4">
@@ -113,7 +79,6 @@
       </div>
       <div class="card-body">
         <% if (participantes && participantes.length > 0) { %>
-          <% const rolesEdicion = ['Bautizado', 'Padre', 'Madre', 'Padre 2', 'Madre 2', 'Padrino', 'Madrina', 'Celebrante', 'Tutor Legal', 'Testigo']; %>
           <% participantes.forEach(function(p) { %>
             <div class="mb-3 p-3 border rounded">
               <div class="row">
@@ -148,91 +113,9 @@
               </div>
             </div>
 
-            <!-- Modal Editar Rol -->
-            <div class="modal fade" id="modalEditarRol-<%= p.id %>" tabindex="-1">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header bg-primary text-white">
-                    <h5 class="modal-title">Editar Rol — <%= p.Persona.nombre %> <%= p.Persona.apellido %></h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                  </div>
-                  <form action="/web/tramites/<%= tramite.id %>/participacion/<%= p.id %>/rol" method="POST">
-                    <div class="modal-body">
-                      <div class="mb-3">
-                        <label class="form-label">Rol</label>
-                        <select name="rol" class="form-select" required>
-                          <% rolesEdicion.forEach(function(r) { %>
-                            <option value="<%= r %>" <%= p.rol === r ? 'selected' : '' %>><%= r %></option>
-                          <% }); %>
-                        </select>
-                      </div>
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                      <button type="submit" class="btn btn-primary">Guardar</button>
-                    </div>
-                  </form>
-                </div>
-              </div>
-            </div>
+            <%- include('../partials/modals/detalle-participante-rol', { p: p }) %>
 
-            <!-- Modal Editar Datos Personales -->
-            <div class="modal fade" id="modalEditarDatosPersona-<%= p.id %>" tabindex="-1">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header bg-secondary text-white">
-                    <h5 class="modal-title">Editar Persona — <%= p.Persona.nombre %> <%= p.Persona.apellido %></h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                  </div>
-                  <form action="/web/personas/<%= p.Persona.id %>" method="POST">
-                    <input type="hidden" name="origen" value="detalle">
-                    <input type="hidden" name="tramiteId" value="<%= tramite.id %>">
-                    <div class="modal-body">
-                      <div class="mb-3">
-                        <label class="form-label">Nombre</label>
-                        <input type="text" name="nombre" class="form-control" value="<%= p.Persona.nombre %>" required>
-                      </div>
-                      <div class="mb-3">
-                        <label class="form-label">Apellido</label>
-                        <input type="text" name="apellido" class="form-control" value="<%= p.Persona.apellido %>" required>
-                      </div>
-                      <% if (p.rol === 'Bautizado') { %>
-                      <div class="mb-3">
-                        <label class="form-label">RUT</label>
-                        <input type="text" name="rut" class="form-control" value="<%= p.Persona.rut || '' %>">
-                      </div>
-                      <div class="mb-3">
-                        <label class="form-label">Fecha de nacimiento</label>
-                        <input type="date" name="fecha_nacimiento" class="form-control"
-                          value="<%= p.Persona.fecha_nacimiento ? new Date(p.Persona.fecha_nacimiento).toISOString().split('T')[0] : '' %>">
-                      </div>
-                      <div class="mb-3">
-                        <label class="form-label">Lugar de nacimiento</label>
-                        <input type="text" name="lugar_nacimiento" class="form-control" value="<%= p.Persona.lugar_nacimiento || '' %>">
-                      </div>
-                      <% } %>
-                      <div class="mb-3">
-                        <label class="form-label">Teléfono</label>
-                        <input type="text" name="fono" class="form-control" value="<%= p.Persona.fono || '' %>">
-                      </div>
-                      <div class="mb-3">
-                        <label class="form-label">Dirección</label>
-                        <input type="text" name="direccion" class="form-control" value="<%= p.Persona.direccion || '' %>">
-                      </div>
-                      <div class="mb-3">
-                        <label class="form-label">Observaciones</label>
-                        <textarea name="observaciones" class="form-control" rows="3"><%= p.Persona.observaciones || '' %></textarea>
-                      </div>
-                      <input type="hidden" name="tipo" value="<%= p.Persona.tipo || '' %>">
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                      <button type="submit" class="btn btn-primary">Guardar cambios</button>
-                    </div>
-                  </form>
-                </div>
-              </div>
-            </div>
+            <%- include('../partials/modals/detalle-participante-persona', { p: p }) %>
           <% }); %>
         <% } else { %>
           <p class="text-muted">Sin participantes agregados</p>
@@ -273,49 +156,7 @@
       </div>
     </div>
 
-    <!-- Modal Editar Reunión -->
-    <div class="modal fade" id="modalEditarReunion" tabindex="-1">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header bg-primary text-white">
-            <h5 class="modal-title">Editar Reunión Prebautismal</h5>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-          </div>
-          <form action="/web/tramites/<%= tramite.id %>/reunion" method="POST">
-            <div class="modal-body">
-              <div class="mb-3">
-                <label class="form-label">Catequista</label>
-                <select name="id_fk_persona_catequista" class="form-select">
-                  <option value="">-- Seleccionar --</option>
-                  <% ListaDecatequistas.forEach(function(c) { %>
-                    <option value="<%= c.id %>" <%= reunion && reunion.id_fk_persona_catequista === c.id ? 'selected' : '' %>>
-                      <%= c.nombre %> <%= c.apellido %>
-                    </option>
-                  <% }); %>
-                </select>
-              </div>
-              <div class="mb-3">
-                <label class="form-label">Fecha reunión</label>
-                <input type="date" name="fecha" class="form-control"
-                  value="<%= reunion && reunion.fecha ? new Date(reunion.fecha).toISOString().split('T')[0] : '' %>">
-              </div>
-              <div class="mb-3">
-                <label class="form-label">Estado</label>
-                <select name="estado" class="form-select" required>
-                  <% estadosReunion.forEach(function(e) { %>
-                    <option value="<%= e %>" <%= reunion && reunion.estado === e ? 'selected' : '' %>><%= e %></option>
-                  <% }); %>
-                </select>
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-              <button type="submit" class="btn btn-primary">Guardar</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
+    <%- include('../partials/modals/detalle-reunion') %>
 
     <!-- Documentos -->
     <div class="card mb-4">
@@ -358,41 +199,7 @@
                 </div>
               </div>
 
-              <!-- Modal Editar Documento -->
-              <div class="modal fade" id="modalEditarDocumento-<%= p.documento.id %>" tabindex="-1">
-                <div class="modal-dialog">
-                  <div class="modal-content">
-                    <div class="modal-header bg-primary text-white">
-                      <h5 class="modal-title">Editar Documento — <%= p.Persona.nombre %> <%= p.Persona.apellido %></h5>
-                      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                    </div>
-                    <form action="/web/tramites/<%= tramite.id %>/documento/<%= p.documento.id %>" method="POST">
-                      <div class="modal-body">
-                        <div class="mb-3">
-                          <label class="form-label">Tipo de documento</label>
-                          <input type="text" name="tipo_documento" class="form-control" value="<%= p.documento.tipo_documento || '' %>">
-                        </div>
-                        <div class="mb-3">
-                          <label class="form-label">Estado</label>
-                          <select name="estado_documento" class="form-select" required>
-                            <% estadosDocumento.forEach(function(e) { %>
-                              <option value="<%= e %>" <%= p.documento.estado_documento === e ? 'selected' : '' %>><%= e %></option>
-                            <% }); %>
-                          </select>
-                        </div>
-                        <div class="mb-3">
-                          <label class="form-label">Fecha entrega</label>
-                          <input type="date" name="fecha_entrega" class="form-control" value="<%= p.documento.fecha_entrega || '' %>">
-                        </div>
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-primary">Guardar</button>
-                      </div>
-                    </form>
-                  </div>
-                </div>
-              </div>
+              <%- include('../partials/modals/detalle-doc-editar', { p: p }) %>
             <% } %>
           <% }); %>
         <% } else { %>
@@ -403,182 +210,9 @@
 
   </div>
 
-    <!-- Modal Agregar Documento -->
-    <div class="modal fade" id="modalAgregarDocumento" tabindex="-1">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header bg-primary text-white">
-            <h5 class="modal-title">Agregar Documento</h5>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-          </div>
-          <form action="/web/tramites/<%= tramite.id %>/documento" method="POST">
-            <div class="modal-body">
-              <div class="mb-3">
-                <label class="form-label">Participante</label>
-                <select name="id_participacion" class="form-select" required>
-                  <option value="">-- Seleccionar --</option>
-                  <% const rolesDocumento = ['Bautizado', 'Padrino', 'Madrina']; %>
-                  <% participantes.filter(p => rolesDocumento.includes(p.rol)).forEach(function(p) { %>
-                    <option value="<%= p.id %>"><%= p.rol %> — <%= p.Persona.nombre %> <%= p.Persona.apellido %></option>
-                  <% }); %>
-                </select>
-              </div>
-              <div class="mb-3">
-                <label class="form-label">Tipo de documento</label>
-                <input type="text" name="tipo_documento" class="form-control" placeholder="Ej: Partida de nacimiento">
-              </div>
-              <div class="mb-3">
-                <label class="form-label">Estado</label>
-                <select name="estado_documento" class="form-select" required>
-                  <% estadosDocumento.forEach(function(e) { %>
-                    <option value="<%= e %>"><%= e %></option>
-                  <% }); %>
-                </select>
-              </div>
-              <div class="mb-3">
-                <label class="form-label">Fecha entrega</label>
-                <input type="date" name="fecha_entrega" class="form-control">
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-              <button type="submit" class="btn btn-primary">Guardar</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
+    <%- include('../partials/modals/detalle-doc-agregar') %>
 
-    <!-- Modal Agregar Participante -->
-    <%
-      const rolesUnicos       = ['Bautizado', 'Padre', 'Madre', 'Padre 2', 'Madre 2', 'Celebrante'];
-      const rolesTabNuevo     = ['Bautizado', 'Padre', 'Madre', 'Padre 2', 'Madre 2', 'Padrino', 'Madrina', 'Tutor Legal', 'Testigo'];
-      const rolesTabExistente = ['Bautizado', 'Padre', 'Madre', 'Padre 2', 'Madre 2', 'Padrino', 'Madrina', 'Celebrante', 'Tutor Legal', 'Testigo'];
-
-      const rolesTomados = participantes.map(function(p) { return p.rol; });
-      const rolesDisponiblesNuevo     = rolesTabNuevo.filter(function(r) { return !rolesUnicos.includes(r) || !rolesTomados.includes(r); });
-      const rolesDisponiblesExistente = rolesTabExistente.filter(function(r) { return !rolesUnicos.includes(r) || !rolesTomados.includes(r); });
-    %>
-    <div class="modal fade" id="modalAgregarParticipante" tabindex="-1">
-      <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-          <div class="modal-header bg-primary text-white">
-            <h5 class="modal-title">Agregar Participante</h5>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-          </div>
-          <div class="modal-body">
-
-            <!-- Pestañas -->
-            <ul class="nav nav-tabs mb-3" id="tabsParticipante">
-              <li class="nav-item">
-                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tabNuevo">Nueva persona</button>
-              </li>
-              <li class="nav-item">
-                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabExistente">Persona existente</button>
-              </li>
-            </ul>
-
-            <div class="tab-content">
-
-              <!-- Pestaña 1: Nueva persona -->
-              <div class="tab-pane fade show active" id="tabNuevo">
-                <form id="formNuevoParticipante" action="/web/tramites/<%= tramite.id %>/participantes" method="POST" novalidate>
-                  <div class="mb-3">
-                    <label class="form-label">Rol</label>
-                    <select name="rol" id="rolNuevo" class="form-select">
-                      <option value="">-- Seleccionar --</option>
-                      <% rolesDisponiblesNuevo.forEach(function(r) { %>
-                        <option value="<%= r %>"><%= r %></option>
-                      <% }); %>
-                    </select>
-                    <div class="invalid-feedback">Selecciona un rol</div>
-                  </div>
-                  <div class="mb-3">
-                    <label class="form-label">Nombre</label>
-                    <input type="text" name="nombre" id="nombreNuevo" class="form-control">
-                    <div class="invalid-feedback">El nombre es obligatorio</div>
-                  </div>
-                  <div class="mb-3">
-                    <label class="form-label">Apellido</label>
-                    <input type="text" name="apellido" id="apellidoNuevo" class="form-control">
-                    <div class="invalid-feedback">El apellido es obligatorio</div>
-                  </div>
-                  <div class="mb-3 d-none" id="wrapperRutNuevo">
-                    <label class="form-label">RUT *</label>
-                    <input type="text" name="rut" id="rutNuevo" class="form-control">
-                    <div class="invalid-feedback">El RUT es obligatorio para el Bautizado</div>
-                  </div>
-                  <div class="mb-3 d-none" id="wrapperFechaNuevo">
-                    <label class="form-label">Fecha de nacimiento *</label>
-                    <input type="date" name="fecha_nacimiento" id="fechaNacimientoNuevo" class="form-control">
-                    <div class="invalid-feedback">La fecha de nacimiento es obligatoria para el Bautizado</div>
-                  </div>
-                  <div class="mb-3">
-                    <label class="form-label">Teléfono</label>
-                    <input type="text" name="fono" class="form-control">
-                  </div>
-                  <div class="mb-3">
-                    <label class="form-label">Dirección</label>
-                    <input type="text" name="direccion" class="form-control">
-                  </div>
-                   <div class="mb-3 d-none" id="wrapperLugarNuevo">
-                    <label class="form-label">Lugar de nacimiento</label>
-                    <input type="text" name="lugar_nacimiento" id="lugarNacimientoNuevo" class="form-control">
-                  </div>
-                  <div class="mb-3">
-                    <label class="form-label">Observaciones</label>
-                    <textarea name="observaciones" id="observaciones" class="form-control" rows="4"></textarea>
-                  </div>
-                 
-                  <div class="d-flex justify-content-end gap-2">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary">Guardar</button>
-                  </div>
-                </form>
-              </div>
-
-              <!-- Pestaña 2: Persona existente -->
-              <div class="tab-pane fade" id="tabExistente">
-                <form action="/web/tramites/<%= tramite.id %>/participantes" method="POST">
-                  <div class="mb-3">
-                    <label class="form-label">Rol</label>
-                    <select name="rol" id="rolExistente" class="form-select" required>
-                      <option value="">-- Seleccionar --</option>
-                      <% rolesDisponiblesExistente.forEach(function(r) { %>
-                        <option value="<%= r %>"><%= r %></option>
-                      <% }); %>
-                    </select>
-                  </div>
-                  <div class="mb-3" id="wrapperFamiliares">
-                    <label class="form-label">Persona</label>
-                    <select name="personaId" id="selectFamiliares" class="form-select" required>
-                      <option value="">-- Seleccionar --</option>
-                      <% ListaDePersonas.forEach(function(persona) { %>
-                        <option value="<%= persona.id %>"><%= persona.apellido %>, <%= persona.nombre %></option>
-                      <% }); %>
-                    </select>
-                  </div>
-                  <div class="mb-3 d-none" id="wrapperCelebrantes">
-                    <label class="form-label">Celebrante</label>
-                    <select name="personaId" id="selectCelebrantes" class="form-select" disabled>
-                      <option value="">-- Seleccionar --</option>
-                      <% ListaDeCelebrantes.forEach(function(c) { %>
-                        <option value="<%= c.id %>"><%= c.apellido %>, <%= c.nombre %></option>
-                      <% }); %>
-                    </select>
-                  </div>
-                  <div class="d-flex justify-content-end gap-2">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary">Guardar</button>
-                  </div>
-                </form>
-              </div>
-
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <%- include('../partials/modals/detalle-participante-agregar') %>
 
   <%- include('ficha') %>
 

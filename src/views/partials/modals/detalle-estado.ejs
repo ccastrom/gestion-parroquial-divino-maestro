@@ -1,0 +1,41 @@
+<%
+  function isoHora(val) {
+    if (!val) return null;
+    var t = new Date(val).toISOString().split('T')[1].substring(0, 5);
+    return t === '00:00' ? null : t;
+  }
+%>
+<div class="modal fade" id="modalEditarEstado" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title">Editar Estado del Trámite</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <form action="/web/tramites/<%= tramite.id %>/estado" method="POST">
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label">Estado</label>
+            <select name="estado" class="form-select" required>
+              <% estadosTramite.forEach(function(e) { %>
+                <option value="<%= e %>" <%= tramite.estado === e ? 'selected' : '' %>><%= e %></option>
+              <% }); %>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Fecha bautismo</label>
+            <input type="date" name="fecha_bautismo" class="form-control" value="<%= tramite.fecha_bautismo ? new Date(tramite.fecha_bautismo).toISOString().split('T')[0] : '' %>">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Hora bautismo</label>
+            <input type="time" name="hora_bautismo" class="form-control" value="<%= isoHora(tramite.fecha_bautismo) || '' %>">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

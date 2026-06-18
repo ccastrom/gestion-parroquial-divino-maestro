@@ -1,0 +1,128 @@
+<%
+  const rolesUnicos       = ['Bautizado', 'Padre', 'Madre', 'Padre 2', 'Madre 2', 'Celebrante'];
+  const rolesTabNuevo     = ['Bautizado', 'Padre', 'Madre', 'Padre 2', 'Madre 2', 'Padrino', 'Madrina', 'Tutor Legal', 'Testigo'];
+  const rolesTabExistente = ['Bautizado', 'Padre', 'Madre', 'Padre 2', 'Madre 2', 'Padrino', 'Madrina', 'Celebrante', 'Tutor Legal', 'Testigo'];
+
+  const rolesTomados = participantes.map(function(p) { return p.rol; });
+  const rolesDisponiblesNuevo     = rolesTabNuevo.filter(function(r) { return !rolesUnicos.includes(r) || !rolesTomados.includes(r); });
+  const rolesDisponiblesExistente = rolesTabExistente.filter(function(r) { return !rolesUnicos.includes(r) || !rolesTomados.includes(r); });
+%>
+<div class="modal fade" id="modalAgregarParticipante" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title">Agregar Participante</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+
+        <!-- Pestañas -->
+        <ul class="nav nav-tabs mb-3" id="tabsParticipante">
+          <li class="nav-item">
+            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tabNuevo">Nueva persona</button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabExistente">Persona existente</button>
+          </li>
+        </ul>
+
+        <div class="tab-content">
+
+          <!-- Pestaña 1: Nueva persona -->
+          <div class="tab-pane fade show active" id="tabNuevo">
+            <form id="formNuevoParticipante" action="/web/tramites/<%= tramite.id %>/participantes" method="POST" novalidate>
+              <div class="mb-3">
+                <label class="form-label">Rol</label>
+                <select name="rol" id="rolNuevo" class="form-select">
+                  <option value="">-- Seleccionar --</option>
+                  <% rolesDisponiblesNuevo.forEach(function(r) { %>
+                    <option value="<%= r %>"><%= r %></option>
+                  <% }); %>
+                </select>
+                <div class="invalid-feedback">Selecciona un rol</div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Nombre</label>
+                <input type="text" name="nombre" id="nombreNuevo" class="form-control">
+                <div class="invalid-feedback">El nombre es obligatorio</div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Apellido</label>
+                <input type="text" name="apellido" id="apellidoNuevo" class="form-control">
+                <div class="invalid-feedback">El apellido es obligatorio</div>
+              </div>
+              <div class="mb-3 d-none" id="wrapperRutNuevo">
+                <label class="form-label">RUT *</label>
+                <input type="text" name="rut" id="rutNuevo" class="form-control">
+                <div class="invalid-feedback">El RUT es obligatorio para el Bautizado</div>
+              </div>
+              <div class="mb-3 d-none" id="wrapperFechaNuevo">
+                <label class="form-label">Fecha de nacimiento *</label>
+                <input type="date" name="fecha_nacimiento" id="fechaNacimientoNuevo" class="form-control">
+                <div class="invalid-feedback">La fecha de nacimiento es obligatoria para el Bautizado</div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Teléfono</label>
+                <input type="text" name="fono" class="form-control">
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Dirección</label>
+                <input type="text" name="direccion" class="form-control">
+              </div>
+              <div class="mb-3 d-none" id="wrapperLugarNuevo">
+                <label class="form-label">Lugar de nacimiento</label>
+                <input type="text" name="lugar_nacimiento" id="lugarNacimientoNuevo" class="form-control">
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Observaciones</label>
+                <textarea name="observaciones" id="observaciones" class="form-control" rows="4"></textarea>
+              </div>
+              <div class="d-flex justify-content-end gap-2">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" class="btn btn-primary">Guardar</button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Pestaña 2: Persona existente -->
+          <div class="tab-pane fade" id="tabExistente">
+            <form action="/web/tramites/<%= tramite.id %>/participantes" method="POST">
+              <div class="mb-3">
+                <label class="form-label">Rol</label>
+                <select name="rol" id="rolExistente" class="form-select" required>
+                  <option value="">-- Seleccionar --</option>
+                  <% rolesDisponiblesExistente.forEach(function(r) { %>
+                    <option value="<%= r %>"><%= r %></option>
+                  <% }); %>
+                </select>
+              </div>
+              <div class="mb-3" id="wrapperFamiliares">
+                <label class="form-label">Persona</label>
+                <select name="personaId" id="selectFamiliares" class="form-select" required>
+                  <option value="">-- Seleccionar --</option>
+                  <% ListaDePersonas.forEach(function(persona) { %>
+                    <option value="<%= persona.id %>"><%= persona.apellido %>, <%= persona.nombre %></option>
+                  <% }); %>
+                </select>
+              </div>
+              <div class="mb-3 d-none" id="wrapperCelebrantes">
+                <label class="form-label">Celebrante</label>
+                <select name="personaId" id="selectCelebrantes" class="form-select" disabled>
+                  <option value="">-- Seleccionar --</option>
+                  <% ListaDeCelebrantes.forEach(function(c) { %>
+                    <option value="<%= c.id %>"><%= c.apellido %>, <%= c.nombre %></option>
+                  <% }); %>
+                </select>
+              </div>
+              <div class="d-flex justify-content-end gap-2">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" class="btn btn-primary">Guardar</button>
+              </div>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

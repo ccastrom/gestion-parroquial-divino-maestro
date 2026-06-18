@@ -1,0 +1,56 @@
+<div class="modal fade" id="modalEditarDatosPersona-<%= p.id %>" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-secondary text-white">
+        <h5 class="modal-title">Editar Persona — <%= p.Persona.nombre %> <%= p.Persona.apellido %></h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <form action="/web/personas/<%= p.Persona.id %>" method="POST">
+        <input type="hidden" name="origen" value="detalle">
+        <input type="hidden" name="tramiteId" value="<%= tramite.id %>">
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label">Nombre</label>
+            <input type="text" name="nombre" class="form-control" value="<%= p.Persona.nombre %>" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Apellido</label>
+            <input type="text" name="apellido" class="form-control" value="<%= p.Persona.apellido %>" required>
+          </div>
+          <% if (p.rol === 'Bautizado') { %>
+          <div class="mb-3">
+            <label class="form-label">RUT</label>
+            <input type="text" name="rut" class="form-control" value="<%= p.Persona.rut || '' %>">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Fecha de nacimiento</label>
+            <input type="date" name="fecha_nacimiento" class="form-control"
+              value="<%= p.Persona.fecha_nacimiento ? new Date(p.Persona.fecha_nacimiento).toISOString().split('T')[0] : '' %>">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Lugar de nacimiento</label>
+            <input type="text" name="lugar_nacimiento" class="form-control" value="<%= p.Persona.lugar_nacimiento || '' %>">
+          </div>
+          <% } %>
+          <div class="mb-3">
+            <label class="form-label">Teléfono</label>
+            <input type="text" name="fono" class="form-control" value="<%= p.Persona.fono || '' %>">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Dirección</label>
+            <input type="text" name="direccion" class="form-control" value="<%= p.Persona.direccion || '' %>">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Observaciones</label>
+            <textarea name="observaciones" class="form-control" rows="3"><%= p.Persona.observaciones || '' %></textarea>
+          </div>
+          <input type="hidden" name="tipo" value="<%= p.Persona.tipo || '' %>">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Guardar cambios</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
