@@ -11,9 +11,16 @@
     return new Date(iso + 'T12:00:00');
   };
 
+  const horaBautismo = (v) => {
+    if (!v) return null;
+    const t = new Date(v).toISOString().split('T')[1].substring(0, 5);
+    return t === '00:00' ? null : t;
+  };
+
   const meses = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
   const fechaNacimiento = safeDate(bautizadoFicha && bautizadoFicha.Persona.fecha_nacimiento);
   const fechaBautismo   = safeDate(tramite.fecha_bautismo);
+  const horaDelBautismo = horaBautismo(tramite.fecha_bautismo);
   const fechaReunion    = safeDate(reunion && reunion.fecha);
 %>
 
@@ -31,7 +38,7 @@
     </div>
     <div class="fp-tile fp-tile--blank">
       <span class="fp-label">Hora</span>
-      <span class="fp-value"></span>
+      <span class="fp-value"><%= horaDelBautismo || '' %></span>
     </div>
   </div>
 
