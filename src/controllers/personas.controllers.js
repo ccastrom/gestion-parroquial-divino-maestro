@@ -16,12 +16,19 @@ const GET_PersonaById= asyncHandler(async(req,res)=>{
   
 
 const POST_Personas=asyncHandler (async(req,res)=>{
-    
-   const crearPersona= await PersonaService.crearPersona(req.body);
-  if(crearPersona.advertencia){
-   return res.status(200).json(crearPersona);
+  try {
+    const crearPersona= await PersonaService.crearPersona(req.body);
+    res.status(201).json(crearPersona);
+  } catch (error) {
+    if (error.advertencia) {
+      return res.status(200).json({
+        advertencia: true,
+        mensaje: error.message,
+        personaEncontrada: error.personaEncontrada,
+      });
+    }
+    throw error;
   }
-  res.status(201).json(crearPersona);
 });
 
 
