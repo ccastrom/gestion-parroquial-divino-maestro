@@ -34,11 +34,11 @@ const POST_restaurarTramite_Web = asyncHandler(async(req, res) => {
 });
 
 const GET_TramitesById_Web= asyncHandler(async(req,res)=>{
-    const {tramite, participantes, reunion, catequista, ListaDecatequistas, ListaDePersonas, ListaDeCelebrantes} = await tramiteService.obtenerDetalleTramite(req.params.id);
+    const {tramite, ListaDeParticipantes, reunion, catequista, ListaDecatequistas, ListaDePersonas, ListaDeCelebrantes} = await tramiteService.obtenerDetalleTramite(req.params.id);
     if (tramite.es_historico) {
-        return res.render('bautismos/historico', { tramite, participantes, reunion: null, catequista: null, query: req.query });
+        return res.render('bautismos/historico', { tramite, ListaDeParticipantes, reunion: null, catequista: null, query: req.query });
     }
-    res.render('bautismos/detalle', {tramite, participantes, catequista, reunion, ListaDecatequistas, ListaDePersonas, ListaDeCelebrantes, estadosTramite: Object.values(ESTADOS_TRAMITE), estadosReunion: Object.values(ESTADOS_REUNION), estadosDocumento: Object.values(ESTADOS_DOCUMENTO), query: req.query});
+    res.render('bautismos/detalle', {tramite, ListaDeParticipantes, catequista, reunion, ListaDecatequistas, ListaDePersonas, ListaDeCelebrantes, estadosTramite: Object.values(ESTADOS_TRAMITE), estadosReunion: Object.values(ESTADOS_REUNION), estadosDocumento: Object.values(ESTADOS_DOCUMENTO), query: req.query});
 });
 
 const POST_CambiarEstado_Web = asyncHandler(async(req, res)=>{

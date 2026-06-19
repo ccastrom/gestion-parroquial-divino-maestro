@@ -17,6 +17,7 @@ const {
 const { validarBodyWeb } = require('../../middleware/validarBodyWeb.js');
 const { agregarParticipanteWebSchema, editarRolParticipanteWebSchema } = require('../../schemas/participantes.schemas.js');
 const { registrarHistoricoWebSchema } = require('../../schemas/historico.schema.js');
+const { documentoWebSchema } = require('../../schemas/documento.schemas.js');
 
 const router = Router();
 
@@ -33,8 +34,8 @@ router.post('/:id/participacion/:idParticipacion/rol',          validarBodyWeb(e
 router.post('/:id/participacion/:idParticipacion/eliminar',     POST_EliminarParticipante_Web);
 
 // 3. Documentos
-router.post('/:id/documento',               POST_AgregarDocumento_Web);
-router.post('/:id/documento/:idDocumento',  POST_ModificarDocumento_Web);
+router.post('/:id/documento',               validarBodyWeb(documentoWebSchema), POST_AgregarDocumento_Web);
+router.post('/:id/documento/:idDocumento',  validarBodyWeb(documentoWebSchema), POST_ModificarDocumento_Web);
 
 // 4. Reunión prebautismal
 router.post('/:id/reunion',             POST_CambiarReunion_Web);

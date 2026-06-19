@@ -9,7 +9,11 @@ const crearPersona = async (persona, transaction = null) => {
   } else {
     const resultado = await obtenerPersonaPorNombreApellido(persona);
     if (resultado?.advertencia) {
-      return resultado;
+      const error = new Error(`Ya existe una persona registrada con el nombre "${persona.nombre} ${persona.apellido}". Si es la misma persona, vinculala como persona existente. Si es otra persona distinta, ingresa su RUT para diferenciarla.`);
+      error.statusCode = 409;
+      error.advertencia = true;
+      error.personaEncontrada = resultado.personaEncontrada;
+      throw error;
     }
   }
   return await Persona.create(persona, { transaction });

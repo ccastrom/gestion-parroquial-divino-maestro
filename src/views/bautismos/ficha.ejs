@@ -1,9 +1,9 @@
 <%
-  const bautizadoFicha  = participantes.find(p => p.rol === 'Bautizado');
-  const padreFicha      = participantes.find(p => p.rol === 'Padre' || p.rol === 'Padre 2');
-  const madreFicha      = participantes.find(p => p.rol === 'Madre' || p.rol === 'Madre 2');
-  const padrinosFicha   = participantes.filter(p => p.rol === 'Padrino' || p.rol === 'Madrina');
-  const celebranteFicha = participantes.find(p => p.rol === 'Celebrante');
+  const bautizadoFicha  = ListaDeParticipantes.find(participante => participante.rol === 'Bautizado');
+  const padreFicha      = ListaDeParticipantes.find(participante => participante.rol === 'Padre' || participante.rol === 'Padre 2');
+  const madreFicha      = ListaDeParticipantes.find(participante => participante.rol === 'Madre' || participante.rol === 'Madre 2');
+  const padrinosFicha   = ListaDeParticipantes.filter(participante => participante.rol === 'Padrino' || participante.rol === 'Madrina');
+  const celebranteFicha = ListaDeParticipantes.find(participante => participante.rol === 'Celebrante');
 
   const safeDate = (v) => {
     if (!v) return null;
@@ -113,13 +113,13 @@
         <span>Padrino / Madrina</span>
         <span>Celular</span>
       </div>
-      <% padrinosFicha.forEach(function(p) { %>
+      <% padrinosFicha.forEach(function(padrino) { %>
         <div class="fp-prow">
           <div>
-            <span class="fp-rol"><%= p.rol %></span>
-            <span class="fp-pname"><%= p.Persona.nombre %> <%= p.Persona.apellido %></span>
+            <span class="fp-rol"><%= padrino.rol %></span>
+            <span class="fp-pname"><%= padrino.Persona.nombre %> <%= padrino.Persona.apellido %></span>
           </div>
-          <div><span class="fp-pname"><%= p.Persona.fono || '' %></span></div>
+          <div><span class="fp-pname"><%= padrino.Persona.fono || '' %></span></div>
         </div>
       <% }); %>
       <% for (var i = padrinosFicha.length; i < 4; i++) { %>
