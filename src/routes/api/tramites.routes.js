@@ -1,8 +1,8 @@
 
-const { agregarParticipanteSchema}= require('../schemas/participantes.schemas.js');
-const {actualizarReunionSchema}= require('../schemas/reunion_pre_bautizo.schema.js');
-const {documentoParticipante}=require('../schemas/documento.schemas.js');
-const {validateBody}= require('../middleware/validarBody.js');
+const { agregarParticipanteSchema}= require('../../schemas/participantes.schemas.js');
+const {actualizarReunionSchema}= require('../../schemas/reunion_pre_bautizo.schema.js');
+const {documentoParticipante}=require('../../schemas/documento.schemas.js');
+const {validateBody}= require('../../middleware/validarBody.js');
 const {Router} = require('express');
 const
 {   GET_Tramites,
@@ -14,7 +14,7 @@ const
     POSTagregarDocumento,
     PATCHmodificarDocumento,
     PATCHcompletarReunion
-}=require('../controllers/tramites.controllers');
+}=require('../../controllers/api/tramites.controllers');
 const router= Router();
 
 router.post('/',POST_Tramites);

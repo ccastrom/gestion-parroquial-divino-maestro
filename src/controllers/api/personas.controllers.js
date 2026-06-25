@@ -1,6 +1,6 @@
 const {request,response} = require ('express');
-const PersonaService = require('../services/persona.service');
-const asyncHandler= require('../utils/asyncHandler')
+const PersonaService = require('../../services/persona.service');
+const asyncHandler= require('../../utils/asyncHandler')
 
 
 

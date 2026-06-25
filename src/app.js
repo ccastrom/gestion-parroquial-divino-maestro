@@ -6,8 +6,8 @@ const app= express();
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
-const personasRoutes= require('./routes/personas.routes');
-const tramitesRoutes= require('./routes/tramites.routes');
+const personasRoutes= require('./routes/api/personas.routes');
+const tramitesRoutes= require('./routes/api/tramites.routes');
 const webRoutes= require('./routes/web.routes');
 const authRoutes= require('./routes/auth.routes');
 const errorHandler=require('./middleware/errorHandler');
