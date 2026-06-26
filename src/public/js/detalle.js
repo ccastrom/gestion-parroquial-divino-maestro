@@ -25,6 +25,13 @@ document.getElementById('rolNuevo').addEventListener('change', function() {
   document.getElementById('wrapperLugarNuevo').classList.toggle('d-none', !esBautizado);
   document.getElementById('rutNuevo').classList.remove('is-invalid');
   document.getElementById('fechaNacimientoNuevo').classList.remove('is-invalid');
+
+  // Precargar el teléfono del bautizado como sugerencia editable
+  const rolesConTelefonoFamiliar = ['Padre', 'Madre', 'Padre 2', 'Madre 2', 'Tutor Legal'];
+  const fonoNuevo = document.getElementById('fonoNuevo');
+  if (rolesConTelefonoFamiliar.includes(this.value) && !fonoNuevo.value) {
+    fonoNuevo.value = fonoNuevo.dataset.fonoBautizado;
+  }
 });
 
 // Tab 1: validación client-side antes de enviar

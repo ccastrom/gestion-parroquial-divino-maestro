@@ -6,6 +6,9 @@
   const rolesTomados = ListaDeParticipantes.map(function(participante) { return participante.rol; });
   const rolesDisponiblesNuevo     = rolesTabNuevo.filter(function(r) { return !rolesUnicos.includes(r) || !rolesTomados.includes(r); });
   const rolesDisponiblesExistente = rolesTabExistente.filter(function(r) { return !rolesUnicos.includes(r) || !rolesTomados.includes(r); });
+
+  const bautizado = ListaDeParticipantes.find(function(participante) { return participante.rol === 'Bautizado'; });
+  const fonoBautizado = (bautizado && bautizado.Persona.fono) || '';
 %>
 <div class="modal fade" id="modalAgregarParticipante" tabindex="-1">
   <div class="modal-dialog modal-lg">
@@ -63,7 +66,7 @@
               </div>
               <div class="mb-3">
                 <label class="form-label">Teléfono</label>
-                <input type="text" name="fono" class="form-control">
+                <input type="text" name="fono" id="fonoNuevo" class="form-control" data-fono-bautizado="<%= fonoBautizado %>">
               </div>
               <div class="mb-3">
                 <label class="form-label">Dirección</label>
