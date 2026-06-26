@@ -1,15 +1,15 @@
 
 
-const { crearPersonaSchema}= require('../schemas/persona.schema.js');
+const { crearPersonaSchema}= require('../../schemas/persona.schema.js');
 const {Router} = require('express');
-const {validateBody}= require('../middleware/validarBody.js');
-const 
-{   GET_Personas, 
+const {validateBody}= require('../../middleware/validarBody.js');
+const
+{   GET_Personas,
     POST_Personas,
     PUT_Personas,
     DELETE_Personas,
     GET_PersonaById
-}= require('../controllers/personas.controllers');
+}= require('../../controllers/api/personas.controllers');
 const router= Router();
 
 router.get('/',GET_Personas);

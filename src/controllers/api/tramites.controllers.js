@@ -1,5 +1,5 @@
-const tramiteService=require('../services/tramite.service');
-const asyncHandler=require('../utils/asyncHandler');
+const tramiteService=require('../../services/tramite.service');
+const asyncHandler=require('../../utils/asyncHandler');
 
 const GET_Tramites= asyncHandler(async (req,res)=> {
         

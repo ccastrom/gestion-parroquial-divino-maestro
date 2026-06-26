@@ -151,7 +151,7 @@ body {
   font-weight: 600;
   letter-spacing: .13em;
   text-transform: uppercase;
-  color: var(--label);
+  color: var(--ink);
   white-space: nowrap;
 }
 
@@ -166,6 +166,7 @@ body {
   border-bottom: 1px solid var(--hairline);
   padding: 3px 2px;
   outline: none;
+  font-variant-numeric: lining-nums;
 }
 .field-input:focus,
 .field-area:focus { background: var(--focus-bg); border-bottom-color: var(--ink); }
@@ -202,6 +203,7 @@ body {
    Rejillas
    ---------------------------------------------------------- */
 .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 22px 44px; }
+.grid-2--ceremony { margin-top: 24px; }
 .grid-head { display: grid; grid-template-columns: 2fr 1fr; gap: 18px 40px; margin-top: 32px; }
 .span-all { grid-column: 1 / -1; }
 
@@ -214,11 +216,11 @@ body {
   font-weight: 700;
   letter-spacing: .24em;
   text-transform: uppercase;
-  color: var(--section);
+  color: var(--ink);
   white-space: nowrap;
   flex-shrink: 0;
 }
-.section__line { flex: 1; height: 1px; background: var(--section-ln); }
+.section__line { flex: 1; height: 2px; background: var(--rule); }
 
 /* ----------------------------------------------------------
    Bloques concretos
@@ -242,6 +244,16 @@ body {
 }
 .semblanza:focus { background: var(--focus-bg); border-color: var(--ink); }
 .semblanza::placeholder { color: #b6ad98; font-style: italic; }
+
+.char-counter {
+  margin-top: 6px;
+  font-size: 20px;
+  font-weight: 600;
+  text-align: right;
+  color: var(--label);
+}
+.char-counter.is-warning { color: #b8860b; font-weight: 600; }
+.char-counter.is-danger  { color: #b3261e; font-weight: 700; }
 
 .ceremony-row { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
 .toggle { display: flex; gap: 8px; }
@@ -352,10 +364,11 @@ body {
   .title { font-size: 20pt !important; }
 
   /* Espaciado entre secciones reducido */
-  .section        { margin: 18px 0 10px !important; }
-  .grid-head      { margin-top: 18px !important; }
-  .name-block     { margin-top: 14px !important; }
-  .rule-double    { margin-top: 12px !important; }
+  .section        { margin: 14px 0 8px !important; }
+  .grid-head      { margin-top: 14px !important; }
+  .name-block     { margin-top: 10px !important; }
+  .rule-double    { margin-top: 8px !important; }
+  .grid-2--ceremony { margin-top: 8px !important; }
 
   /* Ocultar controles de formulario al imprimir */
   .field-input,
@@ -372,6 +385,7 @@ body {
     display: inline-block !important;
     color: #000 !important;
     font-family: var(--serif);
+    font-variant-numeric: lining-nums;
     border-bottom: 1px solid #000;
     min-height: 1.3em;
     padding: 1px 2px 2px;
@@ -392,10 +406,11 @@ body {
 
   /* Semblanza: párrafo largo, fluye libre con line-height compacto */
   .field-print--flow {
+    font-size: 12.8pt !important;
     border: 1px solid #000 !important;
     white-space: pre-wrap;
     text-align: justify;
-    line-height: 1.45;
+    line-height: 1.4;
     min-height: 4em;
     padding: 6px 8px !important;
   }
@@ -409,7 +424,7 @@ body {
   .grid-head > *,
   .grid-2 > * { break-inside: avoid; }
 
-  .grid-2 { gap: 14px 28px; }
+  .grid-2 { gap: 7px 20px; }
 
   @page { size: A4 portrait; margin: 12mm; }
 }

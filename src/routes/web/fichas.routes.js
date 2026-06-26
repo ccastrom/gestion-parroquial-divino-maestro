@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { GET_FichaFuneral_Web } = require('../../controllers/web.controllers.js');
+const { GET_FichaFuneral_Web } = require('../../controllers/web/fichas.controllers.js');
 
 const router = Router();
 
