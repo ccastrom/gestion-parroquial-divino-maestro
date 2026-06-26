@@ -13,9 +13,23 @@
   var tituloCelebracion = document.getElementById('titulo-celebracion');
   var wrapNumero = document.getElementById('wrap-numero');
   var wrapTiempo = document.getElementById('wrap-tiempo');
+  var caracteristicasInput = document.getElementById('f-caracteristicas');
+  var charCounter = document.getElementById('char-counter');
+  var CHAR_LIMIT = 1600;
   var palabras = 'Sí';
   var tipo = 'funeral';
   var mirrors = {};
+
+  // Contador de caracteres de Semblanza — naranja cerca del límite,
+  // rojo al llegar al tope (el textarea ya tiene maxlength="1600").
+  function updateCharCounter() {
+    if (!caracteristicasInput || !charCounter) return;
+    var len = caracteristicasInput.value.length;
+    charCounter.textContent = len + ' / ' + CHAR_LIMIT;
+    charCounter.classList.remove('is-warning', 'is-danger');
+    if (len >= CHAR_LIMIT) charCounter.classList.add('is-danger');
+    else if (len >= CHAR_LIMIT * 0.9) charCounter.classList.add('is-warning');
+  }
 
   // Crea un <span class="field-print"> espejo por cada campo.
   // Al imprimir, los inputs se ocultan y los espejos muestran el texto
@@ -99,6 +113,31 @@
     paintToggle();
     applyTipo(data.tipo || 'funeral');
     syncPrint();
+    updateCharCounter();
+  }
+
+  // Hora: la secretaria solo escribe los 4 dígitos corridos (ej. "1000")
+  // y el campo arma "10:00" solo; al salir, agrega " hrs". Al volver a
+  // entrar se le quita el " hrs" para que siga editando solo los dígitos.
+  var horaInput = document.getElementById('f-hora');
+  if (horaInput) {
+    horaInput.addEventListener('input', function () {
+      var digits = horaInput.value.replace(/\D/g, '').slice(0, 4);
+      horaInput.value = digits.length > 2 ? digits.slice(0, 2) + ':' + digits.slice(2) : digits;
+    });
+    horaInput.addEventListener('focus', function () {
+      horaInput.value = horaInput.value.replace(/\s*hrs\s*$/i, '');
+    });
+    horaInput.addEventListener('blur', function () {
+      var digits = horaInput.value.replace(/\D/g, '').slice(0, 4);
+      if (digits.length === 4) horaInput.value = digits.slice(0, 2) + ':' + digits.slice(2) + ' hrs';
+      syncPrint();
+      persist();
+    });
+  }
+
+  if (caracteristicasInput) {
+    caracteristicasInput.addEventListener('input', updateCharCounter);
   }
 
   inputs.forEach(function (el) {

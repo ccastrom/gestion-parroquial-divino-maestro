@@ -62,7 +62,7 @@
         </div>
         <div class="stack stack--bottom">
           <label class="label" for="f-hora">Hora</label>
-          <input class="field-input field-input--display field-input--time" id="f-hora" data-field="hora" placeholder="10:00 hrs">
+          <input class="field-input field-input--display field-input--time" id="f-hora" data-field="hora" placeholder="10:00 hrs" inputmode="numeric" maxlength="9">
         </div>
       </div>
 
@@ -111,7 +111,8 @@
         <span class="section__label">Características / Semblanza</span>
         <span class="section__line"></span>
       </div>
-      <textarea class="semblanza" id="f-caracteristicas" data-field="caracteristicas" rows="6" placeholder="Personalidad, oficios, aficiones, anécdotas, familia que le sobrevive…"></textarea>
+      <textarea class="semblanza" id="f-caracteristicas" data-field="caracteristicas" rows="6" maxlength="1600" placeholder="Personalidad, oficios, aficiones, anécdotas, familia que le sobrevive…"></textarea>
+      <div class="char-counter only-screen" id="char-counter">0 / 1600</div>
 
       <div class="section">
         <span class="section__label">Ceremonia</span>
@@ -127,7 +128,7 @@
         <span class="toggle-print only-print" id="palabras-print"></span>
       </div>
 
-      <div class="grid-2" style="margin-top:24px;">
+      <div class="grid-2 grid-2--ceremony">
         <div class="row">
           <label class="label" for="f-celebra">Celebra</label>
           <input class="field-input" id="f-celebra" data-field="celebra">
