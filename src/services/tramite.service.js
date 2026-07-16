@@ -136,6 +136,7 @@ const agregarParticipante = async (id, participante) => {
     if (error.name === 'SequelizeUniqueConstraintError') {
       throw { status: 409, message: 'Esta persona ya existe en este trámite' };
     }
+    if (error.advertencia) error.rol = participante.rol;
     throw error;
   }
 

@@ -3,20 +3,6 @@ if (inputFechaBautismo) {
   inputFechaBautismo.setAttribute('min', new Date().toISOString().split('T')[0]);
 }
 
-// Tab 2: intercambio familiares / celebrantes según rol
-document.getElementById('rolExistente').addEventListener('change', function() {
-  const esCelebrante = this.value === 'Celebrante';
-  const wrapFam = document.getElementById('wrapperFamiliares');
-  const wrapCel = document.getElementById('wrapperCelebrantes');
-  const selFam  = document.getElementById('selectFamiliares');
-  const selCel  = document.getElementById('selectCelebrantes');
-
-  wrapFam.classList.toggle('d-none', esCelebrante);
-  wrapCel.classList.toggle('d-none', !esCelebrante);
-  selFam.disabled  = esCelebrante;
-  selCel.disabled  = !esCelebrante;
-});
-
 // Tab 1: mostrar/ocultar RUT y fecha según rol
 document.getElementById('rolNuevo').addEventListener('change', function() {
   const esBautizado = this.value === 'Bautizado';
@@ -25,6 +11,13 @@ document.getElementById('rolNuevo').addEventListener('change', function() {
   document.getElementById('wrapperLugarNuevo').classList.toggle('d-none', !esBautizado);
   document.getElementById('rutNuevo').classList.remove('is-invalid');
   document.getElementById('fechaNacimientoNuevo').classList.remove('is-invalid');
+
+  // Precargar el teléfono del bautizado como sugerencia editable
+  const rolesConTelefonoFamiliar = ['Padre', 'Madre', 'Padre 2', 'Madre 2', 'Tutor Legal'];
+  const fonoNuevo = document.getElementById('fonoNuevo');
+  if (rolesConTelefonoFamiliar.includes(this.value) && !fonoNuevo.value) {
+    fonoNuevo.value = fonoNuevo.dataset.fonoBautizado;
+  }
 });
 
 // Tab 1: validación client-side antes de enviar
@@ -76,12 +69,36 @@ document.getElementById('modalAgregarParticipante').addEventListener('hidden.bs.
   document.getElementById('wrapperFechaNuevo').classList.add('d-none');
   document.getElementById('wrapperLugarNuevo').classList.add('d-none');
 
-  // Restaurar selects Tab 2
-  document.getElementById('wrapperFamiliares').classList.remove('d-none');
-  document.getElementById('wrapperCelebrantes').classList.add('d-none');
-  document.getElementById('selectFamiliares').disabled = false;
-  document.getElementById('selectCelebrantes').disabled = true;
+  // Resetear Tab 2 (buscador + selección)
+  if (window.tab2Reset) window.tab2Reset();
 });
+
+// Modal de nombre duplicado: abre automáticamente y ofrece ir al Tab 2 pre-llenado
+const elModalDuplicado = document.getElementById('modalNombreDuplicado');
+if (elModalDuplicado) {
+  bootstrap.Modal.getOrCreateInstance(elModalDuplicado).show();
+
+  document.getElementById('btnIrTab2').addEventListener('click', function() {
+    const apellido = this.dataset.apellido;
+    const rol      = this.dataset.rol;
+    bootstrap.Modal.getInstance(elModalDuplicado).hide();
+
+    elModalDuplicado.addEventListener('hidden.bs.modal', function() {
+      bootstrap.Modal.getOrCreateInstance(document.getElementById('modalAgregarParticipante')).show();
+      document.querySelector('[data-bs-target="#tabExistente"]').click();
+
+      // Preseleccionar el rol en Tab 2
+      const rolExistente = document.getElementById('rolExistente');
+      rolExistente.value = rol;
+      rolExistente.dispatchEvent(new Event('change'));
+
+      // Pre-llenar el buscador con el apellido y disparar la búsqueda
+      const input = document.getElementById('inputBusqueda');
+      input.value = apellido;
+      input.dispatchEvent(new Event('input'));
+    }, { once: true });
+  });
+}
 
 // '← Volver' usa history.back() — si la página se restaura desde bfcache
 // (e.persisted), el HTML queda desactualizado tras crear/editar algo. Forzar reload.

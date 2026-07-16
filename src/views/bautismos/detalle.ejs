@@ -214,9 +214,35 @@
 
     <%- include('../partials/modals/detalle-participante-agregar') %>
 
+  <% if (locals.query && query.error_tipo === 'nombre_duplicado') { %>
+  <div class="modal fade" id="modalNombreDuplicado" tabindex="-1" data-bs-backdrop="static">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header bg-danger text-white">
+          <h5 class="modal-title text-center">⚠️ Esta persona ya existe en el sistema ⚠️</h5>
+        </div>
+        <div class="modal-body">
+          <p class="fs-5 fw-bold mb-1">Ya existe una persona con ese nombre:</p>
+          <p class="fs-4 fw-bold text-danger mb-3"><%= query.nombre %> <%= query.apellido %></p>
+          <p class="mb-0">Para agregarla a este trámite, búscala en la pestaña <strong>Persona existente</strong>.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-primary" id="btnIrTab2"
+                  data-apellido="<%= query.apellido %>"
+                  data-rol="<%= query.rol %>">
+            Buscar en Persona existente →
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <% } %>
+
   <%- include('ficha') %>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="/js/detalle.js"></script>
+  <script src="/js/detalle-tab2.js"></script>
 </body>
 </html>

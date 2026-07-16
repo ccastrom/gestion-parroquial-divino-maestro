@@ -6,6 +6,9 @@
   const rolesTomados = ListaDeParticipantes.map(function(participante) { return participante.rol; });
   const rolesDisponiblesNuevo     = rolesTabNuevo.filter(function(r) { return !rolesUnicos.includes(r) || !rolesTomados.includes(r); });
   const rolesDisponiblesExistente = rolesTabExistente.filter(function(r) { return !rolesUnicos.includes(r) || !rolesTomados.includes(r); });
+
+  const bautizado = ListaDeParticipantes.find(function(participante) { return participante.rol === 'Bautizado'; });
+  const fonoBautizado = (bautizado && bautizado.Persona.fono) || '';
 %>
 <div class="modal fade" id="modalAgregarParticipante" tabindex="-1">
   <div class="modal-dialog modal-lg">
@@ -63,7 +66,7 @@
               </div>
               <div class="mb-3">
                 <label class="form-label">Teléfono</label>
-                <input type="text" name="fono" class="form-control">
+                <input type="text" name="fono" id="fonoNuevo" class="form-control" data-fono-bautizado="<%= fonoBautizado %>">
               </div>
               <div class="mb-3">
                 <label class="form-label">Dirección</label>
@@ -86,37 +89,32 @@
 
           <!-- Pestaña 2: Persona existente -->
           <div class="tab-pane fade" id="tabExistente">
-            <form action="/web/tramites/<%= tramite.id %>/participantes" method="POST">
+            <script>
+              window.TAB2_PERSONAS    = <%- JSON.stringify(ListaDePersonas.map(function(p){ return { id: p.id, nombre: p.apellido + ', ' + p.nombre }; })) %>;
+              window.TAB2_CELEBRANTES = <%- JSON.stringify(ListaDeCelebrantes.map(function(c){ return { id: c.id, nombre: c.apellido + ', ' + c.nombre }; })) %>;
+            </script>
+            <form id="formExistente" action="/web/tramites/<%= tramite.id %>/participantes" method="POST">
+              <input type="hidden" name="personaId" id="personaIdHidden">
               <div class="mb-3">
-                <label class="form-label">Rol</label>
-                <select name="rol" id="rolExistente" class="form-select" required>
-                  <option value="">-- Seleccionar --</option>
+                <label class="form-label" for="rolExistente">Rol</label>
+                <select id="rolExistente" name="rol" class="form-select" required>
+                  <option value="">— Seleccionar —</option>
                   <% rolesDisponiblesExistente.forEach(function(r) { %>
                     <option value="<%= r %>"><%= r %></option>
                   <% }); %>
                 </select>
               </div>
-              <div class="mb-3" id="wrapperFamiliares">
-                <label class="form-label">Persona</label>
-                <select name="personaId" id="selectFamiliares" class="form-select" required>
-                  <option value="">-- Seleccionar --</option>
-                  <% ListaDePersonas.forEach(function(persona) { %>
-                    <option value="<%= persona.id %>"><%= persona.apellido %>, <%= persona.nombre %></option>
-                  <% }); %>
-                </select>
+              <div class="mb-2">
+                <label class="form-label" for="inputBusqueda">Persona</label>
+                <input type="text" id="inputBusqueda" class="form-control" placeholder="Escribe un nombre o apellido…" autocomplete="off">
               </div>
-              <div class="mb-3 d-none" id="wrapperCelebrantes">
-                <label class="form-label">Celebrante</label>
-                <select name="personaId" id="selectCelebrantes" class="form-select" disabled>
-                  <option value="">-- Seleccionar --</option>
-                  <% ListaDeCelebrantes.forEach(function(c) { %>
-                    <option value="<%= c.id %>"><%= c.apellido %>, <%= c.nombre %></option>
-                  <% }); %>
-                </select>
+              <div class="list-group mb-3" id="listaResultados" style="max-height:220px; overflow-y:auto;"></div>
+              <div class="card mb-3 d-none" id="tarjetaPerfil">
+                <div class="card-body" id="cuerpoPerfil"></div>
               </div>
               <div class="d-flex justify-content-end gap-2">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <button type="submit" class="btn btn-primary">Guardar</button>
+                <button type="submit" id="btnGuardar" class="btn btn-primary" disabled>Guardar</button>
               </div>
             </form>
           </div>
