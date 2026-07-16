@@ -1,5 +1,6 @@
-const { Persona } = require('../models/persona.model');
-
+const { Persona, Participacion, Tramite } = require('../models');
+const { ROLES_VALIDOS } = require('../constants/roles_Participantes');
+const { formatFecha } = require('../constants/fechas');
 const crearPersona = async (persona, transaction = null) => {
   if (!persona.rut || persona.rut.trim() === '') {
     persona.rut = null;
@@ -63,6 +64,44 @@ const obtenerPersonaPorId = async (id) => {
   }
   return persona;
 };
+const obtenerPerfilParticipante= async(id)=>{
+  const persona = await obtenerPersonaPorId(id);
+  const participaciones = await Participacion.findAll({
+    where: { id_fk_persona: id },
+    include: [
+      {
+        model: Tramite,
+        attributes: ['id', 'fecha_bautismo'],
+        include: [{
+          model: Participacion,
+          as: 'participacion',
+          where: { rol: ROLES_VALIDOS.Bautizado },
+          required: false,
+          include: [
+            { model: Persona, attributes: ['nombre', 'apellido'] }
+          ]
+        }]
+      }
+    ]
+  });
+
+  return {
+    rut: persona.rut || '—',
+    nac: formatFecha(persona.fecha_nacimiento),
+    participaciones: participaciones.map(p => {
+      const bautizado = p.Tramite.participacion[0]?.Persona;
+      return {
+        tramite: p.Tramite.id,
+        rol: p.rol,
+        detalle: bautizado
+          ? `Bautismo de ${bautizado.nombre} ${bautizado.apellido}`
+          : `Trámite #${p.Tramite.id}`,
+        fecha: formatFecha(p.Tramite.fecha_bautismo)
+      };
+    })
+  };
+
+}
 
 const actualizarPersonaPorId = async (id, datosPersona) => {
   const persona = await Persona.findByPk(id);
@@ -74,6 +113,7 @@ const actualizarPersonaPorId = async (id, datosPersona) => {
   return await Persona.update(datosPersona, { where: { id } });
 };
 
+
 module.exports = {
   crearPersona,
   obtenerPersonas,
@@ -81,4 +121,5 @@ module.exports = {
   obtenerPersonaPorNombreApellido,
   obtenerPersonaPorId,
   actualizarPersonaPorId,
+  obtenerPerfilParticipante
 };

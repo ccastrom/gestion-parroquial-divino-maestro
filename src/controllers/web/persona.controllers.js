@@ -18,9 +18,14 @@ const POST_EditarPersona_Web = asyncHandler(async(req, res) => {
         : '/web/personas';
     res.redirect(`${destino}?success=Persona%20modificada%20exitosamente`);
 });
+const GET_PerfilParticipante_Web= asyncHandler(async(req,res)=>{
+    const perfilParticipantes= await personaService.obtenerPerfilParticipante(req.params.id);
+    res.json(perfilParticipantes);
+})
 
 module.exports={
     GET_Personas_Web,
     POST_CrearPersona_Web,
     POST_EditarPersona_Web,
+    GET_PerfilParticipante_Web
 }
