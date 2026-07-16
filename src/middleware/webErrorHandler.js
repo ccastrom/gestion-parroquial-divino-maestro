@@ -13,6 +13,15 @@ const webErrorHandler = (err, req, res, next) => {
     console.error('[webErrorHandler] Error inesperado:', err);
   }
 
+  // Error de nombre duplicado — modal específico con pre-llenado del Tab 2
+  if (err.advertencia && err.personaEncontrada) {
+    const { nombre, apellido } = err.personaEncontrada;
+    const rol = err.rol || '';
+    return res.redirect(
+      `${baseUrl}?error_tipo=nombre_duplicado&nombre=${encodeURIComponent(nombre)}&apellido=${encodeURIComponent(apellido)}&rol=${encodeURIComponent(rol)}`
+    );
+  }
+
   res.redirect(`${baseUrl}?error=${encodeURIComponent(mensaje)}`);
 };
 

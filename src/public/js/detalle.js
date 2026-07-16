@@ -73,6 +73,33 @@ document.getElementById('modalAgregarParticipante').addEventListener('hidden.bs.
   if (window.tab2Reset) window.tab2Reset();
 });
 
+// Modal de nombre duplicado: abre automáticamente y ofrece ir al Tab 2 pre-llenado
+const elModalDuplicado = document.getElementById('modalNombreDuplicado');
+if (elModalDuplicado) {
+  bootstrap.Modal.getOrCreateInstance(elModalDuplicado).show();
+
+  document.getElementById('btnIrTab2').addEventListener('click', function() {
+    const apellido = this.dataset.apellido;
+    const rol      = this.dataset.rol;
+    bootstrap.Modal.getInstance(elModalDuplicado).hide();
+
+    elModalDuplicado.addEventListener('hidden.bs.modal', function() {
+      bootstrap.Modal.getOrCreateInstance(document.getElementById('modalAgregarParticipante')).show();
+      document.querySelector('[data-bs-target="#tabExistente"]').click();
+
+      // Preseleccionar el rol en Tab 2
+      const rolExistente = document.getElementById('rolExistente');
+      rolExistente.value = rol;
+      rolExistente.dispatchEvent(new Event('change'));
+
+      // Pre-llenar el buscador con el apellido y disparar la búsqueda
+      const input = document.getElementById('inputBusqueda');
+      input.value = apellido;
+      input.dispatchEvent(new Event('input'));
+    }, { once: true });
+  });
+}
+
 // '← Volver' usa history.back() — si la página se restaura desde bfcache
 // (e.persisted), el HTML queda desactualizado tras crear/editar algo. Forzar reload.
 window.addEventListener('pageshow', function(e) {
