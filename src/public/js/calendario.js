@@ -48,7 +48,6 @@ var calendar = new FullCalendar.Calendar(document.getElementById('calendario'), 
   dateClick: function(info) {
     var hoy = new Date().toISOString().split('T')[0];
     if (info.dateStr < hoy) return;
-    if (new Date(info.dateStr + 'T12:00:00Z').getUTCDay() === 0) return;
     document.getElementById('nuevaFecha').value = info.dateStr;
     document.getElementById('nuevaFechaTexto').textContent = info.dateStr.split('-').reverse().join('-');
     document.getElementById('nuevaHora').value = '';
@@ -59,7 +58,6 @@ var calendar = new FullCalendar.Calendar(document.getElementById('calendario'), 
     var clases = [];
     var hoy = new Date().toISOString().split('T')[0];
     if (info.dateStr < hoy) clases.push('fc-dia-pasado');
-    if (info.date.getUTCDay() === 0) clases.push('fc-dia-domingo');
     return clases;
   },
 
