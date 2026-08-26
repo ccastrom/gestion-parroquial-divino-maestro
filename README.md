@@ -194,8 +194,9 @@ node server.js
 ```
 
 ### Variables de entorno utilizadas en el sistema.
-Revisar el archivo `.env.example` en la carpeta `src` contiene las variables que utiliza la aplicación.
+Revisar el archivo `src/.env.example`, que contiene las variables requeridas por la aplicación, y renombrarlo como `.env `para evitar errores de ejecución.
 ```bash
+PORT — puerto del servidor express.js (default express.js:3000)
 DB_HOST — host de la base de datos
 DB_PORT — puerto de la base de datos (default MySQL: 3306)
 DB_USER — usuario de la base de datos
