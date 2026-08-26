@@ -2,6 +2,9 @@
 
 -- Usuario de prueba: username = admin, password = 12345
 -- El sistema fuerza el cambio de contraseña en el primer login.
+
+CREATE DATABASE -- Crear nombre para la base de datos
+USE -- Nombre de la base de datos
 CREATE TABLE usuario (
   id INT PRIMARY KEY AUTO_INCREMENT,
   username VARCHAR(255) UNIQUE,
