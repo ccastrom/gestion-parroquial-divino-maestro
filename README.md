@@ -184,8 +184,12 @@ CSS ni en lógica de tablas desde cero.
 - Instalar Node.js en su versión `v18.19.1` o superior
 - Instalar MySQL en su versión `8.0.45` o superior
 - Copiar y pegar el esquema de la base de datos alojado en `db/script.sql` en el motor de la base de datos
-
+### Clonar el repositorio
+```bash
+https://github.com/ccastrom/parroquia-api.git
+```
 ### Instalación
+
 
 ```bash
 cd src
